@@ -55,12 +55,37 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1
 ## 阅读顺序
 
 1. `HANDOFF.md`：当前权威基线、授权和下一步。
-2. `docs/charter.md`：方法层定位与非目标。
-3. `docs/integration-map.md`：上游概念、v0.1 字段和 future 边界。
-4. `docs/workflow.md`：artifact 生命周期和 finish gate。
-5. `schemas/*.schema.json`：机器可验证契约。
-6. `examples/README.md` 与 `examples/**`：正反实例。
-7. `templates/*`：人工任务和交接输出模板。
+2. `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`：长期维护交接与新对话启动提示词。
+3. `docs/architecture/repository-structure.md`：仓库目录架构、职责边界和维护检查表。
+4. `docs/charter.md`：方法层定位与非目标。
+5. `docs/integration-map.md`：上游概念、v0.1 字段和 future 边界。
+6. `docs/workflow.md`：artifact 生命周期和 finish gate。
+7. `schemas/*.schema.json`：机器可验证契约。
+8. `examples/README.md` 与 `examples/**`：正反实例。
+9. `templates/*`：人工任务和交接输出模板。
+
+## 长期维护入口
+
+后续新对话维护本项目时，优先读取：
+
+- `HANDOFF.md`
+- `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`
+- `docs/maintenance/long-term-maintenance-agent-prompt.md`
+- `docs/architecture/repository-structure.md`
+
+其中长期维护交接文件包含：
+
+- 当前 Git / remote / commit 基线；
+- 本轮会话沉淀的事实和验证证据；
+- 维护授权边界；
+- upstream absorption 流程；
+- 新对话启动提示词。
+
+如果需要给另一个 Agent 开启维护会话，可直接复制：
+
+- `docs/maintenance/long-term-maintenance-agent-prompt.md`
+
+目录架构文件说明每个目录的职责、测试入口、release/push checklist，以及后续吸收其它项目方法层时应落文档和测试的位置。
 
 ## File-first reference adapter
 

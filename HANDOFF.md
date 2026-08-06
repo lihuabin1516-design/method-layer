@@ -1,17 +1,20 @@
-# CC-Panes Method Layer v0.1 Production Baseline Handoff
+# CC-Panes Method Layer Long-Term Maintenance Handoff
 
 ## 1. Role, task id, current result
 
-- Role: 下一任 CC-Panes Method Layer 主控。
-- Task ID: `ccp-method-v01-production-baseline-20260805`
+- Role: 下一任 CC-Panes Method Layer 长期维护主控。
+- Task ID: `ccp-method-layer-long-term-maintenance-20260806`
 - Current result: v0.1 四类方法 artifact、file-first adapter、transport planner、
-  journaled executor 和 MCP Streamable HTTP driver 已形成可本机验证基线。
+  journaled executor、MCP Streamable HTTP driver、长期维护交接和仓库目录架构已形成可持续维护基线。
 
 ## 2. Required reading
 
 - `AGENTS.md`
 - `tsc.md`
 - `README.md`
+- `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`
+- `docs/maintenance/long-term-maintenance-agent-prompt.md`
+- `docs/architecture/repository-structure.md`
 - `docs/charter.md`
 - `docs/integration-map.md`
 - `docs/workflow.md`
@@ -31,11 +34,11 @@
 
 - Repository: `D:\ccpanes-method-layer`
 - Branch: `main`
-- HEAD: `unborn`
-- Remote count: `0`
-- Repository content remains untracked because commit was not authorized.
-- No dependency install, commit, push, remote, UI, hook, plugin, profile, global
-  configuration, or `D:\cc-pane` write was performed.
+- Current pushed baseline commit: `d75cf50be269009cc53f6e984fc70981c55cee31`
+- Remote: `https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
+- Remote `main` matched local HEAD after push.
+- Current follow-up maintenance docs are local working-tree changes on top of the pushed v0.1 baseline.
+- No dependency install, UI, hook, plugin, profile, global configuration, or `D:\cc-pane` write was performed.
 - Four public schemas remain `task`, `run`, `evidence`, and `handoff` v0.1.
 - Adapter commands remain file-first and emit command-specific validated envelopes.
 - Planner emits ordered requests and update preconditions containing binding identity,
@@ -53,11 +56,15 @@
 - GREEN evidence: executor suite reports 16 passes.
 - Existing adapter suite reports 23 passes.
 - Existing planner suite reports 16 passes.
+- Long-term maintenance handoff added under `docs/maintenance/`.
+- Standalone long-term Agent prompt added under `docs/maintenance/`.
+- Repository directory architecture added under `docs/architecture/`.
 
 ## 4. Single objective for the next round
 
-Consume this v0.1 baseline from a separately authorized CC-Panes adapter integration
-without changing the four public artifact contracts.
+Maintain this repository as the long-term CC-Panes method-layer baseline and absorb
+future method-layer ideas from other projects through documented, tested, reversible
+plans.
 
 ## 5. Authorization, forbidden items, conditional authorization
 
@@ -65,6 +72,8 @@ Authorized baseline maintenance:
 
 - Modify only `D:\ccpanes-method-layer` files required by the active task.
 - Run local schema, parser, fixture, and read-only MCP checks.
+- Read upstream public repositories and record findings under `docs/upstreams/`.
+- Add plans under `docs/plans/` before changing public protocol semantics.
 
 Forbidden without a new explicit task:
 
@@ -83,11 +92,13 @@ Conditional:
 ## 6. Execution order and agent dispatch boundary
 
 1. Re-run `scripts/validate.ps1`.
-2. Read planner/executor schemas and `controller/README.md`.
-3. Generate a plan from a validated adapter envelope.
-4. Run `execute-transport.ps1 -Mode dry-run`.
-5. Only with explicit runtime mutation authorization, run `-Mode live`.
-6. Inspect journal, response hashes, TaskBinding readback, and full Git status.
+2. Read `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`.
+3. Read `docs/architecture/repository-structure.md`.
+4. Classify the next task as protocol, upstream absorption, adapter, controller,
+   documentation, or CC-Panes integration preparation.
+5. Write or update a focused plan under `docs/plans/`.
+6. Add tests/examples before behavior changes.
+7. Run validation and inspect full Git status.
 
 Read-only workers may review schemas or transport sequencing. Writing workers must
 have disjoint file scopes inside this repository and report touched files, commands,
@@ -136,10 +147,16 @@ Primary artifacts:
 - `tests/controller/**`
 - `tests/controller-executor/**`
 - `docs/**`
+- `docs/maintenance/**`
+- `docs/architecture/**`
 - `templates/**`
 - `README.md`
 - `HANDOFF.md`
 
-Delivery remains a local uncommitted repository baseline. The next dependency is a
-separately authorized CC-Panes adapter consumption task; it does not expand this
-handoff's permissions automatically.
+Next order:
+
+1. Use `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md` as the
+   starting state for the new long-term maintenance conversation.
+2. Keep `docs/architecture/repository-structure.md` aligned with directory changes.
+3. When absorbing another project, first create/update `docs/upstreams/<source>.md`,
+   then create a dated plan, tests, implementation, validation, and handoff update.
