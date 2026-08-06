@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/launch-response.internal.schema.json",
+  "title": "CC-Panes launch_task Response Snapshot",
+  "type": "object",
+  "required": [
+    "taskId",
+    "sessionId",
+    "status",
+    "runtimeKind",
+    "runtimeSource"
+  ],
+  "properties": {
+    "taskId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtimeKind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtimeSource": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profileId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "notice": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,45 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "task",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "createdAt": "2026-08-05T16:00:00+08:00",
+  "riskMode": "standard",
+  "authorization": {
+    "allowedPaths": [
+      "D:\\ccpanes-method-layer"
+    ],
+    "forbiddenActions": [
+      "Modify D:\\cc-pane"
+    ]
+  },
+  "baseline": {
+    "projectPath": "D:\\ccpanes-method-layer",
+    "repoRoot": "D:\\ccpanes-method-layer",
+    "git": {
+      "branch": "main",
+      "head": "unborn",
+      "status": {
+        "state": "untracked",
+        "summary": "Initial untracked baseline."
+      }
+    },
+    "relevantRules": [
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "Examples are validated."
+  ],
+  "requiredEvidence": [
+    "Validation output"
+  ],
+  "stopConditions": [
+    "External write required"
+  ],
+  "lineage": {
+    "externalRefs": [
+      "tsc.md"
+    ]
+  },
+  "status": "active"
+}

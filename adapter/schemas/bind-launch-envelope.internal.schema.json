@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/bind-launch-envelope.internal.schema.json",
+  "title": "CC-Panes Method Layer Bind Launch Envelope",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "envelopeType",
+    "operation",
+    "runPath",
+    "runSha256",
+    "launchTaskId",
+    "sessionId",
+    "taskBindingLookup",
+    "taskBindingPatch",
+    "idempotent"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "envelopeType": {
+      "const": "bind-launch-envelope"
+    },
+    "operation": {
+      "const": "bind-launch"
+    },
+    "attemptPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "attemptSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "runSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "launchTaskId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "taskBindingLookup": {
+      "$ref": "#/$defs/taskBindingLookup"
+    },
+    "taskBindingPatch": {
+      "$ref": "#/$defs/methodMetadataPatch"
+    },
+    "idempotent": {
+      "type": "boolean"
+    }
+  },
+  "dependentRequired": {
+    "attemptPath": [
+      "attemptSha256"
+    ],
+    "attemptSha256": [
+      "attemptPath"
+    ]
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/]{2})(?![\\\\/]).+"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{64}$"
+    },
+    "taskId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    },
+    "taskBindingLookup": {
+      "type": "object",
+      "required": [
+        "operation",
+        "sessionId",
+        "fallback"
+      ],
+      "properties": {
+        "operation": {
+          "const": "find_task_binding_by_session"
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fallback": {
+          "const": "create_or_register_task_binding"
+        }
+      },
+      "additionalProperties": false
+    },
+    "methodMetadataPatch": {
+      "type": "object",
+      "required": [
+        "metadata"
+      ],
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "required": [
+            "methodLayer"
+          ],
+          "properties": {
+            "methodLayer": {
+              "type": "object",
+              "required": [
+                "protocolVersion",
+                "taskId",
+                "runId",
+                "artifactRoot",
+                "taskPath",
+                "runPath"
+              ],
+              "properties": {
+                "protocolVersion": {
+                  "const": "0.1"
+                },
+                "taskId": {
+                  "$ref": "#/$defs/taskId"
+                },
+                "runId": {
+                  "$ref": "#/$defs/runId"
+                },
+                "artifactRoot": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "taskPath": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "runPath": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "latestEvidencePath": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "latestHandoffPath": {
+                  "$ref": "#/$defs/relativePath"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/prepare-launch-envelope.internal.schema.json",
+  "title": "CC-Panes Method Layer Prepare Launch Envelope",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "envelopeType",
+    "operation",
+    "attemptPath",
+    "attemptSha256",
+    "taskPath",
+    "taskSha256",
+    "runId",
+    "launchTaskRequest"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "envelopeType": {
+      "const": "prepare-launch-envelope"
+    },
+    "operation": {
+      "const": "prepare-launch"
+    },
+    "attemptPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "attemptSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "taskPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "taskSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runId": {
+      "$ref": "#/$defs/runId"
+    },
+    "launchTaskRequest": {
+      "type": "object",
+      "required": [
+        "projectPath",
+        "cliTool",
+        "profileId",
+        "runtimeKind"
+      ],
+      "properties": {
+        "projectPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cliTool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profileId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeKind": {
+          "type": "string",
+          "enum": [
+            "local",
+            "wsl",
+            "ssh"
+          ]
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resumeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerSelection": {
+          "type": "string",
+          "enum": [
+            "inherit",
+            "explicit",
+            "none"
+          ]
+        },
+        "workspaceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paneId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placement": {
+          "type": "string",
+          "enum": [
+            "beside",
+            "tab",
+            "background",
+            "silent"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "prompt"
+          ],
+          "not": {
+            "required": [
+              "resumeId"
+            ]
+          }
+        },
+        {
+          "required": [
+            "resumeId"
+          ],
+          "not": {
+            "required": [
+              "prompt"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/]{2})(?![\\\\/]).+"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{64}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    }
+  }
+}

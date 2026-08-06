@@ -1,0 +1,49 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "task",
+  "taskId": "team:task-001",
+  "createdAt": "2026-08-05T20:00:00+08:00",
+  "objective": "Exercise the file-first adapter in a local fixture.",
+  "riskMode": "standard",
+  "authorization": {
+    "allowedPaths": [
+      "PROJECT_PATH"
+    ],
+    "forbiddenActions": [
+      "Modify paths outside the fixture project.",
+      "Install dependencies.",
+      "Create remote state."
+    ]
+  },
+  "baseline": {
+    "projectPath": "PROJECT_PATH",
+    "repoRoot": "PROJECT_PATH",
+    "git": {
+      "branch": "main",
+      "head": "unborn",
+      "status": {
+        "state": "untracked",
+        "summary": "Fixture repository contains untracked task inputs."
+      }
+    },
+    "relevantRules": [
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "Adapter artifacts validate against their schemas.",
+    "All writes remain under the fixture project."
+  ],
+  "requiredEvidence": [
+    "Adapter test output.",
+    "Fixture Git status."
+  ],
+  "stopConditions": [
+    "A path escapes the fixture project.",
+    "A protocol artifact fails validation."
+  ],
+  "lineage": {
+    "specId": "adapter-fixture"
+  },
+  "status": "active"
+}

@@ -1,0 +1,102 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "handoff",
+  "handoffId": "handoff-20260805-v01-review",
+  "createdAt": "2026-08-05T17:05:00+08:00",
+  "role": "Next CC-Panes Method Layer controller",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "currentResult": "The v0.1 local protocol baseline is ready for review.",
+  "requiredReading": [
+    "README.md",
+    "AGENTS.md",
+    "docs/integration-map.md",
+    "schemas/*.schema.json",
+    "examples/README.md"
+  ],
+  "baseline": {
+    "projectPath": "D:\\ccpanes-method-layer",
+    "repoRoot": "D:\\ccpanes-method-layer",
+    "git": {
+      "branch": "main",
+      "head": "unborn",
+      "status": {
+        "state": "untracked",
+        "summary": "Protocol baseline files are untracked because commits are outside the task authorization."
+      }
+    },
+    "relevantRules": [
+      "AGENTS.md"
+    ]
+  },
+  "facts": [
+    "The repository is independent from D:\\cc-pane.",
+    "PowerShell 7.6.3 Test-Json is the instance validator."
+  ],
+  "evidence": [
+    "scripts/validate.ps1 output",
+    "git status --short"
+  ],
+  "objective": "Review the v0.1 baseline and decide whether to design an adapter.",
+  "authorization": [
+    "Read and modify files only in D:\\ccpanes-method-layer."
+  ],
+  "forbidden": [
+    "Modify D:\\cc-pane.",
+    "Write user-global configuration.",
+    "Commit, push, merge, or create remotes."
+  ],
+  "conditionalAuthorization": [
+    "Any CC-Panes integration requires a separately approved target path and action."
+  ],
+  "executionOrder": [
+    "Read the protocol baseline and validation evidence.",
+    "Resolve review findings inside this repository.",
+    "Stop after producing the requested artifact."
+  ],
+  "agentDispatchBoundary": {
+    "allowed": [
+      "Read-only analysis may be delegated.",
+      "Write workers may edit only explicitly assigned files in this repository."
+    ],
+    "requiredReporting": [
+      "Workers report touched files, commands, outcomes, and residual risk."
+    ]
+  },
+  "requiredChecks": [
+    {
+      "name": "protocol-validation",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/validate.ps1",
+      "required": true
+    }
+  ],
+  "acceptanceAssertions": [
+    "Every valid example passes.",
+    "Every invalid example fails.",
+    "No repository-external write occurred."
+  ],
+  "audit": [
+    "Inspect the final file inventory and Git status."
+  ],
+  "fuse": [
+    "Stop after three failed repair attempts for the same root cause."
+  ],
+  "stopConditions": [
+    "A required change reaches outside D:\\ccpanes-method-layer.",
+    "A dependency installation becomes necessary."
+  ],
+  "artifacts": [
+    "schemas/*.schema.json",
+    "examples/**",
+    "scripts/validate.ps1",
+    "templates/*"
+  ],
+  "delivery": {
+    "format": "Compact Chinese engineering report",
+    "requirements": [
+      "Include changes, validation, risk, and next step."
+    ]
+  },
+  "nextOrder": [
+    "Decide whether to authorize adapter design after reviewing v0.1."
+  ]
+}

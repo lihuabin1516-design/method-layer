@@ -1,0 +1,24 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "run",
+  "runId": "run-20260805-v01-baseline",
+  "taskRef": {
+    "taskId": "ccp-method-bootstrap-20260805",
+    "protocolVersion": "0.1"
+  },
+  "startedAt": "2026-08-05T16:05:00+08:00",
+  "status": "running",
+  "runner": {
+    "cliTool": "codex",
+    "profile": "codex-gpt55-heavy",
+    "session": {
+      "sessionId": "SESSION"
+    }
+  },
+  "workspace": {
+    "projectPath": "D:\\ccpanes-method-layer",
+    "worktreePath": "D:\\ccpanes-method-layer",
+    "branch": "main"
+  },
+  "contract": {}
+}

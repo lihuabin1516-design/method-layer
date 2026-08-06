@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/finish-run-envelope.internal.schema.json",
+  "title": "CC-Panes Method Layer Finish Run Envelope",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "envelopeType",
+    "operation",
+    "methodOutcome",
+    "evidencePath",
+    "evidenceSha256",
+    "runPath",
+    "runSha256",
+    "taskBindingLookup",
+    "taskBindingPatch",
+    "leaderReport"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "envelopeType": {
+      "const": "finish-run-envelope"
+    },
+    "operation": {
+      "const": "finish-run"
+    },
+    "methodOutcome": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "partial",
+        "blocked",
+        "failed"
+      ]
+    },
+    "evidencePath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "evidenceSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "runSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "taskBindingLookup": {
+      "$ref": "#/$defs/taskBindingLookup"
+    },
+    "taskBindingPatch": {
+      "$ref": "#/$defs/taskBindingPatch"
+    },
+    "leaderReport": {
+      "$ref": "#/$defs/leaderReport"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/]{2})(?![\\\\/]).+"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{64}$"
+    },
+    "taskId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    },
+    "bindingStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "waiting",
+        "completed",
+        "failed"
+      ]
+    },
+    "taskBindingLookup": {
+      "type": "object",
+      "required": [
+        "operation",
+        "sessionId",
+        "fallback"
+      ],
+      "properties": {
+        "operation": {
+          "const": "find_task_binding_by_session"
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fallback": {
+          "const": "manual-review"
+        }
+      },
+      "additionalProperties": false
+    },
+    "methodLayer": {
+      "type": "object",
+      "required": [
+        "protocolVersion",
+        "taskId",
+        "runId",
+        "artifactRoot",
+        "taskPath",
+        "runPath",
+        "latestEvidencePath"
+      ],
+      "properties": {
+        "protocolVersion": {
+          "const": "0.1"
+        },
+        "taskId": {
+          "$ref": "#/$defs/taskId"
+        },
+        "runId": {
+          "$ref": "#/$defs/runId"
+        },
+        "artifactRoot": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "taskPath": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "runPath": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "latestEvidencePath": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "latestHandoffPath": {
+          "$ref": "#/$defs/relativePath"
+        }
+      },
+      "additionalProperties": false
+    },
+    "taskBindingPatch": {
+      "type": "object",
+      "required": [
+        "status",
+        "progress",
+        "completionSummary",
+        "metadata"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/bindingStatus"
+        },
+        "progress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "completionSummary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exitCode": {
+          "type": "integer"
+        },
+        "metadata": {
+          "type": "object",
+          "required": [
+            "methodLayer"
+          ],
+          "properties": {
+            "methodLayer": {
+              "$ref": "#/$defs/methodLayer"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "leaderReport": {
+      "type": "object",
+      "required": [
+        "workerId",
+        "status",
+        "summary",
+        "dispatchPolicy"
+      ],
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/bindingStatus"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dispatchPolicy": {
+          "const": "if-not-auto-notified"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

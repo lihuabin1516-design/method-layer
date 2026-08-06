@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/handoff-context.internal.schema.json",
+  "title": "CC-Panes Method Layer Handoff Context",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "role",
+    "requiredReading",
+    "facts",
+    "executionOrder",
+    "agentDispatchBoundary",
+    "requiredChecks",
+    "audit",
+    "fuse",
+    "delivery",
+    "nextOrder"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requiredReading": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "facts": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "executionOrder": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "agentDispatchBoundary": {
+      "type": "object",
+      "required": [
+        "allowed",
+        "requiredReporting"
+      ],
+      "properties": {
+        "allowed": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "requiredReporting": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requiredChecks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "command",
+          "required"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "audit": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "fuse": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    },
+    "delivery": {
+      "type": "object",
+      "required": [
+        "format",
+        "requirements"
+      ],
+      "properties": {
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirements": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "nextOrder": {
+      "$ref": "#/$defs/nonEmptyStrings"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/task-binding.internal.schema.json",
+  "title": "CC-Panes TaskBinding Adapter Snapshot",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "role",
+    "projectPath",
+    "cliTool",
+    "status",
+    "progress"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "task",
+        "leader",
+        "worker"
+      ]
+    },
+    "parentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "planPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalizedPlanPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resumeId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paneId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tabId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "todoId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workspaceName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cliTool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "waiting",
+        "completed",
+        "failed"
+      ]
+    },
+    "progress": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "completionSummary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exitCode": {
+      "type": "integer"
+    },
+    "sortOrder": {
+      "type": "integer"
+    },
+    "metadata": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

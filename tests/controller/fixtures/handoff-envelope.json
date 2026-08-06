@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.1-internal",
+  "envelopeType": "handoff-envelope",
+  "operation": "new-handoff",
+  "handoffPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/handoffs/handoff-controller.json",
+  "handoffSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "taskBindingLookup": {
+    "operation": "find_task_binding_by_session",
+    "sessionId": "session-controller-fixture",
+    "fallback": "manual-review"
+  },
+  "taskBindingPatch": {
+    "metadata": {
+      "methodLayer": {
+        "protocolVersion": "0.1",
+        "taskId": "team:task-001",
+        "runId": "run-controller-fixture",
+        "artifactRoot": ".ccpanes-method/v0.1",
+        "taskPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/task.json",
+        "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+        "latestEvidencePath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/evidence/evidence-controller.json",
+        "latestHandoffPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/handoffs/handoff-controller.json"
+      }
+    }
+  }
+}

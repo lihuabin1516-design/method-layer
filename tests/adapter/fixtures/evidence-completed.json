@@ -1,0 +1,50 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "evidence",
+  "evidenceId": "evidence-fixture-completed",
+  "runId": "RUN_ID",
+  "taskId": "team:task-001",
+  "completedAt": "2026-08-05T20:30:00+08:00",
+  "outcome": "completed",
+  "summary": "Fixture checks passed with aligned drift.",
+  "touchedFiles": [
+    {
+      "path": "RUN_PATH",
+      "action": "inspected",
+      "notes": "Validated the bound run artifact."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Adapter test output.",
+      "command": "pwsh -NoProfile -File tests/adapter/run.ps1",
+      "required": true,
+      "status": "pass",
+      "notes": "Adapter test output was collected."
+    },
+    {
+      "name": "Fixture Git status.",
+      "command": "git status --short",
+      "required": true,
+      "status": "pass",
+      "notes": "Fixture Git status was collected."
+    }
+  ],
+  "driftCheck": {
+    "scope": "aligned",
+    "files": "aligned",
+    "acceptance": "aligned",
+    "notes": "Fixture remained aligned."
+  },
+  "gitStatus": {
+    "branch": "main",
+    "head": "unborn",
+    "state": "untracked",
+    "summary": "Fixture artifacts are untracked."
+  },
+  "residualRisk": {
+    "level": "low",
+    "summary": "Runtime transport is represented by fixtures."
+  },
+  "recommendedNextAction": "Generate the fixture handoff."
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/controller/v0.1/execution-journal-entry.internal.schema.json",
+  "title": "CC-Panes Method Layer Controller Execution Journal Entry",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "executionId",
+    "planId",
+    "planSha256",
+    "entrySequence",
+    "timestamp",
+    "eventType",
+    "mode"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1-internal" },
+    "artifactType": { "const": "controller-execution-journal-entry" },
+    "executionId": {
+      "type": "string",
+      "pattern": "^execution-[a-f0-9]{32}$"
+    },
+    "planId": {
+      "type": "string",
+      "pattern": "^controller-plan-[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "planSha256": {
+      "type": "string",
+      "pattern": "^[A-F0-9]{64}$"
+    },
+    "entrySequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "execution-started",
+        "step-attempted",
+        "step-succeeded",
+        "step-failed",
+        "step-skipped",
+        "execution-finished"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["live"]
+    },
+    "stepSequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "requestSha256": {
+      "type": "string",
+      "pattern": "^[A-F0-9]{64}$"
+    },
+    "responsePath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "responseSha256": {
+      "type": "string",
+      "pattern": "^[A-F0-9]{64}$"
+    },
+    "stepStatus": {
+      "type": "string",
+      "enum": ["succeeded", "failed", "skipped"]
+    },
+    "executionStatus": {
+      "type": "string",
+      "enum": ["completed", "manual-review", "failed"]
+    },
+    "error": {
+      "type": "object",
+      "required": ["category", "delivery", "message"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": ["transient", "permanent", "contract"]
+        },
+        "delivery": {
+          "type": "string",
+          "enum": ["not-sent", "ambiguous", "rejected", "unknown"]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "eventType": { "const": "execution-started" } }, "required": ["eventType"] },
+      "then": { "required": ["note"] }
+    },
+    {
+      "if": { "properties": { "eventType": { "const": "step-attempted" } }, "required": ["eventType"] },
+      "then": { "required": ["stepSequence", "tool", "attempt", "requestSha256"] }
+    },
+    {
+      "if": { "properties": { "eventType": { "const": "step-succeeded" } }, "required": ["eventType"] },
+      "then": { "required": ["stepSequence", "tool", "attempt", "requestSha256", "responsePath", "responseSha256", "stepStatus"] }
+    },
+    {
+      "if": { "properties": { "eventType": { "const": "step-failed" } }, "required": ["eventType"] },
+      "then": { "required": ["stepSequence", "tool", "requestSha256", "stepStatus", "error"] }
+    },
+    {
+      "if": { "properties": { "eventType": { "const": "step-skipped" } }, "required": ["eventType"] },
+      "then": { "required": ["stepSequence", "tool", "requestSha256", "stepStatus", "note"] }
+    },
+    {
+      "if": { "properties": { "eventType": { "const": "execution-finished" } }, "required": ["eventType"] },
+      "then": { "required": ["executionStatus", "note"] }
+    }
+  ],
+  "additionalProperties": false
+}

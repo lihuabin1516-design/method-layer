@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "0.1-internal",
+  "envelopeType": "recovery-envelope",
+  "operation": "recover-launch",
+  "attemptState": "prepared",
+  "recoveryAction": "retry-launch",
+  "taskId": "team:task-001",
+  "runId": "run-controller-fixture"
+}

@@ -1,0 +1,508 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/controller/v0.1/transport-plan.internal.schema.json",
+  "title": "CC-Panes Method Layer Dry-Run Transport Plan",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "planId",
+    "createdAt",
+    "sourceEnvelopeType",
+    "mode",
+    "decision",
+    "leaderNotification",
+    "correlation",
+    "steps",
+    "notes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "artifactType": {
+      "const": "controller-transport-plan"
+    },
+    "planId": {
+      "type": "string",
+      "pattern": "^controller-plan-[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceEnvelopeType": {
+      "type": "string",
+      "enum": [
+        "prepare-launch-envelope",
+        "bind-launch-envelope",
+        "finish-run-envelope",
+        "handoff-envelope",
+        "recovery-envelope"
+      ]
+    },
+    "mode": {
+      "const": "dry-run"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "requires-binding",
+        "requires-journal",
+        "manual-review",
+        "already-satisfied"
+      ]
+    },
+    "leaderNotification": {
+      "type": "string",
+      "enum": [
+        "not-applicable",
+        "auto-notify-expected",
+        "manual-report-planned"
+      ]
+    },
+    "correlation": {
+      "type": "object",
+      "properties": {
+        "taskId": {
+          "$ref": "#/$defs/taskId"
+        },
+        "runId": {
+          "$ref": "#/$defs/runId"
+        },
+        "launchTaskId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/launchStep"
+          },
+          {
+            "$ref": "#/$defs/findBindingStep"
+          },
+          {
+            "$ref": "#/$defs/updateBindingStep"
+          },
+          {
+            "$ref": "#/$defs/reportStep"
+          }
+        ]
+      }
+    },
+    "notes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "requires-journal",
+              "manual-review"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "steps": {
+            "maxItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "ready",
+              "requires-binding",
+              "already-satisfied"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "steps": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "taskId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    },
+    "bindingStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "waiting",
+        "completed",
+        "failed"
+      ]
+    },
+    "stepBaseProperties": {
+      "sequence": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "purpose": {
+        "type": "string",
+        "minLength": 1
+      },
+      "readbackAssertions": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "launchRequest": {
+      "type": "object",
+      "required": [
+        "projectPath",
+        "cliTool",
+        "profileId",
+        "runtimeKind"
+      ],
+      "properties": {
+        "projectPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cliTool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profileId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeKind": {
+          "type": "string",
+          "enum": [
+            "local",
+            "wsl",
+            "ssh"
+          ]
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resumeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerSelection": {
+          "type": "string",
+          "enum": [
+            "inherit",
+            "explicit",
+            "none"
+          ]
+        },
+        "workspaceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paneId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placement": {
+          "type": "string",
+          "enum": [
+            "beside",
+            "tab",
+            "background",
+            "silent"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "prompt"
+          ],
+          "not": {
+            "required": [
+              "resumeId"
+            ]
+          }
+        },
+        {
+          "required": [
+            "resumeId"
+          ],
+          "not": {
+            "required": [
+              "prompt"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "launchStep": {
+      "type": "object",
+      "required": [
+        "sequence",
+        "tool",
+        "request",
+        "purpose"
+      ],
+      "properties": {
+        "sequence": {
+          "$ref": "#/$defs/stepBaseProperties/sequence"
+        },
+        "tool": {
+          "const": "launch_task"
+        },
+        "request": {
+          "$ref": "#/$defs/launchRequest"
+        },
+        "purpose": {
+          "$ref": "#/$defs/stepBaseProperties/purpose"
+        },
+        "readbackAssertions": {
+          "$ref": "#/$defs/stepBaseProperties/readbackAssertions"
+        }
+      },
+      "additionalProperties": false
+    },
+    "findBindingStep": {
+      "type": "object",
+      "required": [
+        "sequence",
+        "tool",
+        "request",
+        "purpose"
+      ],
+      "properties": {
+        "sequence": {
+          "$ref": "#/$defs/stepBaseProperties/sequence"
+        },
+        "tool": {
+          "const": "find_task_binding_by_session"
+        },
+        "request": {
+          "type": "object",
+          "required": [
+            "sessionId"
+          ],
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "purpose": {
+          "$ref": "#/$defs/stepBaseProperties/purpose"
+        },
+        "readbackAssertions": {
+          "$ref": "#/$defs/stepBaseProperties/readbackAssertions"
+        }
+      },
+      "additionalProperties": false
+    },
+    "updateBindingStep": {
+      "type": "object",
+      "required": [
+        "sequence",
+        "tool",
+        "request",
+        "preconditions",
+        "purpose"
+      ],
+      "properties": {
+        "sequence": {
+          "$ref": "#/$defs/stepBaseProperties/sequence"
+        },
+        "tool": {
+          "const": "update_task_binding"
+        },
+        "request": {
+          "type": "object",
+          "required": [
+            "id",
+            "metadata"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "$ref": "#/$defs/bindingStatus"
+            },
+            "progress": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "completionSummary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "exitCode": {
+              "type": "integer"
+            },
+            "metadata": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        },
+        "preconditions": {
+          "type": "object",
+          "required": [
+            "bindingId",
+            "sessionId",
+            "role",
+            "status",
+            "projectPath",
+            "metadataSha256"
+          ],
+          "properties": {
+            "bindingId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "task",
+                "leader",
+                "worker"
+              ]
+            },
+            "status": {
+              "$ref": "#/$defs/bindingStatus"
+            },
+            "projectPath": {
+              "type": "string",
+              "minLength": 1
+            },
+            "metadataSha256": {
+              "type": "string",
+              "pattern": "^[A-F0-9]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "purpose": {
+          "$ref": "#/$defs/stepBaseProperties/purpose"
+        },
+        "readbackAssertions": {
+          "$ref": "#/$defs/stepBaseProperties/readbackAssertions"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reportStep": {
+      "type": "object",
+      "required": [
+        "sequence",
+        "tool",
+        "request",
+        "purpose"
+      ],
+      "properties": {
+        "sequence": {
+          "$ref": "#/$defs/stepBaseProperties/sequence"
+        },
+        "tool": {
+          "const": "report_to_leader"
+        },
+        "request": {
+          "type": "object",
+          "required": [
+            "workerId",
+            "status",
+            "summary"
+          ],
+          "properties": {
+            "workerId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "$ref": "#/$defs/bindingStatus"
+            },
+            "summary": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "purpose": {
+          "$ref": "#/$defs/stepBaseProperties/purpose"
+        },
+        "readbackAssertions": {
+          "$ref": "#/$defs/stepBaseProperties/readbackAssertions"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/launch-attempt.internal.schema.json",
+  "title": "CC-Panes Method Layer Launch Attempt Internal Contract",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "attemptId",
+    "taskId",
+    "runId",
+    "taskPath",
+    "taskSha256",
+    "artifactRoot",
+    "state",
+    "launch",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "artifactType": {
+      "const": "launch-attempt"
+    },
+    "attemptId": {
+      "type": "string",
+      "pattern": "^attempt-[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "taskId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    },
+    "taskPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "taskSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "artifactRoot": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "prepared",
+        "launched",
+        "bound",
+        "conflict",
+        "failed"
+      ]
+    },
+    "launch": {
+      "type": "object",
+      "required": [
+        "projectPath",
+        "cliTool",
+        "profile",
+        "runtimeKind"
+      ],
+      "properties": {
+        "projectPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cliTool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeKind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerSelection": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workspaceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paneId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layoutName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resumeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditionalApproval": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "type": "object",
+      "required": [
+        "taskId",
+        "sessionId",
+        "status",
+        "runtimeKind",
+        "runtimeSource"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeKind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runtimeSource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profileId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "notice": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "runPath": {
+      "$ref": "#/$defs/relativePath"
+    },
+    "runSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "lastError": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/]{2})(?![\\\\/]).+"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{64}$"
+    }
+  }
+}

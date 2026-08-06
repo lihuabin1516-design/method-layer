@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.1-internal",
+  "envelopeType": "bind-launch-envelope",
+  "operation": "bind-launch",
+  "attemptPath": ".ccpanes-method/v0.1/adapter/launch-attempts/attempt-fixture.json",
+  "attemptSha256": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+  "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+  "runSha256": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+  "launchTaskId": "launch-task-controller-fixture",
+  "sessionId": "session-controller-fixture",
+  "taskBindingLookup": {
+    "operation": "find_task_binding_by_session",
+    "sessionId": "session-controller-fixture",
+    "fallback": "create_or_register_task_binding"
+  },
+  "taskBindingPatch": {
+    "metadata": {
+      "methodLayer": {
+        "protocolVersion": "0.1",
+        "taskId": "team:task-001",
+        "runId": "run-controller-fixture",
+        "artifactRoot": ".ccpanes-method/v0.1",
+        "taskPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/task.json",
+        "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json"
+      }
+    }
+  },
+  "idempotent": false
+}

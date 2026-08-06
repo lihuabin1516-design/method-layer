@@ -1,1 +1,134 @@
-# ccpanes-method-layer
+# CC-Panes Method Layer
+
+本仓库维护 CC-Panes 的本地方法层协议。v0.1 把 task intent、运行绑定、验证证据和主控交接定义为可审阅、可验证的本地 artifact；CC-Panes UI、Orchestrator 和目标项目仍保持各自边界。
+
+## v0.1 协议边界
+
+v0.1 包含四类 JSON artifact：
+
+| Artifact | 责任 | Schema |
+| --- | --- | --- |
+| `task` | 目标、授权、基线、验收、证据要求、停止条件和 lineage | `schemas/task.schema.json` |
+| `run` | task 引用、runner/session/profile、workspace/worktree 和 launch-time contract snapshot | `schemas/run.schema.json` |
+| `evidence` | outcome、文件触达、检查结果、drift check、Git 状态和残余风险 | `schemas/evidence.schema.json` |
+| `handoff` | 结构化九段式主控交接 | `schemas/handoff.schema.json` |
+
+所有 v0.1 artifact 都必须包含：
+
+- `protocolVersion: "0.1"`
+- 与 schema 对应的 `artifactType`
+- 统一规则的 `taskId`
+- 关键字段非空约束
+- 明确的 `additionalProperties: false` 对象边界
+
+`riskMode` 在 v0.1 仅是 `simple` / `standard` / `deep` 的建议性工作深度。它不授予权限，也不自动选择 profile、启动 worker 或驱动 finish 行为。
+
+## 本机验证
+
+不需要安装依赖。仓库使用 Python 标准库检查 JSON 语法，使用 PowerShell 7 的 `Test-Json -SchemaFile` 检查实例。
+
+从仓库根目录执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
+```
+
+在 Windows PowerShell 缺少 `Test-Json` 时，脚本会使用本机现有的 `pwsh` 重新启动。也可以直接执行：
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1
+```
+
+验证要求：
+
+- `schemas/*.json` 和 `examples/**/*.json` 全部通过 JSON 语法检查。
+- `examples/valid/*.json` 全部通过对应 schema。
+- `examples/invalid/*.json` 全部被对应 schema 拒绝。
+- `adapter/schemas/*.json` 与 adapter fixtures 通过 JSON 语法检查。
+- `scripts/**/*.ps1|psm1` 与 `tests/**/*.ps1` 通过 PowerShell parser。
+- 五类 adapter stdout 通过各自的 internal envelope schema。
+- controller plan、execution journal/result 与 fixtures 通过 JSON 和 schema 验证。
+- `tests/adapter/run.ps1` 全部通过。
+- `tests/controller/run.ps1` 全部通过。
+- `tests/controller-executor/run.ps1` 全部通过。
+
+## 阅读顺序
+
+1. `HANDOFF.md`：当前权威基线、授权和下一步。
+2. `docs/charter.md`：方法层定位与非目标。
+3. `docs/integration-map.md`：上游概念、v0.1 字段和 future 边界。
+4. `docs/workflow.md`：artifact 生命周期和 finish gate。
+5. `schemas/*.schema.json`：机器可验证契约。
+6. `examples/README.md` 与 `examples/**`：正反实例。
+7. `templates/*`：人工任务和交接输出模板。
+
+## File-first reference adapter
+
+仓库内已提供 PowerShell 7 reference adapter，以独立层消费 v0.1：
+
+1. `prepare-launch.ps1` 验证 task、基线和授权，写入 launch attempt 并输出 `launch_task` envelope。
+2. transport 调用 CC-Panes `launch_task`。
+3. `bind-launch.ps1` 消费真实响应，发布 `run` 并输出 TaskBinding metadata patch。
+4. `finish-run.ps1` 发布 evidence、更新 run，并输出 TaskBinding patch 与 leader report。
+5. `new-handoff.ps1` 生成九段式 handoff。
+6. `recover-launch.ps1` 对 prepared/launched/bound 状态给出恢复动作。
+
+完整命令说明见 `adapter/README.md`。reference adapter 生成 JSON envelope，CC-Panes runtime transport 仍保持独立边界。
+
+controller 如何将五类 envelope 映射到 `launch_task`、
+`find_task_binding_by_session`、`update_task_binding` 和
+`report_to_leader`，见：
+
+- `docs/ccpanes-mcp-transport-runbook.md`
+
+该 runbook 固定 metadata merge/readback、identity 分离、journal 和 recovery
+action 映射。live transport 只能通过显式 `-Mode live` 启动。
+
+## Controller planner 与 executor
+
+`scripts/controller/plan-transport.ps1` 消费 adapter envelope、可选 TaskBinding
+snapshot 和 recovery journal envelope，输出 schema-valid 的 MCP request plan：
+
+- `launch_task`
+- `find_task_binding_by_session`
+- `update_task_binding`
+- 条件性 `report_to_leader`
+
+planner 保留 metadata sibling keys、计划 update 后 readback、识别 terminal
+auto-notify，并对 identity 冲突、缺失 binding/journal 和超过 64 KiB 的合并请求
+执行 fail-closed decision。完整说明见 `controller/README.md`。
+
+`scripts/controller/execute-transport.ps1` 对 plan 做第二次 schema 校验，并提供：
+
+- 默认 `dry-run`；
+- 显式 `live` MCP Streamable HTTP transport；
+- append-only JSONL journal 和独立 response artifacts；
+- TaskBinding snapshot hash precondition；
+- read/update 最多三次 transient retry；
+- ambiguous `launch_task` / `report_to_leader` 单次后进入 `manual-review`；
+- crash/replay 时只跳过 request hash 相同的成功 mutation。
+
+方案 A“文件优先薄 Adapter”的设计基线位于：
+
+- `docs/specs/2026-08-05-ccpanes-v0.1-file-first-adapter-design.md`
+
+该设计固定 artifact 存储布局、TaskBinding 最小 metadata、launch attempt 恢复、finish/evidence 顺序与 handoff 门禁，当前已由本地 reference adapter 实现。
+
+已确认设计对应的实施计划：
+
+- `docs/plans/2026-08-05-v0.1-file-first-adapter.md`
+
+计划采用 PowerShell 7 的依赖零安装 reference adapter，通过 `prepare-launch` / `bind-launch`、`finish-run`、`new-handoff` 和 `recover-launch` 生成可供 CC-Panes transport 消费的 JSON envelope；实现和测试文件已落在本仓库。
+
+## 当前明确不做
+
+- 不接入 `D:\cc-pane` 或 CC-Panes 主仓库。
+- 不实现 UI、hook、plugin、profile 或 MCP 写入。
+- 不写用户全局配置。
+- 不自动 merge、push、cleanup 或执行其它远端操作。
+- 不把 Lattice/Aegis 成品目录复制进本仓库。
+- 不把 GitHub 设为唯一事实源。
+
+## 本地宿主文件
+
+`.ccpanes/` 和根目录 `CLAUDE.md` 是 CC-Panes 工作空间宿主生成状态，不属于 v0.1 协议内容，已由 `.gitignore` 排除。

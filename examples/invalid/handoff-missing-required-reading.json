@@ -1,0 +1,82 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "handoff",
+  "handoffId": "handoff-20260805-v01-review",
+  "createdAt": "2026-08-05T17:05:00+08:00",
+  "role": "Next controller",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "currentResult": "Invalid because requiredReading is missing.",
+  "baseline": {
+    "projectPath": "D:\\ccpanes-method-layer",
+    "repoRoot": "D:\\ccpanes-method-layer",
+    "git": {
+      "branch": "main",
+      "head": "unborn",
+      "status": {
+        "state": "untracked",
+        "summary": "Initial baseline."
+      }
+    },
+    "relevantRules": [
+      "AGENTS.md"
+    ]
+  },
+  "facts": [
+    "This is an invalid example."
+  ],
+  "evidence": [
+    "Validation output"
+  ],
+  "objective": "Demonstrate the requiredReading requirement.",
+  "authorization": [
+    "Modify this repository."
+  ],
+  "forbidden": [
+    "Modify external repositories."
+  ],
+  "conditionalAuthorization": [
+    "Integration requires separate approval."
+  ],
+  "executionOrder": [
+    "Read the baseline."
+  ],
+  "agentDispatchBoundary": {
+    "allowed": [
+      "Read-only review."
+    ],
+    "requiredReporting": [
+      "Report findings."
+    ]
+  },
+  "requiredChecks": [
+    {
+      "name": "validation",
+      "command": "scripts/validate.ps1",
+      "required": true
+    }
+  ],
+  "acceptanceAssertions": [
+    "The invalid example fails."
+  ],
+  "audit": [
+    "Review output."
+  ],
+  "fuse": [
+    "Stop on external writes."
+  ],
+  "stopConditions": [
+    "External write required."
+  ],
+  "artifacts": [
+    "examples/invalid/handoff-missing-required-reading.json"
+  ],
+  "delivery": {
+    "format": "Validation output",
+    "requirements": [
+      "Show the expected failure."
+    ]
+  },
+  "nextOrder": [
+    "Restore requiredReading."
+  ]
+}

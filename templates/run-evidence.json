@@ -1,0 +1,46 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "evidence",
+  "evidenceId": "evidence-template-001",
+  "runId": "run-template-001",
+  "taskId": "task-template-001",
+  "completedAt": "2026-08-05T00:00:00+08:00",
+  "outcome": "partial",
+  "summary": "Replace this summary with fresh run evidence.",
+  "touchedFiles": [
+    {
+      "path": "PATH",
+      "action": "inspected",
+      "notes": "Replace with an actual created, modified, deleted, or inspected path."
+    }
+  ],
+  "checks": [
+    {
+      "name": "CHECK_NAME",
+      "command": "COMMAND",
+      "required": true,
+      "status": "not-run",
+      "notes": "Replace with the fresh command result."
+    }
+  ],
+  "driftCheck": {
+    "scope": "needs-review",
+    "files": "needs-review",
+    "acceptance": "needs-review",
+    "notes": "Replace with an actual drift assessment."
+  },
+  "gitStatus": {
+    "branch": "BRANCH",
+    "head": "unborn",
+    "state": "mixed",
+    "summary": "Replace with the final Git status."
+  },
+  "residualRisk": {
+    "level": "medium",
+    "summary": "Replace with the remaining risk.",
+    "items": [
+      "Replace with a concrete residual risk."
+    ]
+  },
+  "recommendedNextAction": "Replace with the next gated action."
+}

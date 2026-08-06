@@ -1,0 +1,34 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "evidence",
+  "evidenceId": "evidence-20260805-v01-baseline",
+  "runId": "run-20260805-v01-baseline",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "completedAt": "2026-08-05T17:00:00+08:00",
+  "outcome": "completed",
+  "summary": "This artifact is invalid because checks is empty.",
+  "touchedFiles": [
+    {
+      "path": "schemas/evidence.schema.json",
+      "action": "modified"
+    }
+  ],
+  "checks": [],
+  "driftCheck": {
+    "scope": "aligned",
+    "files": "aligned",
+    "acceptance": "aligned",
+    "notes": "No drift."
+  },
+  "gitStatus": {
+    "branch": "main",
+    "head": "unborn",
+    "state": "untracked",
+    "summary": "Expected untracked files."
+  },
+  "residualRisk": {
+    "level": "none",
+    "summary": "No known residual risk."
+  },
+  "recommendedNextAction": "Add at least one check."
+}

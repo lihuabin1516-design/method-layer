@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/v0.1/evidence.schema.json",
+  "title": "CC-Panes Method Evidence v0.1",
+  "description": "Fresh verification evidence and drift assessment for a concrete run.",
+  "type": "object",
+  "required": [
+    "protocolVersion",
+    "artifactType",
+    "evidenceId",
+    "runId",
+    "taskId",
+    "completedAt",
+    "outcome",
+    "summary",
+    "touchedFiles",
+    "checks",
+    "driftCheck",
+    "gitStatus",
+    "residualRisk",
+    "recommendedNextAction"
+  ],
+  "properties": {
+    "protocolVersion": {
+      "const": "0.1"
+    },
+    "artifactType": {
+      "const": "evidence"
+    },
+    "evidenceId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^evidence-[A-Za-z0-9][A-Za-z0-9._:-]{1,118}$"
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^run-[A-Za-z0-9][A-Za-z0-9._:-]{1,123}$"
+    },
+    "taskId": {
+      "$ref": "#/$defs/taskId"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "partial",
+        "blocked",
+        "failed"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "touchedFiles": {
+      "description": "Files created, modified, deleted, or materially inspected by the run.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "action"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "created",
+              "modified",
+              "deleted",
+              "inspected"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "command",
+          "required",
+          "status"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "blocked",
+              "not-run"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "driftCheck": {
+      "type": "object",
+      "required": [
+        "scope",
+        "files",
+        "acceptance",
+        "notes"
+      ],
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/alignment"
+        },
+        "files": {
+          "$ref": "#/$defs/alignment"
+        },
+        "acceptance": {
+          "$ref": "#/$defs/alignment"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "gitStatus": {
+      "type": "object",
+      "required": [
+        "branch",
+        "head",
+        "state",
+        "summary"
+      ],
+      "properties": {
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "head": {
+          "$ref": "#/$defs/head"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "clean",
+            "dirty",
+            "untracked",
+            "mixed"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "residualRisk": {
+      "type": "object",
+      "required": [
+        "level",
+        "summary"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "items": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "recommendedNextAction": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "taskId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "alignment": {
+      "type": "string",
+      "enum": [
+        "aligned",
+        "drifted",
+        "needs-review"
+      ]
+    },
+    "head": {
+      "description": "Literal 'unborn' when no commit exists, otherwise a 40-character commit SHA.",
+      "type": "string",
+      "pattern": "^(unborn|[0-9a-fA-F]{40})$"
+    }
+  }
+}

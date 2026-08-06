@@ -1,0 +1,58 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "task",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "createdAt": "2026-08-05T16:00:00+08:00",
+  "objective": "Establish a locally verifiable v0.1 method-layer protocol baseline.",
+  "riskMode": "standard",
+  "authorization": {
+    "allowedPaths": [
+      "D:\\ccpanes-method-layer"
+    ],
+    "forbiddenActions": [
+      "Modify D:\\cc-pane",
+      "Install dependencies",
+      "Commit, push, or create remotes"
+    ],
+    "conditionalActions": [
+      "Any future CC-Panes adapter integration requires separate approval."
+    ]
+  },
+  "baseline": {
+    "workspaceName": "gjc",
+    "projectPath": "D:\\ccpanes-method-layer",
+    "repoRoot": "D:\\ccpanes-method-layer",
+    "git": {
+      "branch": "main",
+      "head": "unborn",
+      "status": {
+        "state": "untracked",
+        "summary": "Initial repository with protocol files not yet committed."
+      }
+    },
+    "relevantRules": [
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "All valid examples pass their matching schema.",
+    "All invalid examples fail their matching schema.",
+    "No files outside D:\\ccpanes-method-layer are modified."
+  ],
+  "requiredEvidence": [
+    "Validation command output",
+    "Final Git status",
+    "Changed-file inventory"
+  ],
+  "stopConditions": [
+    "A dependency installation becomes necessary.",
+    "A required change would modify D:\\cc-pane or user configuration."
+  ],
+  "lineage": {
+    "specId": "local-v0.1-baseline",
+    "externalRefs": [
+      "tsc.md"
+    ]
+  },
+  "status": "active"
+}

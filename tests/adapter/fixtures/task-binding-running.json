@@ -1,0 +1,16 @@
+{
+  "id": "ccpanes-binding-001",
+  "title": "Adapter fixture",
+  "role": "worker",
+  "sessionId": "session-001",
+  "projectPath": "PROJECT_PATH",
+  "cliTool": "codex",
+  "status": "running",
+  "progress": 60,
+  "sortOrder": 0,
+  "metadata": {
+    "kept": true
+  },
+  "createdAt": "2026-08-05T20:00:00+08:00",
+  "updatedAt": "2026-08-05T20:10:00+08:00"
+}

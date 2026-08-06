@@ -1,0 +1,47 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "evidence",
+  "evidenceId": "evidence-fixture-drifted",
+  "runId": "RUN_ID",
+  "taskId": "team:task-001",
+  "completedAt": "2026-08-05T20:30:00+08:00",
+  "outcome": "partial",
+  "summary": "Fixture detected acceptance drift.",
+  "touchedFiles": [
+    {
+      "path": "RUN_PATH",
+      "action": "inspected"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Adapter test output.",
+      "command": "pwsh -NoProfile -File tests/adapter/run.ps1",
+      "required": true,
+      "status": "pass"
+    },
+    {
+      "name": "Fixture Git status.",
+      "command": "git status --short",
+      "required": true,
+      "status": "pass"
+    }
+  ],
+  "driftCheck": {
+    "scope": "aligned",
+    "files": "aligned",
+    "acceptance": "drifted",
+    "notes": "Acceptance differs from the run contract."
+  },
+  "gitStatus": {
+    "branch": "main",
+    "head": "unborn",
+    "state": "untracked",
+    "summary": "Fixture artifacts are untracked."
+  },
+  "residualRisk": {
+    "level": "medium",
+    "summary": "Acceptance drift requires review."
+  },
+  "recommendedNextAction": "Review the acceptance drift."
+}

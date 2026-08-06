@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.1-internal",
+  "role": "Next fixture controller",
+  "requiredReading": [
+    "AGENTS.md",
+    "task.json",
+    "run.json",
+    "evidence.json"
+  ],
+  "facts": [
+    "The adapter flow ran inside a fixture project."
+  ],
+  "executionOrder": [
+    "Validate the referenced artifacts.",
+    "Review the evidence gate."
+  ],
+  "agentDispatchBoundary": {
+    "allowed": [
+      "Read-only review or fixture-local writes."
+    ],
+    "requiredReporting": [
+      "Report touched files, commands, outcome, and residual risk."
+    ]
+  },
+  "requiredChecks": [
+    {
+      "name": "Adapter fixture tests",
+      "command": "pwsh -NoProfile -File tests/adapter/run.ps1",
+      "required": true
+    }
+  ],
+  "audit": [
+    "Re-run validation after any artifact change."
+  ],
+  "fuse": [
+    "Stop after three repair cycles for the same root cause."
+  ],
+  "delivery": {
+    "format": "Compact engineering report",
+    "requirements": [
+      "Include changes, validation, risk, and next action."
+    ]
+  },
+  "nextOrder": [
+    "Review the handoff before another launch."
+  ]
+}

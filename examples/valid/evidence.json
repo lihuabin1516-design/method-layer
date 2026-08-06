@@ -1,0 +1,49 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "evidence",
+  "evidenceId": "evidence-20260805-v01-baseline",
+  "runId": "run-20260805-v01-baseline",
+  "taskId": "ccp-method-bootstrap-20260805",
+  "completedAt": "2026-08-05T17:00:00+08:00",
+  "outcome": "completed",
+  "summary": "The local v0.1 protocol baseline was validated without external dependencies.",
+  "touchedFiles": [
+    {
+      "path": "schemas/task.schema.json",
+      "action": "modified"
+    },
+    {
+      "path": "examples/valid/task.json",
+      "action": "created"
+    }
+  ],
+  "checks": [
+    {
+      "name": "protocol-validation",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/validate.ps1",
+      "required": true,
+      "status": "pass",
+      "notes": "Valid examples passed and invalid examples failed as expected."
+    }
+  ],
+  "driftCheck": {
+    "scope": "aligned",
+    "files": "aligned",
+    "acceptance": "aligned",
+    "notes": "No repository-external changes were made."
+  },
+  "gitStatus": {
+    "branch": "main",
+    "head": "unborn",
+    "state": "untracked",
+    "summary": "Expected untracked protocol files remain; no commit was created."
+  },
+  "residualRisk": {
+    "level": "low",
+    "summary": "Runtime adapter behavior remains untested because integration is outside v0.1 scope.",
+    "items": [
+      "A future adapter must map CC-Panes session fields to the run artifact."
+    ]
+  },
+  "recommendedNextAction": "Review v0.1 and separately authorize a read-only adapter design."
+}

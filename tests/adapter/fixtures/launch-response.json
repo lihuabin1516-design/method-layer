@@ -1,0 +1,9 @@
+{
+  "taskId": "launch-task-001",
+  "sessionId": "session-001",
+  "status": "running",
+  "runtimeKind": "local",
+  "runtimeSource": "explicit",
+  "profileId": "codex-gpt55-heavy",
+  "notice": null
+}

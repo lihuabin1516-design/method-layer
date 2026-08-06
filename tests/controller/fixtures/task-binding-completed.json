@@ -1,0 +1,21 @@
+{
+  "id": "ccpanes-binding-controller",
+  "title": "Controller fixture",
+  "role": "worker",
+  "sessionId": "session-controller-fixture",
+  "projectPath": "D:/fixture/project",
+  "cliTool": "codex",
+  "status": "completed",
+  "progress": 100,
+  "completionSummary": "Already completed.",
+  "exitCode": 0,
+  "sortOrder": 0,
+  "metadata": {
+    "kept": true,
+    "owner": {
+      "kind": "fixture"
+    }
+  },
+  "createdAt": "2026-08-05T10:00:00Z",
+  "updatedAt": "2026-08-05T11:00:00Z"
+}

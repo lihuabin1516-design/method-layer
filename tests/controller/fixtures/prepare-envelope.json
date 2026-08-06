@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1-internal",
+  "envelopeType": "prepare-launch-envelope",
+  "operation": "prepare-launch",
+  "attemptPath": ".ccpanes-method/v0.1/adapter/launch-attempts/attempt-fixture.json",
+  "attemptSha256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "taskPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/task.json",
+  "taskSha256": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "runId": "run-controller-fixture",
+  "launchTaskRequest": {
+    "projectPath": "D:/fixture/project",
+    "cliTool": "codex",
+    "profileId": "codex-gpt55-heavy",
+    "runtimeKind": "local",
+    "prompt": "Execute the validated local method-layer task.",
+    "providerSelection": "inherit",
+    "placement": "silent"
+  }
+}

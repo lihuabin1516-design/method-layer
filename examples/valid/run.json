@@ -1,0 +1,51 @@
+{
+  "protocolVersion": "0.1",
+  "artifactType": "run",
+  "runId": "run-20260805-v01-baseline",
+  "taskRef": {
+    "taskId": "ccp-method-bootstrap-20260805",
+    "protocolVersion": "0.1"
+  },
+  "startedAt": "2026-08-05T16:05:00+08:00",
+  "status": "running",
+  "runner": {
+    "cliTool": "codex",
+    "profile": "codex-gpt55-heavy",
+    "runtimeKind": "local",
+    "session": {
+      "sessionId": "SESSION"
+    }
+  },
+  "workspace": {
+    "workspaceName": "gjc",
+    "projectPath": "D:\\ccpanes-method-layer",
+    "worktreePath": "D:\\ccpanes-method-layer",
+    "branch": "main"
+  },
+  "contract": {
+    "capturedAt": "2026-08-05T16:05:00+08:00",
+    "objective": "Establish a locally verifiable v0.1 method-layer protocol baseline.",
+    "allowedPaths": [
+      "D:\\ccpanes-method-layer"
+    ],
+    "forbiddenActions": [
+      "Modify D:\\cc-pane",
+      "Install dependencies",
+      "Commit, push, or create remotes"
+    ],
+    "conditionalActions": [
+      "Future adapter integration requires separate approval."
+    ],
+    "acceptance": [
+      "Valid examples pass and invalid examples fail."
+    ],
+    "requiredEvidence": [
+      "scripts/validate.ps1 output",
+      "git status --short"
+    ],
+    "stopConditions": [
+      "A required tool is unavailable.",
+      "A repository-external write is required."
+    ]
+  }
+}
