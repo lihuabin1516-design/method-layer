@@ -124,6 +124,21 @@ function Get-TestTempRoot {
     return [System.IO.Path]::GetFullPath((Join-Path $testsRoot '.tmp'))
 }
 
+function Clear-TestTempRoot {
+    $tempRoot = [System.IO.Path]::GetFullPath((Get-TestTempRoot)).TrimEnd('\', '/')
+    $expectedRoot = [System.IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $PSScriptRoot) '.tmp')).TrimEnd('\', '/')
+    if (-not $tempRoot.Equals($expectedRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Refusing tests temp cleanup for unexpected path: $tempRoot"
+    }
+    if (-not $tempRoot.EndsWith([System.IO.Path]::DirectorySeparatorChar + '.tmp') -and -not $tempRoot.EndsWith('/.tmp')) {
+        throw "Refusing tests temp cleanup for non-.tmp path: $tempRoot"
+    }
+    New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
+    foreach ($item in Get-ChildItem -LiteralPath $tempRoot -Force) {
+        Remove-Item -LiteralPath $item.FullName -Recurse -Force
+    }
+}
+
 function New-AdapterTestProject {
     param(
         [Parameter(Mandatory)]
@@ -232,6 +247,7 @@ function Complete-TestRun {
         exit 1
     }
 
+    Clear-TestTempRoot
     Write-Host ""
     Write-Host "$Label tests passed: $script:TestPasses test(s)." -ForegroundColor Green
     exit 0

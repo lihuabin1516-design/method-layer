@@ -27,17 +27,32 @@ v0.1 包含四类 JSON artifact：
 
 不需要安装依赖。仓库使用 Python 标准库检查 JSON 语法，使用 PowerShell 7 的 `Test-Json -SchemaFile` 检查实例。
 
-从仓库根目录执行：
+从仓库根目录执行完整冻结验证：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
+powershell -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
 ```
 
 在 Windows PowerShell 缺少 `Test-Json` 时，脚本会使用本机现有的 `pwsh` 重新启动。也可以直接执行：
 
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
 ```
+
+`Full` 是默认模式，覆盖 schema、examples、templates、PowerShell parser、adapter、
+controller planner 和 controller executor。当前冻结验收实测默认 Full 出现过
+53.4 秒、67.3 秒、142.7 秒与 219.1 秒；此前同机观察到过约 294 秒的长耗时，后续冻结验收以
+实际命令输出为准。
+
+快速结构验证可执行：
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Fast
+```
+
+`Fast` 只跳过 adapter/controller/executor 三个测试套件，仍检查 JSON syntax、
+public examples、templates 和 PowerShell parser。发布、冻结、提交前必须运行
+`Full`。
 
 验证要求：
 
@@ -51,6 +66,31 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1
 - `tests/adapter/run.ps1` 全部通过。
 - `tests/controller/run.ps1` 全部通过。
 - `tests/controller-executor/run.ps1` 全部通过。
+- 成功结束前 `scripts\validate.ps1` 会断言 `tests\.tmp` 为空；失败时保留现场供排查。
+
+## 当前本地冻结状态
+
+截至本轮冻结验收整理：
+
+- Branch：`main`
+- HEAD：`d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f`
+- Remote：`origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
+- Remote `main`：已与 `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f` 对齐。
+- 当前本轮未提交工作区目标：只允许冻结验收相关变更。
+- Dirty summary 由以下命令复核：
+
+```powershell
+git status --short --branch
+```
+
+冻结验收期间预期的本地变更类别：
+
+- `README.md` / `HANDOFF.md`：记录真实 Git 状态、验证入口、验证耗时和文档归属。
+- `scripts/validate.ps1`：提供 `Fast` / `Full` 模式，并在成功结束前断言 `tests\.tmp` 为空。
+- `tests/adapter/TestHarness.ps1`：成功路径清理 `tests\.tmp` 内 fixture 残留。
+
+`docs/architecture/` 与 `docs/maintenance/` 是长期维护必要文档目录，已纳入阅读路径，
+不是临时产物。
 
 ## 阅读顺序
 

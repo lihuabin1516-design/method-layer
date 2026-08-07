@@ -5,7 +5,7 @@
 - Role: 下一任 CC-Panes Method Layer 长期维护主控。
 - Task ID: `ccp-method-layer-long-term-maintenance-20260806`
 - Current result: v0.1 四类方法 artifact、file-first adapter、transport planner、
-  journaled executor、MCP Streamable HTTP driver、长期维护交接和仓库目录架构已形成可持续维护基线。
+  journaled executor、MCP Streamable HTTP driver、长期维护交接和仓库目录架构已形成可持续维护基线；当前任务暂停新增能力，正在做本地生产基线冻结验收。
 
 ## 2. Required reading
 
@@ -34,11 +34,15 @@
 
 - Repository: `D:\ccpanes-method-layer`
 - Branch: `main`
-- Current pushed baseline commit: `d75cf50be269009cc53f6e984fc70981c55cee31`
+- Current HEAD: `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f`
+- Previous v0.1 protocol baseline commit: `d75cf50be269009cc53f6e984fc70981c55cee31`
 - Remote: `https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
-- Remote `main` matched local HEAD after push.
-- Current follow-up maintenance docs are local working-tree changes on top of the pushed v0.1 baseline.
-- No dependency install, UI, hook, plugin, profile, global configuration, or `D:\cc-pane` write was performed.
+- Remote name: `origin`
+- Branch: `main`
+- Remote `main` matched local HEAD `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f` after the long-term maintenance handoff push.
+- Current freeze-validation working tree is intentionally dirty until user approves a commit.
+- Dirty/untracked summary must be taken from `git status --short --branch`; expected categories for this freeze task are documentation truth updates plus validation/tmp-cleanup scripts.
+- No dependency install, push, remote creation, UI, hook, plugin, profile, global configuration, or `D:\cc-pane` write is authorized in the freeze task.
 - Four public schemas remain `task`, `run`, `evidence`, and `handoff` v0.1.
 - Adapter commands remain file-first and emit command-specific validated envelopes.
 - Planner emits ordered requests and update preconditions containing binding identity,
@@ -59,6 +63,11 @@
 - Long-term maintenance handoff added under `docs/maintenance/`.
 - Standalone long-term Agent prompt added under `docs/maintenance/`.
 - Repository directory architecture added under `docs/architecture/`.
+- `docs/architecture/` and `docs/maintenance/` are required long-term maintenance docs, not temporary artifacts.
+- `scripts\validate.ps1` supports `-Mode Fast` and `-Mode Full`; `Full` is the freeze gate and remains the default.
+- Full validation covers schema, examples, templates, PowerShell parser, adapter, controller planner, and controller executor.
+- Current freeze validation measured default Full at 53.4 seconds, 67.3 seconds, 142.7 seconds, and 219.1 seconds in separate runs; previous same-host observation reached about 294 seconds, so future reports should record the actual measured runtime.
+- `tests\.tmp` must be empty at successful validation end. The reproduced residual path came from controller-suite execution through shared fixture temp usage; shared TestHarness now clears the verified `tests\.tmp` root on successful suite completion, while failures preserve evidence.
 
 ## 4. Single objective for the next round
 
@@ -91,7 +100,7 @@ Conditional:
 
 ## 6. Execution order and agent dispatch boundary
 
-1. Re-run `scripts/validate.ps1`.
+1. Re-run `scripts/validate.ps1 -Mode Full`.
 2. Read `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`.
 3. Read `docs/architecture/repository-structure.md`.
 4. Classify the next task as protocol, upstream absorption, adapter, controller,
@@ -109,7 +118,7 @@ outcome, and residual risk.
 Required:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
+powershell -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
 python -m json.tool schemas/task.schema.json > $null
 python -m json.tool schemas/run.schema.json > $null
 python -m json.tool schemas/evidence.schema.json > $null
@@ -122,6 +131,7 @@ Assertions:
 - all valid examples pass and focused invalid examples are rejected;
 - adapter 23, planner 16, and executor 16 tests pass;
 - every PowerShell file parses;
+- `tests\.tmp` is empty or absent after successful validation;
 - no runtime token appears in repository files or journal evidence;
 - no unexplained repository-external write exists.
 

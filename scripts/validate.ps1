@@ -1,5 +1,8 @@
 [CmdletBinding()]
-param()
+param(
+    [ValidateSet('Fast', 'Full')]
+    [string]$Mode = 'Full'
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -11,7 +14,7 @@ if (-not (Get-Command Test-Json -ErrorAction SilentlyContinue)) {
     }
 
     Write-Host "[INFO] Relaunching validation with PowerShell 7: $($pwsh.Source)" -ForegroundColor Cyan
-    & $pwsh.Source -NoProfile -ExecutionPolicy Bypass -File $PSCommandPath
+    & $pwsh.Source -NoProfile -ExecutionPolicy Bypass -File $PSCommandPath -Mode $Mode
     exit $LASTEXITCODE
 }
 
@@ -39,6 +42,30 @@ function Write-Fail {
     param([string]$Message)
     Write-Host "[FAIL] $Message" -ForegroundColor Red
     $script:failures.Add($Message)
+}
+
+function Get-TestTempRoot {
+    return [System.IO.Path]::GetFullPath((Join-Path $root 'tests/.tmp')).TrimEnd('\', '/')
+}
+
+function Assert-TestTempEmpty {
+    $tempRoot = Get-TestTempRoot
+    $expected = [System.IO.Path]::GetFullPath((Join-Path $root 'tests/.tmp')).TrimEnd('\', '/')
+    if (-not $tempRoot.Equals($expected, [System.StringComparison]::OrdinalIgnoreCase)) {
+        Write-Fail "tests temp root resolved unexpectedly: $tempRoot"
+        return
+    }
+    New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
+    $items = @(Get-ChildItem -LiteralPath $tempRoot -Force -Recurse)
+    if ($items.Count -eq 0) {
+        Write-Pass 'tests/.tmp is empty'
+    }
+    else {
+        Write-Fail "tests/.tmp is not empty: $($items.Count) item(s)"
+        foreach ($item in $items | Select-Object -First 20) {
+            Write-Host "       $($item.FullName)" -ForegroundColor DarkRed
+        }
+    }
 }
 
 function Test-JsonSyntax {
@@ -144,44 +171,52 @@ foreach ($powerShellFile in $powerShellFiles) {
     Test-PowerShellSyntax -File $powerShellFile
 }
 
-$adapterTests = Join-Path $root 'tests/adapter/run.ps1'
-if (Test-Path -LiteralPath $adapterTests -PathType Leaf) {
+if ($Mode -eq 'Full') {
+    $adapterTests = Join-Path $root 'tests/adapter/run.ps1'
+    if (Test-Path -LiteralPath $adapterTests -PathType Leaf) {
+        Write-Host ""
+        Write-Host "[INFO] Running adapter tests" -ForegroundColor Cyan
+        & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $adapterTests
+        if ($LASTEXITCODE -eq 0) {
+            Write-Pass 'Adapter test suite'
+        }
+        else {
+            Write-Fail "Adapter test suite exited $LASTEXITCODE"
+        }
+    }
+
+    $controllerTests = Join-Path $root 'tests/controller/run.ps1'
+    if (Test-Path -LiteralPath $controllerTests -PathType Leaf) {
+        Write-Host ""
+        Write-Host "[INFO] Running controller planner tests" -ForegroundColor Cyan
+        & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $controllerTests
+        if ($LASTEXITCODE -eq 0) {
+            Write-Pass 'Controller planner test suite'
+        }
+        else {
+            Write-Fail "Controller planner test suite exited $LASTEXITCODE"
+        }
+    }
+
+    $executorTests = Join-Path $root 'tests/controller-executor/run.ps1'
+    if (Test-Path -LiteralPath $executorTests -PathType Leaf) {
+        Write-Host ""
+        Write-Host "[INFO] Running controller executor tests" -ForegroundColor Cyan
+        & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $executorTests
+        if ($LASTEXITCODE -eq 0) {
+            Write-Pass 'Controller executor test suite'
+        }
+        else {
+            Write-Fail "Controller executor test suite exited $LASTEXITCODE"
+        }
+    }
+}
+else {
     Write-Host ""
-    Write-Host "[INFO] Running adapter tests" -ForegroundColor Cyan
-    & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $adapterTests
-    if ($LASTEXITCODE -eq 0) {
-        Write-Pass 'Adapter test suite'
-    }
-    else {
-        Write-Fail "Adapter test suite exited $LASTEXITCODE"
-    }
+    Write-Host "[INFO] Fast mode: skipped adapter/controller/executor test suites." -ForegroundColor Cyan
 }
 
-$controllerTests = Join-Path $root 'tests/controller/run.ps1'
-if (Test-Path -LiteralPath $controllerTests -PathType Leaf) {
-    Write-Host ""
-    Write-Host "[INFO] Running controller planner tests" -ForegroundColor Cyan
-    & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $controllerTests
-    if ($LASTEXITCODE -eq 0) {
-        Write-Pass 'Controller planner test suite'
-    }
-    else {
-        Write-Fail "Controller planner test suite exited $LASTEXITCODE"
-    }
-}
-
-$executorTests = Join-Path $root 'tests/controller-executor/run.ps1'
-if (Test-Path -LiteralPath $executorTests -PathType Leaf) {
-    Write-Host ""
-    Write-Host "[INFO] Running controller executor tests" -ForegroundColor Cyan
-    & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $executorTests
-    if ($LASTEXITCODE -eq 0) {
-        Write-Pass 'Controller executor test suite'
-    }
-    else {
-        Write-Fail "Controller executor test suite exited $LASTEXITCODE"
-    }
-}
+Assert-TestTempEmpty
 
 if ($failures.Count -gt 0) {
     Write-Host ""
@@ -190,5 +225,5 @@ if ($failures.Count -gt 0) {
 }
 
 Write-Host ""
-Write-Host "Validation passed: all syntax and schema assertions satisfied." -ForegroundColor Green
+Write-Host "Validation passed: $Mode validation assertions satisfied." -ForegroundColor Green
 exit 0
