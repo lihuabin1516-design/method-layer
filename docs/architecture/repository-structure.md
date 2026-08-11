@@ -14,14 +14,17 @@ D:\ccpanes-method-layer
 ├── prompt-packs/
 ├── examples/
 ├── templates/
+├── companion/
 ├── adapter/
 ├── controller/
 ├── scripts/
+│   ├── companion/
 │   ├── adapter/
 │   └── controller/
 ├── tests/
 │   ├── adapter/
 │   ├── prompt-pack/
+│   ├── companion/
 │   ├── controller/
 │   └── controller-executor/
 └── docs/
@@ -150,6 +153,29 @@ Maintenance:
 - Template JSON must remain schema-valid.
 - Markdown templates should match current terminology in `docs/workflow.md`.
 
+## Official CC-Panes external companion
+
+```text
+companion/
+├── README.md
+└── schemas/
+    ├── official-companion-request.internal.schema.json
+    └── official-companion-guidance.internal.schema.json
+```
+
+Purpose:
+
+- Let `ccpanes-method-layer` assist the official `cc-panes.exe` from outside the runtime.
+- Validate caller-supplied task context and return metadata-only Prompt Pack guidance.
+- Keep official CC-Panes executable, profiles, hooks, plugins, MCP registration, user configuration, and host runtime untouched.
+
+Maintenance:
+
+- Companion schemas are internal contracts, not public v0.1 artifacts.
+- Output must keep `launchesOfficialExe`, `writesOfficialConfig`, and `mutatesHost` false.
+- Output may include Prompt identity/version/output-contract metadata, but not Prompt bodies.
+- Changes to selection behavior require fixtures in `tests/companion/`.
+
 ## Adapter contract layer
 
 ```text
@@ -206,6 +232,9 @@ Maintenance:
 ```text
 scripts/
 ├── validate.ps1
+├── companion/
+│   ├── MethodLayer.Companion.psm1
+│   └── new-guidance.ps1
 ├── adapter/
 │   ├── MethodLayer.Adapter.psm1
 │   ├── prepare-launch.ps1
@@ -229,6 +258,8 @@ Main local gate. It checks:
 - protocol examples.
 - templates.
 - PowerShell parser.
+- Prompt Pack tests.
+- Official CC-Panes external companion tests.
 - adapter tests.
 - controller planner tests.
 - controller executor tests.
@@ -260,6 +291,19 @@ Core invariants:
 - replay safety;
 - loopback-only MCP endpoint.
 
+### `scripts/companion/*`
+
+External guidance for the official `cc-panes.exe`.
+
+Core invariants:
+
+- request and guidance schema validation;
+- read-only Prompt Pack metadata consumption;
+- no official executable launch;
+- no official/user configuration mutation;
+- no Prompt execution or runtime composition;
+- metadata-only guidance output.
+
 ## Tests
 
 ```text
@@ -270,6 +314,9 @@ tests/
 │   └── fixtures/
 ├── prompt-pack/
 │   └── run.ps1
+├── companion/
+│   ├── run.ps1
+│   └── fixtures/
 ├── controller/
 │   ├── run.ps1
 │   └── fixtures/
@@ -283,6 +330,7 @@ Current expected counts:
 | --- | --- | --- |
 | Adapter | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\adapter\run.ps1` | 23 pass |
 | Prompt Pack | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\prompt-pack\run.ps1` | 11 pass |
+| Official Companion | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\companion\run.ps1` | 6 pass |
 | Controller planner | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller\run.ps1` | 16 pass |
 | Controller executor | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1` | 16 pass |
 
@@ -290,6 +338,7 @@ Maintenance:
 
 - Add tests before changing behavior.
 - Keep Prompt Pack fixtures deterministic; LLM judging is optional and non-gating.
+- Keep Companion fixtures synthetic and metadata-only.
 - Keep fixture identities obvious and synthetic.
 - Keep `tests/.tmp` empty after successful runs.
 - Use injected transport for mutation tests; live MCP checks should be read-only unless the task states otherwise.

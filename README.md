@@ -39,8 +39,8 @@ powershell -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
 pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
 ```
 
-`Full` 是默认模式，覆盖 schema、examples、templates、PowerShell parser、adapter、
-controller planner 和 controller executor。当前冻结验收实测默认 Full 出现过
+`Full` 是默认模式，覆盖 schema、examples、templates、PowerShell parser、Prompt Pack、
+Official Companion、adapter、controller planner 和 controller executor。当前冻结验收实测默认 Full 出现过
 53.4 秒、67.3 秒、142.7 秒与 219.1 秒；此前同机观察到过约 294 秒的长耗时，后续冻结验收以
 实际命令输出为准。
 
@@ -51,7 +51,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Fast
 ```
 
 `Fast` 只跳过 adapter/controller/executor 三个测试套件，仍检查 JSON syntax、
-public examples、templates 和 PowerShell parser。发布、冻结、提交前必须运行
+public examples、templates、PowerShell parser、Prompt Pack 和 Official Companion。发布、冻结、提交前必须运行
 `Full`。
 
 验证要求：
@@ -67,6 +67,7 @@ public examples、templates 和 PowerShell parser。发布、冻结、提交前�
 - `tests/controller/run.ps1` 全部通过。
 - `tests/controller-executor/run.ps1` 全部通过。
 - `tests/prompt-pack/run.ps1` 验证 Prompt Pack manifest、技术栈 profile、Prompt 合同、来源锁、组合规则和确定性 eval。
+- `tests/companion/run.ps1` 验证官方 `cc-panes.exe` 外部 Companion 的 schema、Prompt 选择、缺失事实阻断、授权阻断和 no host mutation 边界。
 - `.gitattributes` 将十个 source-locked artifact 标记为 `-text`，禁止 Git 行尾归一化改变其精确 bytes 和 SHA-256。
 - 成功结束前 `scripts\validate.ps1` 会断言 `tests\.tmp` 为空；失败时保留现场供排查。
 
@@ -86,6 +87,30 @@ Focused validation：
 
 ```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File tests\prompt-pack\run.ps1
+```
+
+## Official CC-Panes 外部 Companion
+
+推荐落地方式是外部 Companion：官方 `cc-panes.exe` 原样运行，本仓库只提供旁路方法层指导，不改官方 exe、不改用户配置、不注入 PaneForge。
+
+当前最小切片：
+
+1. 调用方提供 `official-ccpanes-companion-request` JSON，说明任务阶段、变更类型、风险标签、授权动作和已确认 project facts。
+2. `scripts/companion/new-guidance.ps1` 只读本仓库 `java-enterprise` Prompt Pack metadata。
+3. 输出 `official-ccpanes-companion-guidance` JSON，包含选中的 Prompt IDs、输出合同、缺失事实、授权缺口和手动复制步骤。
+4. 输出固定声明：不启动官方 exe、不写官方配置、不改 host、不执行或组合 Prompt、不持久化 Prompt 正文。
+
+Focused validation：
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File tests\\companion\\run.ps1
+```
+
+示例：
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\\companion\\new-guidance.ps1 `
+  -ContextPath tests\\companion\\fixtures\\design-request.json
 ```
 
 ### 启用 PaneForge 只读审查后的实际收益
@@ -115,14 +140,13 @@ $env:PANEFORGE_PROMPT_PACK_REVIEW_ENABLED = '1'
 
 ## 当前本地任务状态
 
-本轮 donor intake 在 linked worktree 中进行：
+本轮外部 Companion 在主仓库工作树的新分支中进行，基于已发布的 Prompt Pack commit：
 
-- Worktree：`D:\ccpanes-method-layer-worktrees\prompt-pack-java-intake`
-- Branch：`codex/prompt-pack-java-intake`
-- Baseline HEAD：`d9abbb8b0f5cfa68448a3d7bf673bbd00ab72d47`
-- Main worktree：`D:\ccpanes-method-layer`，不承载本轮 tracked 变更
+- Worktree：`D:\ccpanes-method-layer`
+- Branch：`codex/official-ccpanes-companion`
+- Baseline HEAD：`921725ec19930687e247841fdfa90bbbf3bf704b`
 - Remote：`origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
-- Git commit / push：用户已在 `2026-08-11` 明确授权本任务同步到上述 remote；merge 到 `main` 和 worktree cleanup 不在该授权内
+- Git commit / push：本轮尚未授权；只做本仓库本地文件变更和验证
 
 实际 dirty summary 始终由以下命令复核：
 
@@ -130,7 +154,7 @@ $env:PANEFORGE_PROMPT_PACK_REVIEW_ENABLED = '1'
 git status --short --branch
 ```
 
-本轮允许的变更类别是 donor 来源记录、Prompt Pack 内部 schema、manifest、profile、Prompt、eval、测试、验证脚本、架构文档和当前 `HANDOFF.md`。
+本轮允许的变更类别是外部 Companion 内部 schema、PowerShell reference script、测试 fixtures、验证脚本、架构/使用文档和当前 `HANDOFF.md`。
 
 ## 阅读顺序
 
@@ -141,10 +165,12 @@ git status --short --branch
 5. `docs/integration-map.md`：上游概念、v0.1 字段和 future 边界。
 6. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`：Prompt Pack 内部架构。
 7. `prompt-packs/java-enterprise/README.md`：首个 pack 的组合和验证入口。
-8. `docs/workflow.md`：artifact 生命周期和 finish gate。
-9. `schemas/*.schema.json`：机器可验证契约。
-10. `examples/README.md` 与 `examples/**`：正反实例。
-11. `templates/*`：人工任务和交接输出模板。
+8. `companion/README.md`：官方 `cc-panes.exe` 外部 Companion 边界和命令。
+9. `docs/specs/2026-08-11-official-ccpanes-companion-design.md`：Companion 架构。
+10. `docs/workflow.md`：artifact 生命周期和 finish gate。
+11. `schemas/*.schema.json`：机器可验证契约。
+12. `examples/README.md` 与 `examples/**`：正反实例。
+13. `templates/*`：人工任务和交接输出模板。
 
 ## 长期维护入口
 

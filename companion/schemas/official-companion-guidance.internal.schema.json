@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/companion/v0.1/official-companion-guidance.internal.schema.json",
+  "title": "Official CC-Panes External Companion Guidance v0.1",
+  "description": "Metadata-only guidance produced outside official CC-Panes. It is safe to copy manually into an official CC-Panes session and carries no runtime, profile, host configuration, Prompt execution, or source mutation authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "requestId",
+    "createdAt",
+    "target",
+    "pack",
+    "decision",
+    "selectedPrompts",
+    "missingProjectFacts",
+    "authorizationViolations",
+    "copyPlan",
+    "deniedOperations",
+    "notes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "artifactType": {
+      "const": "official-ccpanes-companion-guidance"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product",
+        "exeName",
+        "integrationMode",
+        "launchesOfficialExe",
+        "writesOfficialConfig",
+        "mutatesHost"
+      ],
+      "properties": {
+        "product": {
+          "const": "official-cc-panes"
+        },
+        "exeName": {
+          "const": "cc-panes.exe"
+        },
+        "integrationMode": {
+          "const": "external-companion"
+        },
+        "launchesOfficialExe": {
+          "const": false
+        },
+        "writesOfficialConfig": {
+          "const": false
+        },
+        "mutatesHost": {
+          "const": false
+        }
+      }
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packId",
+        "version",
+        "owner",
+        "sourceState",
+        "methodLayerCommit",
+        "publicArtifactImpact"
+      ],
+      "properties": {
+        "packId": {
+          "const": "java-enterprise"
+        },
+        "version": {
+          "const": "0.1.0"
+        },
+        "owner": {
+          "const": "ccpanes-method-layer"
+        },
+        "sourceState": {
+          "const": "remote-commit-reviewed"
+        },
+        "methodLayerCommit": {
+          "const": "921725ec19930687e247841fdfa90bbbf3bf704b"
+        },
+        "publicArtifactImpact": {
+          "const": "none"
+        }
+      }
+    },
+    "decision": {
+      "enum": [
+        "ready-to-copy",
+        "blocked-input-gap",
+        "blocked-authorization"
+      ]
+    },
+    "selectedPrompts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/selectedPrompt"
+      }
+    },
+    "missingProjectFacts": {
+      "$ref": "#/$defs/nonEmptyTextList"
+    },
+    "authorizationViolations": {
+      "$ref": "#/$defs/nonEmptyTextList"
+    },
+    "copyPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "targetSurface",
+        "containsPromptBodies",
+        "steps"
+      ],
+      "properties": {
+        "targetSurface": {
+          "const": "official-ccpanes-manual-session-or-existing-transport"
+        },
+        "containsPromptBodies": {
+          "const": false
+        },
+        "steps": {
+          "$ref": "#/$defs/nonEmptyTextList"
+        }
+      }
+    },
+    "deniedOperations": {
+      "$ref": "#/$defs/nonEmptyTextList"
+    },
+    "notes": {
+      "$ref": "#/$defs/nonEmptyTextList"
+    }
+  },
+  "$defs": {
+    "stage": {
+      "enum": [
+        "shape",
+        "design",
+        "build",
+        "verify",
+        "audit"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^[^\\r\\n]*$"
+    },
+    "nonEmptyTextList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "selectedPrompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "title",
+        "purpose",
+        "applicableStages",
+        "requiredInputs",
+        "outputContract",
+        "acceptanceAssertions",
+        "contentPath"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{2,63}$"
+        },
+        "version": {
+          "const": "0.1.0"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "applicableStages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stage"
+          }
+        },
+        "requiredInputs": {
+          "$ref": "#/$defs/nonEmptyTextList"
+        },
+        "outputContract": {
+          "$ref": "#/$defs/nonEmptyTextList"
+        },
+        "acceptanceAssertions": {
+          "$ref": "#/$defs/nonEmptyTextList"
+        },
+        "contentPath": {
+          "type": "string",
+          "pattern": "^prompts/[a-z0-9-]+\\.md$"
+        }
+      }
+    }
+  }
+}

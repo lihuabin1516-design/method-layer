@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/companion/v0.1/official-companion-request.internal.schema.json",
+  "title": "Official CC-Panes External Companion Request v0.1",
+  "description": "Caller-supplied context for external, read-only assistance to the official cc-panes.exe runtime. This request does not authorize launching the official executable, changing host configuration, or mutating CC-Panes profiles/plugins/hooks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "requestId",
+    "createdAt",
+    "officialTarget",
+    "task",
+    "projectFacts"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1-internal"
+    },
+    "artifactType": {
+      "const": "official-ccpanes-companion-request"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "officialTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product",
+        "exeName",
+        "integrationMode"
+      ],
+      "properties": {
+        "product": {
+          "const": "official-cc-panes"
+        },
+        "exeName": {
+          "const": "cc-panes.exe"
+        },
+        "integrationMode": {
+          "const": "external-companion"
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "stage",
+        "changeType",
+        "riskTags",
+        "authorizedActions",
+        "requestedActions"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "changeType": {
+          "enum": [
+            "new-feature",
+            "modification",
+            "audit"
+          ]
+        },
+        "riskTags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "database",
+              "authentication",
+              "authorization",
+              "tests"
+            ]
+          }
+        },
+        "authorizedActions": {
+          "$ref": "#/$defs/actionList"
+        },
+        "requestedActions": {
+          "$ref": "#/$defs/actionList"
+        }
+      }
+    },
+    "projectFacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provided"
+      ],
+      "properties": {
+        "provided": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "stage": {
+      "enum": [
+        "shape",
+        "design",
+        "build",
+        "verify",
+        "audit"
+      ]
+    },
+    "actionList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "inspect",
+          "design",
+          "implement",
+          "verify",
+          "audit"
+        ]
+      }
+    }
+  }
+}
