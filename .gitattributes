@@ -1,0 +1,10 @@
+schemas/prompt-pack.internal.schema.json -text
+prompt-packs/java-enterprise/pack.json -text
+prompt-packs/java-enterprise/profiles/spring-enterprise.json -text
+prompt-packs/java-enterprise/evals/cases.json -text whitespace=cr-at-eol
+prompt-packs/java-enterprise/evals/donor-fingerprints.json -text whitespace=cr-at-eol
+prompt-packs/java-enterprise/prompts/persistence-design.md -text
+prompt-packs/java-enterprise/prompts/requirement-review.md -text
+prompt-packs/java-enterprise/prompts/security-review.md -text
+prompt-packs/java-enterprise/prompts/solution-design.md -text
+prompt-packs/java-enterprise/prompts/test-generation.md -text

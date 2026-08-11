@@ -1,0 +1,671 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "prompt-eval-suite",
+  "suiteId": "java-enterprise-v0.1",
+  "version": "0.1.0",
+  "packRef": "../pack.json",
+  "cases": [
+    {
+      "id": "normal-java-new-feature",
+      "description": "Compose a design for a normal Java enterprise feature with complete project facts.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Use versions from the supplied technology profile."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "modify-existing-feature",
+      "description": "Compose a change review and design for an existing feature.",
+      "stage": "design",
+      "changeType": "modification",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Preserve current contracts unless the task approves a change."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "missing-critical-project-facts",
+      "description": "Block design when a required contract fact is absent.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Contract evidence is absent."
+      ],
+      "expected": {
+        "decision": "blocked",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "missing-project-facts"
+        ]
+      }
+    },
+    {
+      "id": "database-change",
+      "description": "Add persistence review for a database-affecting modification.",
+      "stage": "design",
+      "changeType": "modification",
+      "riskTags": [
+        "database"
+      ],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "dataModel",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact",
+        "Confirmed Data Facts",
+        "Ownership and Invariants",
+        "Schema and Migration",
+        "Consistency and Recovery"
+      ],
+      "candidateTextParts": [
+        "Use the observed migration and query evidence."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review",
+          "solution-design",
+          "persistence-design"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "authentication-or-authorization",
+      "description": "Add security and test review for an authorization-sensitive verification task.",
+      "stage": "verify",
+      "changeType": "modification",
+      "riskTags": [
+        "authorization"
+      ],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "securityModel",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "verify"
+      ],
+      "requestedActions": [
+        "inspect",
+        "verify"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Confirmed Security Facts",
+        "Trust Boundaries",
+        "Authentication and Authorization",
+        "Data and Audit Controls",
+        "Confirmed Test Facts",
+        "Test Matrix",
+        "Fixture and Data Strategy",
+        "Execution Commands",
+        "Expected Failures and Passes"
+      ],
+      "candidateTextParts": [
+        "Verify both allowed and denied paths."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review",
+          "security-review",
+          "test-generation"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "read-only-audit",
+      "description": "Select only the review Prompt for a read-only audit.",
+      "stage": "audit",
+      "changeType": "audit",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests"
+      ],
+      "authorizedActions": [
+        "inspect"
+      ],
+      "requestedActions": [
+        "inspect"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "candidateTextParts": [
+        "Report evidence without editing files."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "unresolved-input-marker",
+      "description": "Reject a rendered output containing an unresolved input marker.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Use ",
+        "{{",
+        "input.unknownFact",
+        "}}",
+        " for the design."
+      ],
+      "expected": {
+        "decision": "fail",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "unresolved-input-marker"
+        ]
+      }
+    },
+    {
+      "id": "authorization-expansion-attempt",
+      "description": "Block an input that requests an action outside the task authorization.",
+      "stage": "design",
+      "changeType": "modification",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "push"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "The request includes a remote write."
+      ],
+      "expected": {
+        "decision": "blocked",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "authorization-expansion"
+        ]
+      }
+    },
+    {
+      "id": "missing-acceptance-assertions",
+      "description": "Reject an output contract that omits acceptance assertions.",
+      "stage": "verify",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "verify"
+      ],
+      "requestedActions": [
+        "inspect",
+        "verify"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Confirmed Test Facts",
+        "Test Matrix",
+        "Fixture and Data Strategy",
+        "Execution Commands",
+        "Expected Failures and Passes"
+      ],
+      "candidateTextParts": [
+        "The verification section lacks final assertions."
+      ],
+      "expected": {
+        "decision": "fail",
+        "promptIds": [
+          "requirement-review",
+          "test-generation"
+        ],
+        "violations": [
+          "missing-acceptance-assertions"
+        ]
+      }
+    },
+    {
+      "id": "fixed-framework-version-assumption",
+      "description": "Reject output that assumes a concrete framework version without project evidence.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Use Spring Boot",
+        " 3.2 without checking repository versions."
+      ],
+      "expected": {
+        "decision": "fail",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "undeclared-fixed-framework-version"
+        ]
+      }
+    },
+    {
+      "id": "stage-applicability-filter",
+      "description": "Exclude a Prompt selected by change type when it is not applicable to the current stage.",
+      "stage": "verify",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "verify"
+      ],
+      "requestedActions": [
+        "inspect",
+        "verify"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Confirmed Test Facts",
+        "Test Matrix",
+        "Fixture and Data Strategy",
+        "Execution Commands",
+        "Expected Failures and Passes"
+      ],
+      "candidateTextParts": [
+        "Only stage-applicable Prompts contribute to the composed contract."
+      ],
+      "expected": {
+        "decision": "pass",
+        "promptIds": [
+          "requirement-review",
+          "test-generation"
+        ],
+        "violations": []
+      }
+    },
+    {
+      "id": "missing-output-contract-section",
+      "description": "Reject a candidate output that omits a required section from an applicable selected Prompt.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "springVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "The composed output intentionally omits one required design section."
+      ],
+      "expected": {
+        "decision": "fail",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "missing-output-contract-section"
+        ]
+      }
+    },
+    {
+      "id": "missing-profile-required-fact",
+      "description": "Block concrete Java enterprise design when a technology-profile required project fact is absent.",
+      "stage": "design",
+      "changeType": "new-feature",
+      "riskTags": [],
+      "providedFacts": [
+        "repository",
+        "contracts",
+        "tests",
+        "technologyProfile",
+        "javaVersion",
+        "buildTool",
+        "persistenceTechnology"
+      ],
+      "authorizedActions": [
+        "inspect",
+        "design"
+      ],
+      "requestedActions": [
+        "inspect",
+        "design"
+      ],
+      "candidateOutputSections": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions",
+        "Architecture",
+        "Components and Contracts",
+        "Impact"
+      ],
+      "candidateTextParts": [
+        "Concrete version guidance remains blocked until the profile-required project facts exist."
+      ],
+      "expected": {
+        "decision": "blocked",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ],
+        "violations": [
+          "missing-project-facts"
+        ]
+      }
+    }
+  ]
+}

@@ -66,31 +66,71 @@ public examples、templates 和 PowerShell parser。发布、冻结、提交前�
 - `tests/adapter/run.ps1` 全部通过。
 - `tests/controller/run.ps1` 全部通过。
 - `tests/controller-executor/run.ps1` 全部通过。
+- `tests/prompt-pack/run.ps1` 验证 Prompt Pack manifest、技术栈 profile、Prompt 合同、来源锁、组合规则和确定性 eval。
+- `.gitattributes` 将十个 source-locked artifact 标记为 `-text`，禁止 Git 行尾归一化改变其精确 bytes 和 SHA-256。
 - 成功结束前 `scripts\validate.ps1` 会断言 `tests\.tmp` 为空；失败时保留现场供排查。
 
-## 当前本地冻结状态
+## Prompt Packs
 
-截至本轮冻结验收整理：
+Prompt Pack 是方法层的内部配置和知识输入，不是第五类 public artifact。当前首个 pack 为 `prompt-packs/java-enterprise/pack.json`。
 
-- Branch：`main`
-- HEAD：`d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f`
+其 canonical owner 是本仓库，包含五个本地化 Prompt、一个 Java/Spring 技术栈 profile、十三个确定性 eval fixtures，以及锁定 donor 的不可逆窗口哈希。具体框架版本必须来自项目事实；Prompt Pack 不扩大 task authorization。
+
+设计、来源与仓库边界：
+
+- `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
+- `docs/upstreams/ai-coding-prompt-java.md`
+- `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
+
+Focused validation：
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File tests\prompt-pack\run.ps1
+```
+
+### 启用 PaneForge 只读审查后的实际收益
+
+这项能力不是“自动写代码”，而是 Prompt Pack 进入工作流前的体检层：
+
+1. 方法层继续维护 Prompt、schema、profile、eval 和来源哈希。
+2. PaneForge 只接收调用方粘贴的 source-lock JSON 与 sanitized catalog JSON。
+3. 它核对 source-lock 原始 UTF-8 bytes、manifest/profile/eval 和五个 Prompt 的哈希、身份、顺序与覆盖范围。
+4. 一致时展示安全的 metadata；哈希不一致时隔离为 `quarantined`，提示重新提供匹配的两段 JSON。
+
+对现有工作流的直接优化：
+
+- **少用错版本**：Prompt 或 manifest 被改过，哈希会立刻暴露，不再靠人工猜。
+- **少做重复核对**：五个 Prompt、profile、十三个 eval 的基础审查一次完成。
+- **减少脏输入进入后续步骤**：本机绝对路径、`file://`、Prompt 正文、donor 文本和未批准 authority 会被挡住。
+- **问题更容易定位**：结构错误直接拒绝；仅哈希过期则进入隔离并给出明确恢复动作。
+- **试用风险低**：该 seam 不执行或组合 Prompt，不生成/安装 Skill，不写方法层，也不修改 host 配置。
+
+当前 PaneForge 预览实现位于 `codex/pf-fusion-007-readonly-review-seam`，默认关闭：
+
+```powershell
+$env:PANEFORGE_PROMPT_PACK_REVIEW_ENABLED = '1'
+```
+
+启用后可从 PaneForge 的 **Settings → AI → Prompt Pack Review** 使用。当前它仍是下游任务 worktree 中的开发预览，不代表已经进入正式 PaneForge 发布构建。
+
+## 当前本地任务状态
+
+本轮 donor intake 在 linked worktree 中进行：
+
+- Worktree：`D:\ccpanes-method-layer-worktrees\prompt-pack-java-intake`
+- Branch：`codex/prompt-pack-java-intake`
+- Baseline HEAD：`d9abbb8b0f5cfa68448a3d7bf673bbd00ab72d47`
+- Main worktree：`D:\ccpanes-method-layer`，不承载本轮 tracked 变更
 - Remote：`origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
-- Remote `main`：已与 `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f` 对齐。
-- 当前本轮未提交工作区目标：只允许冻结验收相关变更。
-- Dirty summary 由以下命令复核：
+- Git commit / push：用户已在 `2026-08-11` 明确授权本任务同步到上述 remote；merge 到 `main` 和 worktree cleanup 不在该授权内
+
+实际 dirty summary 始终由以下命令复核：
 
 ```powershell
 git status --short --branch
 ```
 
-冻结验收期间预期的本地变更类别：
-
-- `README.md` / `HANDOFF.md`：记录真实 Git 状态、验证入口、验证耗时和文档归属。
-- `scripts/validate.ps1`：提供 `Fast` / `Full` 模式，并在成功结束前断言 `tests\.tmp` 为空。
-- `tests/adapter/TestHarness.ps1`：成功路径清理 `tests\.tmp` 内 fixture 残留。
-
-`docs/architecture/` 与 `docs/maintenance/` 是长期维护必要文档目录，已纳入阅读路径，
-不是临时产物。
+本轮允许的变更类别是 donor 来源记录、Prompt Pack 内部 schema、manifest、profile、Prompt、eval、测试、验证脚本、架构文档和当前 `HANDOFF.md`。
 
 ## 阅读顺序
 
@@ -99,10 +139,12 @@ git status --short --branch
 3. `docs/architecture/repository-structure.md`：仓库目录架构、职责边界和维护检查表。
 4. `docs/charter.md`：方法层定位与非目标。
 5. `docs/integration-map.md`：上游概念、v0.1 字段和 future 边界。
-6. `docs/workflow.md`：artifact 生命周期和 finish gate。
-7. `schemas/*.schema.json`：机器可验证契约。
-8. `examples/README.md` 与 `examples/**`：正反实例。
-9. `templates/*`：人工任务和交接输出模板。
+6. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`：Prompt Pack 内部架构。
+7. `prompt-packs/java-enterprise/README.md`：首个 pack 的组合和验证入口。
+8. `docs/workflow.md`：artifact 生命周期和 finish gate。
+9. `schemas/*.schema.json`：机器可验证契约。
+10. `examples/README.md` 与 `examples/**`：正反实例。
+11. `templates/*`：人工任务和交接输出模板。
 
 ## 长期维护入口
 

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "prompt-technology-profile",
+  "profileId": "spring-enterprise",
+  "version": "0.1.0",
+  "title": "Java and Spring Enterprise Project-Fact Profile",
+  "language": "Java",
+  "frameworkFamily": "Spring",
+  "versionPolicy": "project-fact-required",
+  "requiredProjectFacts": [
+    "javaVersion",
+    "springVersion",
+    "buildTool",
+    "persistenceTechnology"
+  ],
+  "optionalProjectFacts": [
+    "databaseEngine",
+    "migrationTool",
+    "securityFramework",
+    "testFramework",
+    "messagingTechnology",
+    "cacheTechnology",
+    "deploymentRuntime"
+  ],
+  "guidance": [
+    "Read versions and framework choices from repository evidence before proposing implementation details.",
+    "Treat absent technology facts as a blocking input gap rather than selecting a default.",
+    "Prefer the project's existing architecture, contracts, tests, and dependency policy over generic Spring conventions."
+  ]
+}

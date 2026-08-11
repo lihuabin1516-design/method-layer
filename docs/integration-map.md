@@ -43,6 +43,20 @@
 | controller request planning / execution | 五类 envelope -> ordered MCP request plan -> journaled execution | dependency-free planner 与显式 live MCP executor 已实现；不自动接入 CC-Panes 主仓库、UI、profile 或 hook |
 | UI/spec/todo | 可映射到 task lineage 或展示层 | future；不属于 v0.1 runtime |
 
+## Prompt Pack 映射
+
+| Prompt Pack 概念 | 本地 owner / artifact | 边界 |
+| --- | --- | --- |
+| Prompt identity、version、composition | `prompt-packs/<pack>/pack.json` | internal configuration，不改变 public artifact |
+| Prompt metadata contract | `schemas/prompt-pack.internal.schema.json` | required inputs、output contract、acceptance、provenance |
+| 技术栈假设 | `prompt-packs/<pack>/profiles/*.json` | 具体版本必须来自 project facts |
+| Prompt 正文 | `prompt-packs/<pack>/prompts/*.md` | 独立重写；不继承 donor 权限或固定实现 |
+| deterministic eval | `prompt-packs/<pack>/evals/*.json` + `tests/prompt-pack/run.ps1` | exact expected decisions、跨文件引用与 donor-window hashes；required gate 不使用 LLM judge |
+| Task/project context | future composer input | 授权、事实、停止条件的 authority |
+| `tool/skills` | generated projection | consumer，不是 source of truth |
+| PaneForge PF-FUSION-007 | caller-supplied source-lock/catalog JSON -> sanitized metadata review | 默认关闭的只读 consumer；校验原始 bytes/hash、身份、顺序、覆盖与 host-path 边界，不读取 source path |
+| launch/journal/evidence | Prompt identity/version/ref | 避免保存完整 Prompt 正文 |
+
 ## 稳定边界
 
 - GitHub 是可选 surface，不是本地方法层的唯一事实源。
@@ -54,6 +68,8 @@
 - artifact 默认位于项目内 `.ccpanes-method/v0.1`，与 CC-Panes 宿主 `.ccpanes/` 分离。
 - controller-mediated MCP transport contract 见 `docs/ccpanes-mcp-transport-runbook.md`；它不表示本仓库已执行 live runtime 接入。
 - dry-run planner 输出 `controller-transport-plan` internal artifact；它不是新的方法层协议 artifact。
+- Prompt Pack、technology profile 和 eval suite 使用 `0.1-internal` schema；它们不是新的方法层协议 artifact。
+- PaneForge 的 Prompt Pack review seam 只拥有 sanitized review projection；它不拥有 Prompt 语义、执行、组合、Skill 发布、方法层写入或 host 配置修改 authority。
 
 ## Future candidates
 

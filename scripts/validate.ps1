@@ -68,6 +68,35 @@ function Assert-TestTempEmpty {
     }
 }
 
+function Assert-PromptPackHashBytePreservation {
+    $attributesPath = Join-Path $root '.gitattributes'
+    $requiredAttributes = @(
+        'schemas/prompt-pack.internal.schema.json -text',
+        'prompt-packs/java-enterprise/pack.json -text',
+        'prompt-packs/java-enterprise/profiles/spring-enterprise.json -text',
+        'prompt-packs/java-enterprise/evals/cases.json -text whitespace=cr-at-eol',
+        'prompt-packs/java-enterprise/evals/donor-fingerprints.json -text whitespace=cr-at-eol',
+        'prompt-packs/java-enterprise/prompts/persistence-design.md -text',
+        'prompt-packs/java-enterprise/prompts/requirement-review.md -text',
+        'prompt-packs/java-enterprise/prompts/security-review.md -text',
+        'prompt-packs/java-enterprise/prompts/solution-design.md -text',
+        'prompt-packs/java-enterprise/prompts/test-generation.md -text'
+    )
+
+    if (-not (Test-Path -LiteralPath $attributesPath -PathType Leaf)) {
+        Write-Fail '.gitattributes is required for hash-bound Prompt Pack artifacts'
+    }
+    else {
+        $attributes = Get-Content -Raw -LiteralPath $attributesPath
+        foreach ($requiredAttribute in $requiredAttributes) {
+            $pattern = '(?m)^' + [regex]::Escape($requiredAttribute) + '$'
+            if ($attributes -notmatch $pattern) {
+                Write-Fail "Missing .gitattributes rule: $requiredAttribute"
+            }
+        }
+    }
+}
+
 function Test-JsonSyntax {
     param([System.IO.FileInfo]$File)
 
@@ -144,6 +173,7 @@ $jsonFiles = @(
     Get-ChildItem -LiteralPath (Join-Path $root 'tests/adapter/fixtures') -Filter '*.json' -File
     Get-ChildItem -LiteralPath (Join-Path $root 'controller/schemas') -Filter '*.json' -File
     Get-ChildItem -LiteralPath (Join-Path $root 'tests/controller/fixtures') -Filter '*.json' -File
+    Get-ChildItem -LiteralPath (Join-Path $root 'prompt-packs') -Filter '*.json' -File -Recurse
 ) | Sort-Object FullName
 
 foreach ($jsonFile in $jsonFiles) {
@@ -169,6 +199,22 @@ $powerShellFiles = @(
 
 foreach ($powerShellFile in $powerShellFiles) {
     Test-PowerShellSyntax -File $powerShellFile
+}
+
+$promptPackTests = Join-Path $root 'tests/prompt-pack/run.ps1'
+if (Test-Path -LiteralPath $promptPackTests -PathType Leaf) {
+    Write-Host ""
+    Write-Host "[INFO] Running Prompt Pack tests" -ForegroundColor Cyan
+    & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $promptPackTests
+    if ($LASTEXITCODE -eq 0) {
+        Write-Pass 'Prompt Pack test suite'
+    }
+    else {
+        Write-Fail "Prompt Pack test suite exited $LASTEXITCODE"
+    }
+}
+else {
+    Write-Fail 'Prompt Pack test runner is missing: tests/prompt-pack/run.ps1'
 }
 
 if ($Mode -eq 'Full') {
@@ -213,9 +259,10 @@ if ($Mode -eq 'Full') {
 }
 else {
     Write-Host ""
-    Write-Host "[INFO] Fast mode: skipped adapter/controller/executor test suites." -ForegroundColor Cyan
+    Write-Host "[INFO] Fast mode: Prompt Pack tests ran; adapter/controller/executor suites were skipped." -ForegroundColor Cyan
 }
 
+Assert-PromptPackHashBytePreservation
 Assert-TestTempEmpty
 
 if ($failures.Count -gt 0) {

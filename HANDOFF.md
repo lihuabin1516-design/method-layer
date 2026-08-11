@@ -1,172 +1,155 @@
-# CC-Panes Method Layer Long-Term Maintenance Handoff
+# CC-Panes Method Layer Handoff
 
 ## 1. Role, task id, current result
 
-- Role: 下一任 CC-Panes Method Layer 长期维护主控。
-- Task ID: `ccp-method-layer-long-term-maintenance-20260806`
-- Current result: v0.1 四类方法 artifact、file-first adapter、transport planner、
-  journaled executor、MCP Streamable HTTP driver、长期维护交接和仓库目录架构已形成可持续维护基线；当前任务暂停新增能力，正在做本地生产基线冻结验收。
+- Role: next `ccpanes-method-layer` maintenance controller.
+- Task ID: `ccpanes-prompt-pack-ai-coding-java-intake`.
+- Current result: the locked `ai-coding-prompt-java` donor has been recorded and independently rewritten into the first `java-enterprise` Prompt Pack `0.1.0`, with internal schema, technology profile, five Prompts, thirteen deterministic eval fixtures, donor-window fingerprints, validation integration, and repository-boundary ADR. PaneForge `PF-FUSION-007` has also implemented a disabled-by-default, read-only metadata review consumer for these hash-bound artifacts in its separate task worktree.
 
 ## 2. Required reading
 
-- `AGENTS.md`
-- `tsc.md`
-- `README.md`
-- `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`
-- `docs/maintenance/long-term-maintenance-agent-prompt.md`
-- `docs/architecture/repository-structure.md`
-- `docs/charter.md`
-- `docs/integration-map.md`
-- `docs/workflow.md`
-- `docs/ccpanes-mcp-transport-runbook.md`
-- `docs/plans/2026-08-05-v0.1-controller-executor.md`
-- `controller/README.md`
-- `schemas/*.schema.json`
-- `adapter/schemas/*.json`
-- `controller/schemas/*.json`
-- `scripts/adapter/*`
-- `scripts/controller/*`
-- `tests/adapter/*`
-- `tests/controller/*`
-- `tests/controller-executor/*`
+1. `AGENTS.md`
+2. `README.md`
+3. `HANDOFF.md`
+4. `docs/charter.md`
+5. `docs/architecture/repository-structure.md`
+6. `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
+7. `docs/integration-map.md`
+8. `docs/upstreams/ai-coding-prompt-java.md`
+9. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
+10. `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
+11. `prompt-packs/java-enterprise/README.md`
+12. `prompt-packs/java-enterprise/pack.json`
+13. `schemas/prompt-pack.internal.schema.json`
+14. `tests/prompt-pack/run.ps1`
 
-## 3. Current baseline, facts, evidence
+## 3. Current baseline, facts, and evidence
 
-- Repository: `D:\ccpanes-method-layer`
-- Branch: `main`
-- Current HEAD: `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f`
-- Previous v0.1 protocol baseline commit: `d75cf50be269009cc53f6e984fc70981c55cee31`
-- Remote: `https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
-- Remote name: `origin`
-- Branch: `main`
-- Remote `main` matched local HEAD `d06989f09b4b43a4ddb6e5046c9c7d84eb15fe1f` after the long-term maintenance handoff push.
-- Current freeze-validation working tree is intentionally dirty until user approves a commit.
-- Dirty/untracked summary must be taken from `git status --short --branch`; expected categories for this freeze task are documentation truth updates plus validation/tmp-cleanup scripts.
-- No dependency install, push, remote creation, UI, hook, plugin, profile, global configuration, or `D:\cc-pane` write is authorized in the freeze task.
-- Four public schemas remain `task`, `run`, `evidence`, and `handoff` v0.1.
-- Adapter commands remain file-first and emit command-specific validated envelopes.
-- Planner emits ordered requests and update preconditions containing binding identity,
-  status, role, and metadata SHA-256.
-- Executor supports `dry-run` and explicit `live`; live state is project-local.
-- Journal is append-only JSONL; responses are separate create-once JSON artifacts.
-- Read/update transient failures retry at most three times per invocation.
-- Ambiguous `launch_task` and `report_to_leader` stop after one attempt.
-- Replay skips only a matching successful mutation and repeats readback.
-- Production driver completed a real read-only MCP
-  `find_task_binding_by_session` execution through `/mcp`; the synthetic session
-  lookup returned `null`, and the journaled execution completed successfully.
-- Live probe evidence is under ignored `artifacts/local/live-probe/`.
-- RED evidence: executor suite initially reported 11 failures / 0 passes.
-- GREEN evidence: executor suite reports 16 passes.
-- Existing adapter suite reports 23 passes.
-- Existing planner suite reports 16 passes.
-- Long-term maintenance handoff added under `docs/maintenance/`.
-- Standalone long-term Agent prompt added under `docs/maintenance/`.
-- Repository directory architecture added under `docs/architecture/`.
-- `docs/architecture/` and `docs/maintenance/` are required long-term maintenance docs, not temporary artifacts.
-- `scripts\validate.ps1` supports `-Mode Fast` and `-Mode Full`; `Full` is the freeze gate and remains the default.
-- Full validation covers schema, examples, templates, PowerShell parser, adapter, controller planner, and controller executor.
-- Current freeze validation measured default Full at 53.4 seconds, 67.3 seconds, 142.7 seconds, and 219.1 seconds in separate runs; previous same-host observation reached about 294 seconds, so future reports should record the actual measured runtime.
-- `tests\.tmp` must be empty at successful validation end. The reproduced residual path came from controller-suite execution through shared fixture temp usage; shared TestHarness now clears the verified `tests\.tmp` root on successful suite completion, while failures preserve evidence.
+- Main repository: `D:\ccpanes-method-layer`
+- Task worktree: `D:\ccpanes-method-layer-worktrees\prompt-pack-java-intake`
+- Branch: `codex/prompt-pack-java-intake`
+- Baseline HEAD: `d9abbb8b0f5cfa68448a3d7bf673bbd00ab72d47`
+- Remote: `origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
+- On `2026-08-11`, the user explicitly authorized committing and pushing this task to `origin`. Merge to `main` and worktree cleanup remain outside the authorization.
+- Pre-change Full validation passed:
+  - adapter: 23
+  - controller planner: 16
+  - controller executor: 16
+- Prompt Pack focused RED was observed because the internal schema did not exist.
+- Focused GREEN currently reports 11 Prompt Pack tests.
+- Current Fast and Full validation pass; Full includes Prompt Pack 11, adapter 23, controller planner 16, and controller executor 16.
+- Task hook phase `verify` was recorded before removing the transient untracked hook files from both worktrees.
+- Donor repository: `https://github.com/jwangkun/ai-coding-prompt-java.git`
+- Donor branch and locked commit: `main` at `1959b508696c7d92d550c152c735f49ed6dafbe2`
+- Donor commit date: `2025-11-25`
+- Query date: `2026-08-10`
+- Donor tree: 28 Markdown files.
+- License evidence: README claims MIT, but the locked tree has no license file and no recognized SPDX record.
+- Public v0.1 artifacts remain `task`, `run`, `evidence`, and `handoff`; their schemas were not changed.
+- `.gitattributes` marks all ten PaneForge source-locked artifacts `-text`, preventing Git from normalizing mixed LF/CRLF bytes and changing their reviewed SHA-256 values during commit or checkout.
+- Downstream preview evidence:
+  - PaneForge branch: `codex/pf-fusion-007-readonly-review-seam`
+  - Feature flag: `PANEFORGE_PROMPT_PACK_REVIEW_ENABLED`
+  - Input: caller-supplied source-lock JSON and sanitized catalog JSON only
+  - Behavior: exact source-lock UTF-8 byte hash plus manifest/profile/eval/five-Prompt reference checks
+  - Boundaries: no Prompt execution/composition, Skill generation/install, method-layer write, persistence, filesystem path read, or host-config mutation
+  - Current source-state caveat: the PaneForge lock still classifies this pack as `local-uncommitted-reviewed` above base commit `d9abbb8b0f5cfa68448a3d7bf673bbd00ab72d47`.
 
 ## 4. Single objective for the next round
 
-Maintain this repository as the long-term CC-Panes method-layer baseline and absorb
-future method-layer ideas from other projects through documented, tested, reversible
-plans.
+After this Prompt Pack is committed and pushed, replace PaneForge's `local-uncommitted-reviewed` source state with an explicit method-layer commit lock, preserving the same ten reviewed artifact byte/hash records, then rerun the PF-FUSION-007 review gates.
+
+This order is a separate task and does not authorize work from this handoff.
 
 ## 5. Authorization, forbidden items, conditional authorization
 
-Authorized baseline maintenance:
+Current repository maintenance may:
 
-- Modify only `D:\ccpanes-method-layer` files required by the active task.
-- Run local schema, parser, fixture, and read-only MCP checks.
-- Read upstream public repositories and record findings under `docs/upstreams/`.
-- Add plans under `docs/plans/` before changing public protocol semantics.
+- read and validate the Prompt Pack source artifacts;
+- update this repository under a new explicit task;
+- run local schema, Prompt Pack, adapter, planner, and executor checks.
 
-Forbidden without a new explicit task:
+Without a new explicit task:
 
-- Modify `D:\cc-pane`.
-- Write user global configuration.
-- Install dependencies.
-- Commit, merge, push, create remotes, or clean unrelated worktree content.
-- Add UI, hook, plugin, profile, or automatic runtime wiring.
-- Run live mutation plans against non-synthetic TaskBindings.
+- do not modify `D:\cc-pane`, `D:\codex-cc-pane`, `D:\cc-pane\tool\skills`, PaneForge, or user configuration;
+- do not install dependencies;
+- do not publish generated Skills;
+- do not merge, push, commit, clean worktrees, or change remote state;
+- do not change public v0.1 artifact semantics;
+- do not vendor donor Prompt files or substantial donor text.
 
-Conditional:
+The `2026-08-11` commit/push authorization applies only to publishing the current `codex/prompt-pack-java-intake` task branch. Future remote actions require a new explicit task.
 
-- CC-Panes main-repository adapter integration requires exact target paths and
-  mutation authorization.
+## 6. Execution order and agent boundaries
 
-## 6. Execution order and agent dispatch boundary
+For future Prompt Pack maintenance:
 
-1. Re-run `scripts/validate.ps1 -Mode Full`.
-2. Read `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md`.
-3. Read `docs/architecture/repository-structure.md`.
-4. Classify the next task as protocol, upstream absorption, adapter, controller,
-   documentation, or CC-Panes integration preparation.
-5. Write or update a focused plan under `docs/plans/`.
-6. Add tests/examples before behavior changes.
-7. Run validation and inspect full Git status.
+1. record authoritative Git/worktree status;
+2. read the source lock, design, ADR, manifest, profile, and evals;
+3. update deterministic fixtures before changing composition or validation;
+4. change the internal owner contract before consumers or projections;
+5. run focused Prompt Pack tests;
+6. run Fast and Full validation;
+7. inspect the complete diff and status;
+8. update this handoff only with fresh evidence.
 
-Read-only workers may review schemas or transport sequencing. Writing workers must
-have disjoint file scopes inside this repository and report touched files, commands,
-outcome, and residual risk.
+Read-only workers may review donor diffs, schema compatibility, Prompt content, or eval coverage. Writing workers need disjoint file scopes inside the task worktree. The controller retains schema/version decisions and final validation.
 
 ## 7. Required checks and acceptance assertions
 
 Required:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
-python -m json.tool schemas/task.schema.json > $null
-python -m json.tool schemas/run.schema.json > $null
-python -m json.tool schemas/evidence.schema.json > $null
-python -m json.tool schemas/handoff.schema.json > $null
-git status --short
+pwsh -NoProfile -ExecutionPolicy Bypass -File tests\prompt-pack\run.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Fast
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\validate.ps1 -Mode Full
+python -m json.tool schemas\task.schema.json > $null
+python -m json.tool schemas\run.schema.json > $null
+python -m json.tool schemas\evidence.schema.json > $null
+python -m json.tool schemas\handoff.schema.json > $null
+python -m json.tool schemas\prompt-pack.internal.schema.json > $null
+git diff --check
+git status --short --branch
 ```
 
 Assertions:
 
-- all valid examples pass and focused invalid examples are rejected;
-- adapter 23, planner 16, and executor 16 tests pass;
-- every PowerShell file parses;
-- `tests\.tmp` is empty or absent after successful validation;
-- no runtime token appears in repository files or journal evidence;
-- no unexplained repository-external write exists.
+- Prompt Pack manifest, profile, and eval suite satisfy the internal schema.
+- Prompt identity/version pairs are unique.
+- Required inputs, output contracts, and acceptance assertions are non-empty.
+- Declared input markers match Prompt metadata.
+- Provenance points to the locked donor commit.
+- Donor-specific fixed implementation assumptions are absent from local Prompts.
+- Thirteen eval scenarios have exact expected results.
+- Public v0.1 schemas and artifact semantics remain unchanged.
+- No unexplained out-of-scope tracked or untracked changes exist.
 
 ## 8. Audit, fuse, and stop conditions
 
-- Inspect task diff/status after each write batch.
-- Treat plan hash, journal sequence, response hash, TaskBinding precondition, or
-  readback mismatch as fail-closed.
-- Same root cause gets at most three autonomous repair rounds.
-- Stop before any unapproved CC-Panes source/config/runtime mutation.
-- Do not report completion while a required check is failing.
+- Inspect task diff and status after write batches.
+- Treat missing source lock, duplicate Prompt identity, undeclared marker, invalid schema, missing project fact, or authorization expansion as fail-closed.
+- Preserve historical donor and validation evidence.
+- Stop before public schema change, other-repository write, user-configuration write, Skill publication, PaneForge change, any remote Git action outside the current branch publication, or large donor-copy requirement.
+- Stop after three repair cycles for the same Full-validation root cause.
 
 ## 9. Artifacts, delivery, and next order
 
-Primary artifacts:
+Primary new artifacts:
 
-- `schemas/**`
-- `adapter/**`
-- `controller/**`
-- `scripts/adapter/**`
-- `scripts/controller/**`
-- `tests/adapter/**`
-- `tests/controller/**`
-- `tests/controller-executor/**`
-- `docs/**`
-- `docs/maintenance/**`
-- `docs/architecture/**`
-- `templates/**`
-- `README.md`
-- `HANDOFF.md`
+- `docs/upstreams/ai-coding-prompt-java.md`
+- `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
+- `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
+- `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
+- `schemas/prompt-pack.internal.schema.json`
+- `prompt-packs/java-enterprise/**`
+- `tests/prompt-pack/run.ps1`
+
+Validation owner:
+
+- `scripts/validate.ps1`
 
 Next order:
 
-1. Use `docs/maintenance/2026-08-06-long-term-maintenance-handoff.md` as the
-   starting state for the new long-term maintenance conversation.
-2. Keep `docs/architecture/repository-structure.md` aligned with directory changes.
-3. When absorbing another project, first create/update `docs/upstreams/<source>.md`,
-   then create a dated plan, tests, implementation, validation, and handoff update.
+> Replace PaneForge's `local-uncommitted-reviewed` Prompt Pack source state with an explicit commit lock for the published method-layer artifacts, preserve the reviewed byte/hash set, and rerun PF-FUSION-007 verification without adding execution, composition, persistence, source mutation, or host mutation authority.
+
+Do not execute that order as part of the current task.
