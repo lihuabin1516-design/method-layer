@@ -18,6 +18,11 @@ v0.1 定义 artifact 和门禁输入。本仓库 reference adapter 已实现本�
 JSON envelope 转换；controller 可在显式 live 模式执行 MCP plan，UI、远端动作和
 CC-Panes 主仓库接入仍保持独立。
 
+辅助派生图形 brief 见
+[`docs/architecture/diagram-v0.1-lifecycle.md`](architecture/diagram-v0.1-lifecycle.md)。
+该 brief 是 `derived: true` / `authoritative: false` 的 renderer-neutral 视图，不替代
+本文件、public schema、adapter/controller 合同或运行状态证据。
+
 ## Reference adapter 路径
 
 ```text
