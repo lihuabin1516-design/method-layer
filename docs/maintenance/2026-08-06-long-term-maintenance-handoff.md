@@ -5,6 +5,7 @@
 - 角色：下一任本项目长期维护主控。
 - 任务标识：`ccpanes-method-layer-long-term-maintenance-20260806`
 - 一句话结论：`D:\ccpanes-method-layer` 已从草案升级为可验证、可维护、可被后续 CC-Panes adapter 消费的 v0.1 方法层协议基线，并已推送到远端 `lihuabin1516-design/ccpanes-method-layer`。
+- 状态：历史快照；当前权威基线请看 `README.md`、`HANDOFF.md` 和 `docs/maintenance/governance-baseline.md`。
 
 ## 2. 先决必读
 
@@ -28,7 +29,7 @@
 16. `tests/controller/run.ps1`
 17. `tests/controller-executor/run.ps1`
 
-## 3. 当前基线、事实和证据
+## 3. 历史基线、事实和证据
 
 ### Git / remote
 

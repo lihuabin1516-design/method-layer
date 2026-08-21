@@ -28,6 +28,18 @@ Method Layer 将这些信息固定为机器可验证的契约，让 Codex App �
 - **可审计 Controller**：先生成 MCP request plan，再按 dry-run、journal、hash precondition 和 recovery 规则执行。
 - **Prompt Pack**：将阶段、变更类型、风险和技术栈相关的 Prompt 元数据、输出合同与 eval 固定下来。
 
+## 自有评判标准
+
+本仓库不以外部打分作为维护依据，而以本地治理基线判断是否变好。
+
+- 边界更清楚
+- 证据更可复核
+- 来源更可追溯
+- 入口更清楚
+- 变更更克制
+
+详见 [`docs/maintenance/governance-baseline.md`](docs/maintenance/governance-baseline.md)。
+
 ## 兼容关系
 
 ```mermaid
@@ -269,24 +281,27 @@ Prompt Pack 可以通过下游 PaneForge 预览实现进行只读审查。方法
 
 1. [`HANDOFF.md`](HANDOFF.md)：当前权威基线、授权和下一步；
 2. [`docs/charter.md`](docs/charter.md)：方法层定位与非目标；
-3. [`docs/architecture/repository-structure.md`](docs/architecture/repository-structure.md)：目录职责和维护检查表；
-4. [`docs/integration-map.md`](docs/integration-map.md)：上游概念、v0.1 字段和 future 边界；
-5. [`companion/README.md`](companion/README.md)：External Companion 边界和命令；
-6. [`adapter/README.md`](adapter/README.md)：File-first Adapter 命令；
-7. [`controller/README.md`](controller/README.md)：规划、执行、journal 和 recovery；
-8. [`examples/README.md`](examples/README.md)：正反实例；
-9. [`schemas/`](schemas)：机器可验证契约；
-10. [`templates/`](templates)：任务和交接模板。
+3. [`docs/maintenance/governance-baseline.md`](docs/maintenance/governance-baseline.md)：本仓库自有评判标准与当前治理基线；
+4. [`docs/architecture/repository-structure.md`](docs/architecture/repository-structure.md)：目录职责和维护检查表；
+5. [`docs/integration-map.md`](docs/integration-map.md)：上游概念、v0.1 字段和 future 边界；
+6. [`companion/README.md`](companion/README.md)：External Companion 边界和命令；
+7. [`adapter/README.md`](adapter/README.md)：File-first Adapter 命令；
+8. [`controller/README.md`](controller/README.md)：规划、执行、journal 和 recovery；
+9. [`examples/README.md`](examples/README.md)：正反实例；
+10. [`schemas/`](schemas)：机器可验证契约；
+11. [`templates/`](templates)：任务和交接模板。
 
 ## 当前状态
 
 - Protocol baseline：v0.1；
 - 当前仓库分支：`codex/official-ccpanes-companion`；
 - 当前本地工作区：`D:\ccpanes-method-layer`；
+- 当前治理基线：[`docs/maintenance/governance-baseline.md`](docs/maintenance/governance-baseline.md)；
+- 当前 license / provenance 决策：[`docs/maintenance/license-provenance-decision.md`](docs/maintenance/license-provenance-decision.md)；
 - 项目主页（用户提供）：[lihuabin1516-design/method-layer](https://github.com/lihuabin1516-design/method-layer)；
 - 当前实现重点：外部 Companion、Prompt Pack、File-first Adapter 和 Controller transport seam；
 - 官方 CC-Panes runtime integration 仍保持独立边界，需单独定义目标面和授权。
 
 ## License
 
-License information will be added when the repository license decision is finalized.
+See [`docs/maintenance/license-provenance-decision.md`](docs/maintenance/license-provenance-decision.md) for the current license / provenance decision record.

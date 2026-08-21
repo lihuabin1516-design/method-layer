@@ -373,7 +373,7 @@ Repository architecture and ownership map. Keep this directory up to date when d
 
 ### `docs/maintenance/`
 
-Long-lived handoffs, maintenance playbooks, release checklists, absorption procedure. This is the first place a new long-term maintenance conversation should read after `HANDOFF.md`.
+Long-lived handoffs, governance baseline, license/provenance decision, maintenance playbooks, release checklists, absorption procedure. This is the first place a new long-term maintenance conversation should read after `HANDOFF.md`.
 
 ### `docs/plans/`
 

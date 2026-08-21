@@ -15,17 +15,19 @@ https://github.com/lihuabin1516-design/ccpanes-method-layer.git
 1. AGENTS.md
 2. README.md
 3. HANDOFF.md
-4. docs/maintenance/2026-08-06-long-term-maintenance-handoff.md
-5. docs/architecture/repository-structure.md
-6. docs/charter.md
-7. docs/workflow.md
-8. docs/integration-map.md
-9. docs/ccpanes-mcp-transport-runbook.md
-10. adapter/README.md
-11. controller/README.md
-12. schemas/*.schema.json
-13. adapter/schemas/*.json
-14. controller/schemas/*.json
+4. docs/maintenance/governance-baseline.md
+5. docs/maintenance/license-provenance-decision.md
+6. docs/maintenance/2026-08-06-long-term-maintenance-handoff.md
+7. docs/architecture/repository-structure.md
+8. docs/charter.md
+9. docs/workflow.md
+10. docs/integration-map.md
+11. docs/ccpanes-mcp-transport-runbook.md
+12. adapter/README.md
+13. controller/README.md
+14. schemas/*.schema.json
+15. adapter/schemas/*.json
+16. controller/schemas/*.json
 
 读取后先执行并报告：
 - git status --branch --short

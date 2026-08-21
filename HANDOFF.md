@@ -12,30 +12,32 @@
 2. `README.md`
 3. `HANDOFF.md`
 4. `docs/charter.md`
-5. `docs/architecture/repository-structure.md`
-6. `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
-7. `docs/integration-map.md`
-8. `docs/upstreams/ai-coding-prompt-java.md`
-9. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
-10. `docs/specs/2026-08-11-official-ccpanes-companion-design.md`
-11. `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
-12. `docs/plans/2026-08-11-official-ccpanes-companion.md`
-13. `prompt-packs/java-enterprise/README.md`
-14. `prompt-packs/java-enterprise/pack.json`
-15. `schemas/prompt-pack.internal.schema.json`
-16. `companion/README.md`
-17. `companion/schemas/official-companion-request.internal.schema.json`
-18. `companion/schemas/official-companion-guidance.internal.schema.json`
-19. `scripts/companion/MethodLayer.Companion.psm1`
-20. `scripts/companion/new-guidance.ps1`
-21. `tests/prompt-pack/run.ps1`
-22. `tests/companion/run.ps1`
+5. `docs/maintenance/governance-baseline.md`
+6. `docs/maintenance/license-provenance-decision.md`
+7. `docs/architecture/repository-structure.md`
+8. `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
+9. `docs/integration-map.md`
+10. `docs/upstreams/ai-coding-prompt-java.md`
+11. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
+12. `docs/specs/2026-08-11-official-ccpanes-companion-design.md`
+13. `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
+14. `docs/plans/2026-08-11-official-ccpanes-companion.md`
+15. `prompt-packs/java-enterprise/README.md`
+16. `prompt-packs/java-enterprise/pack.json`
+17. `schemas/prompt-pack.internal.schema.json`
+18. `companion/README.md`
+19. `companion/schemas/official-companion-request.internal.schema.json`
+20. `companion/schemas/official-companion-guidance.internal.schema.json`
+21. `scripts/companion/MethodLayer.Companion.psm1`
+22. `scripts/companion/new-guidance.ps1`
+23. `tests/prompt-pack/run.ps1`
+24. `tests/companion/run.ps1`
 
 ## 3. Current baseline, facts, and evidence
 
 - Repository: `D:\ccpanes-method-layer`
 - Branch: `codex/official-ccpanes-companion`
-- Baseline HEAD: `921725ec19930687e247841fdfa90bbbf3bf704b`
+- Baseline HEAD: `704e6a090f1ba74869219b4318e559c927265711`
 - Remote: `origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
 - Current task has no commit, push, merge, cleanup, or official runtime mutation authorization.
 - The previous Prompt Pack branch `codex/prompt-pack-java-intake` is published at `921725ec19930687e247841fdfa90bbbf3bf704b`.
@@ -43,6 +45,7 @@
 - Donor branch and locked commit: `main` at `1959b508696c7d92d550c152c735f49ed6dafbe2`
 - Donor commit date: `2025-11-25`
 - License evidence: README claims MIT, but the locked tree has no license file and no recognized SPDX record.
+- License / provenance decision record: `docs/maintenance/license-provenance-decision.md`
 - Public v0.1 artifacts remain `task`, `run`, `evidence`, and `handoff`; their schemas were not changed by this Companion slice.
 - `.gitattributes` still marks all ten Prompt Pack source-locked artifacts `-text`.
 - Companion focused RED was observed because `companion/schemas/*` and `scripts/companion/new-guidance.ps1` were absent.
@@ -52,6 +55,8 @@
 - `python -m json.tool` passed for public schemas, Prompt Pack internal schema, and both Companion schemas.
 - Sample guidance for `tests\companion\fixtures\design-request.json` returned `decision=ready-to-copy`, selected `requirement-review,solution-design`, and kept `launchesOfficialExe=false`, `writesOfficialConfig=false`, `mutatesHost=false`.
 - `git diff --check` passed; latest status has only intended Companion/documentation/validator changes and untracked new Companion artifacts.
+- Project governance baseline: `docs/maintenance/governance-baseline.md`
+- Current maintenance judgments use local facts, validation, and this governance baseline; external commentary is advisory only.
 - External Companion artifacts:
   - Request schema: `companion/schemas/official-companion-request.internal.schema.json`
   - Guidance schema: `companion/schemas/official-companion-guidance.internal.schema.json`
