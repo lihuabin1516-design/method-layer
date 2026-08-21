@@ -1,0 +1,419 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "prompt-pack",
+  "packId": "java-enterprise",
+  "version": "0.1.0",
+  "title": "CC-Panes Java Enterprise Prompt Pack",
+  "domain": "java-enterprise",
+  "owner": "ccpanes-method-layer",
+  "status": "experimental",
+  "publicArtifactImpact": "none",
+  "publicArtifactTypes": [
+    "task",
+    "run",
+    "evidence",
+    "handoff"
+  ],
+  "profileRefs": [
+    "profiles/spring-enterprise.json"
+  ],
+  "donorFingerprintRef": "evals/donor-fingerprints.json",
+  "composition": {
+    "order": [
+      "requirement-review",
+      "solution-design",
+      "persistence-design",
+      "security-review",
+      "test-generation"
+    ],
+    "stageRules": [
+      {
+        "stage": "shape",
+        "promptIds": [
+          "requirement-review"
+        ]
+      },
+      {
+        "stage": "design",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ]
+      },
+      {
+        "stage": "build",
+        "promptIds": [
+          "solution-design",
+          "test-generation"
+        ]
+      },
+      {
+        "stage": "verify",
+        "promptIds": [
+          "requirement-review",
+          "test-generation"
+        ]
+      },
+      {
+        "stage": "audit",
+        "promptIds": [
+          "requirement-review"
+        ]
+      }
+    ],
+    "changeTypeRules": [
+      {
+        "changeType": "new-feature",
+        "promptIds": [
+          "solution-design"
+        ]
+      },
+      {
+        "changeType": "modification",
+        "promptIds": [
+          "requirement-review",
+          "solution-design"
+        ]
+      },
+      {
+        "changeType": "audit",
+        "promptIds": [
+          "requirement-review"
+        ]
+      }
+    ],
+    "riskRules": [
+      {
+        "riskTag": "database",
+        "promptIds": [
+          "persistence-design"
+        ]
+      },
+      {
+        "riskTag": "authentication",
+        "promptIds": [
+          "security-review"
+        ]
+      },
+      {
+        "riskTag": "authorization",
+        "promptIds": [
+          "security-review"
+        ]
+      },
+      {
+        "riskTag": "tests",
+        "promptIds": [
+          "test-generation"
+        ]
+      }
+    ],
+    "stopRules": [
+      "Stop composition when a required project fact is absent.",
+      "Stop when requested actions exceed the task authorization.",
+      "Stop before assuming a framework, database, security model, class name, table name, or performance target not established by repository evidence."
+    ]
+  },
+  "prompts": [
+    {
+      "id": "requirement-review",
+      "version": "0.1.0",
+      "title": "Requirement and Existing-Implementation Review",
+      "purpose": "Compare the requested outcome with repository facts, existing contracts, tests, and authorization before design or implementation.",
+      "applicableStages": [
+        "shape",
+        "design",
+        "verify",
+        "audit"
+      ],
+      "requiredInputs": [
+        "task.objective",
+        "task.authorization",
+        "projectFacts.repository",
+        "projectFacts.contracts",
+        "projectFacts.tests"
+      ],
+      "optionalInputs": [
+        "projectFacts.securityModel",
+        "projectFacts.dataModel",
+        "projectFacts.incidentHistory"
+      ],
+      "outputContract": [
+        "Scope",
+        "Confirmed Facts",
+        "High-Confidence Inferences",
+        "Open Assumptions",
+        "Gap Analysis",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "acceptanceAssertions": [
+        "Every finding is traceable to a requirement, contract, file, test, or explicit task constraint.",
+        "Missing project facts remain explicit and block unsupported implementation claims.",
+        "The review does not expand task authorization."
+      ],
+      "sourceProvenance": {
+        "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+        "branch": "main",
+        "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+        "commitDate": "2025-11-25",
+        "paths": [
+          "rules/Review需求实现检查prompt.md",
+          "prompt整体介绍.md"
+        ],
+        "transformation": "idea-level-rewrite"
+      },
+      "knownLimitations": [
+        "This Prompt identifies evidence gaps but does not decide product priority.",
+        "It does not replace project-specific review policy or runtime evidence."
+      ],
+      "contentPath": "prompts/requirement-review.md"
+    },
+    {
+      "id": "solution-design",
+      "version": "0.1.0",
+      "title": "Java Enterprise Solution Design",
+      "purpose": "Produce a bounded design from confirmed project facts without defaulting to a fixed Spring implementation.",
+      "applicableStages": [
+        "design",
+        "build"
+      ],
+      "requiredInputs": [
+        "task.objective",
+        "task.authorization",
+        "projectFacts.repository",
+        "projectFacts.contracts",
+        "projectFacts.tests",
+        "projectFacts.technologyProfile"
+      ],
+      "optionalInputs": [
+        "projectFacts.dataModel",
+        "projectFacts.securityModel",
+        "projectFacts.runtimeTopology",
+        "projectFacts.performanceEvidence"
+      ],
+      "outputContract": [
+        "Scope",
+        "Confirmed Facts",
+        "Architecture",
+        "Components and Contracts",
+        "Impact",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "acceptanceAssertions": [
+        "The design names owners, consumers, changed contracts, and dependency direction.",
+        "Concrete framework versions and implementation types come only from the technology profile and repository facts.",
+        "Database, authentication, and authorization concerns are delegated to their focused Prompt when triggered."
+      ],
+      "sourceProvenance": {
+        "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+        "branch": "main",
+        "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+        "commitDate": "2025-11-25",
+        "paths": [
+          "技术方案/新增类需求prompt.md",
+          "技术方案/修改类需求prompt.md",
+          "业务层/业务层prompt.md",
+          "应用层/接口定义prompt.md"
+        ],
+        "transformation": "idea-level-rewrite"
+      },
+      "knownLimitations": [
+        "It provides a design contract, not a complete implementation.",
+        "It does not infer performance targets or deployment topology."
+      ],
+      "contentPath": "prompts/solution-design.md"
+    },
+    {
+      "id": "persistence-design",
+      "version": "0.1.0",
+      "title": "Persistence and Data Model Design",
+      "purpose": "Review data ownership, schema impact, migration, consistency, rollback, and query evidence for Java enterprise changes.",
+      "applicableStages": [
+        "design",
+        "build",
+        "verify"
+      ],
+      "requiredInputs": [
+        "task.objective",
+        "task.authorization",
+        "projectFacts.repository",
+        "projectFacts.dataModel",
+        "projectFacts.technologyProfile"
+      ],
+      "optionalInputs": [
+        "projectFacts.migrationPolicy",
+        "projectFacts.queryEvidence",
+        "projectFacts.retentionPolicy"
+      ],
+      "outputContract": [
+        "Scope",
+        "Confirmed Data Facts",
+        "Ownership and Invariants",
+        "Schema and Migration",
+        "Consistency and Recovery",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "acceptanceAssertions": [
+        "No table, field, index, migration tool, or database engine is invented without project evidence.",
+        "Data changes include rollback or roll-forward and reconciliation.",
+        "Authentication or authorization data changes remain subject to the security Prompt and task approval."
+      ],
+      "sourceProvenance": {
+        "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+        "branch": "main",
+        "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+        "commitDate": "2025-11-25",
+        "paths": [
+          "数据层/建表prompt.md",
+          "数据层/持久化prompt.md",
+          "技术方案/修改类需求prompt.md"
+        ],
+        "transformation": "idea-level-rewrite"
+      },
+      "knownLimitations": [
+        "It requires actual schema and query evidence for concrete index advice.",
+        "It does not authorize migrations or production data operations."
+      ],
+      "contentPath": "prompts/persistence-design.md"
+    },
+    {
+      "id": "security-review",
+      "version": "0.1.0",
+      "title": "Authentication, Authorization, and Security Review",
+      "purpose": "Evaluate security boundaries and denied paths from repository facts while keeping remediation within task authority.",
+      "applicableStages": [
+        "design",
+        "build",
+        "verify",
+        "audit"
+      ],
+      "requiredInputs": [
+        "task.objective",
+        "task.authorization",
+        "projectFacts.repository",
+        "projectFacts.securityModel",
+        "projectFacts.contracts"
+      ],
+      "optionalInputs": [
+        "projectFacts.dataClassification",
+        "projectFacts.threatModel",
+        "projectFacts.auditRequirements"
+      ],
+      "outputContract": [
+        "Scope",
+        "Confirmed Security Facts",
+        "Trust Boundaries",
+        "Authentication and Authorization",
+        "Data and Audit Controls",
+        "Verification",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "acceptanceAssertions": [
+        "Authorization is checked before side effects and denied paths are testable.",
+        "Secrets, credentials, and production data are neither requested nor emitted.",
+        "Framework-specific security advice is tied to confirmed project versions and contracts."
+      ],
+      "sourceProvenance": {
+        "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+        "branch": "main",
+        "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+        "commitDate": "2025-11-25",
+        "paths": [
+          "rules/安全检查prompt.md",
+          "应用层/接口实现prompt.md"
+        ],
+        "transformation": "idea-level-rewrite"
+      },
+      "knownLimitations": [
+        "It is a repository review template, not a substitute for threat modeling or penetration testing.",
+        "It does not select cryptographic algorithms or identity providers without project policy."
+      ],
+      "contentPath": "prompts/security-review.md"
+    },
+    {
+      "id": "test-generation",
+      "version": "0.1.0",
+      "title": "Evidence-Oriented Test Design",
+      "purpose": "Design focused tests and acceptance assertions that falsify the requested behavior and its important failure paths.",
+      "applicableStages": [
+        "build",
+        "verify"
+      ],
+      "requiredInputs": [
+        "task.objective",
+        "task.authorization",
+        "projectFacts.repository",
+        "projectFacts.contracts",
+        "projectFacts.tests",
+        "projectFacts.technologyProfile"
+      ],
+      "optionalInputs": [
+        "projectFacts.dataModel",
+        "projectFacts.securityModel",
+        "projectFacts.performanceEvidence"
+      ],
+      "outputContract": [
+        "Scope",
+        "Confirmed Test Facts",
+        "Test Matrix",
+        "Fixture and Data Strategy",
+        "Execution Commands",
+        "Expected Failures and Passes",
+        "Risks",
+        "Acceptance Assertions"
+      ],
+      "acceptanceAssertions": [
+        "Every proposed test maps to a changed contract, risk, or acceptance assertion.",
+        "Framework and test-library syntax follows the repository's existing test stack.",
+        "Performance thresholds are proposed only when baseline and target evidence exist."
+      ],
+      "sourceProvenance": {
+        "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+        "branch": "main",
+        "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+        "commitDate": "2025-11-25",
+        "paths": [
+          "rules/测试用例生成prompt.md",
+          "rules/Review需求实现检查prompt.md"
+        ],
+        "transformation": "idea-level-rewrite"
+      },
+      "knownLimitations": [
+        "It designs tests but does not claim execution results.",
+        "Coverage percentages are not treated as universal quality targets."
+      ],
+      "contentPath": "prompts/test-generation.md"
+    }
+  ],
+  "sourceProvenance": {
+    "repository": "https://github.com/jwangkun/ai-coding-prompt-java.git",
+    "branch": "main",
+    "commit": "1959b508696c7d92d550c152c735f49ed6dafbe2",
+    "commitDate": "2025-11-25",
+    "paths": [
+      "README.md",
+      "prompt整体介绍.md",
+      "prompt使用示例.md",
+      "rules/**",
+      "技术方案/**",
+      "数据层/**",
+      "业务层/**",
+      "应用层/**",
+      "工程结构/**"
+    ],
+    "transformation": "idea-level-rewrite"
+  },
+  "licenseAssessment": {
+    "readmeClaim": "MIT",
+    "licenseFilePresent": false,
+    "spdxDetected": false,
+    "localPolicy": "ideas-only-no-verbatim-vendoring"
+  }
+}

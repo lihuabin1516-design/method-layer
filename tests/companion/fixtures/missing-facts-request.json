@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "official-ccpanes-companion-request",
+  "requestId": "fixture-missing-facts",
+  "createdAt": "2026-08-11T12:00:00+08:00",
+  "officialTarget": {
+    "product": "official-cc-panes",
+    "exeName": "cc-panes.exe",
+    "integrationMode": "external-companion"
+  },
+  "task": {
+    "objective": "Design a Java persistence change without enough project facts.",
+    "stage": "design",
+    "changeType": "new-feature",
+    "riskTags": [
+      "database"
+    ],
+    "authorizedActions": [
+      "inspect",
+      "design"
+    ],
+    "requestedActions": [
+      "inspect",
+      "design"
+    ]
+  },
+  "projectFacts": {
+    "provided": [
+      "repository",
+      "contracts",
+      "tests",
+      "technologyProfile"
+    ]
+  }
+}

@@ -1,0 +1,631 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/prompt-pack/v0.1/prompt-pack.internal.schema.json",
+  "title": "CC-Panes Prompt Pack Internal Contracts v0.1",
+  "description": "Internal contracts for Prompt Pack manifests, technology profiles, deterministic eval suites, and donor fingerprint sets. These are configuration inputs, not public method artifacts.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/promptPack"
+    },
+    {
+      "$ref": "#/$defs/technologyProfile"
+    },
+    {
+      "$ref": "#/$defs/evalSuite"
+    },
+    {
+      "$ref": "#/$defs/donorFingerprintSet"
+    }
+  ],
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "strings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "promptId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,63}$"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "repository",
+        "branch",
+        "commit",
+        "commitDate",
+        "paths",
+        "transformation"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "format": "uri"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "commitDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "paths": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "transformation": {
+          "const": "idea-level-rewrite"
+        }
+      },
+      "additionalProperties": false
+    },
+    "promptEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "title",
+        "purpose",
+        "applicableStages",
+        "requiredInputs",
+        "optionalInputs",
+        "outputContract",
+        "acceptanceAssertions",
+        "sourceProvenance",
+        "knownLimitations",
+        "contentPath"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/promptId"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applicableStages": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "requiredInputs": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "optionalInputs": {
+          "$ref": "#/$defs/strings"
+        },
+        "outputContract": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "acceptanceAssertions": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "sourceProvenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "knownLimitations": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "contentPath": {
+          "type": "string",
+          "pattern": "^prompts/[a-z0-9-]+\\.md$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "compositionRule": {
+      "type": "object",
+      "required": [
+        "promptIds"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string",
+          "enum": [
+            "shape",
+            "design",
+            "build",
+            "verify",
+            "audit"
+          ]
+        },
+        "changeType": {
+          "type": "string",
+          "enum": [
+            "new-feature",
+            "modification",
+            "audit"
+          ]
+        },
+        "riskTag": {
+          "type": "string",
+          "enum": [
+            "database",
+            "authentication",
+            "authorization",
+            "tests"
+          ]
+        },
+        "promptIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/promptId"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "promptPack": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "packId",
+        "version",
+        "title",
+        "domain",
+        "owner",
+        "status",
+        "publicArtifactImpact",
+        "publicArtifactTypes",
+        "profileRefs",
+        "donorFingerprintRef",
+        "composition",
+        "prompts",
+        "sourceProvenance",
+        "licenseAssessment"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "0.1-internal"
+        },
+        "artifactType": {
+          "const": "prompt-pack"
+        },
+        "packId": {
+          "const": "java-enterprise"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domain": {
+          "const": "java-enterprise"
+        },
+        "owner": {
+          "const": "ccpanes-method-layer"
+        },
+        "status": {
+          "enum": [
+            "experimental",
+            "stable",
+            "retired"
+          ]
+        },
+        "publicArtifactImpact": {
+          "const": "none"
+        },
+        "publicArtifactTypes": {
+          "prefixItems": [
+            {
+              "const": "task"
+            },
+            {
+              "const": "run"
+            },
+            {
+              "const": "evidence"
+            },
+            {
+              "const": "handoff"
+            }
+          ],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "profileRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^profiles/[a-z0-9-]+\\.json$"
+          }
+        },
+        "donorFingerprintRef": {
+          "type": "string",
+          "pattern": "^evals/[a-z0-9-]+\\.json$"
+        },
+        "composition": {
+          "type": "object",
+          "required": [
+            "order",
+            "stageRules",
+            "changeTypeRules",
+            "riskRules",
+            "stopRules"
+          ],
+          "properties": {
+            "order": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/promptId"
+              }
+            },
+            "stageRules": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/compositionRule"
+                  },
+                  {
+                    "required": [
+                      "stage"
+                    ]
+                  }
+                ]
+              }
+            },
+            "changeTypeRules": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/compositionRule"
+                  },
+                  {
+                    "required": [
+                      "changeType"
+                    ]
+                  }
+                ]
+              }
+            },
+            "riskRules": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/compositionRule"
+                  },
+                  {
+                    "required": [
+                      "riskTag"
+                    ]
+                  }
+                ]
+              }
+            },
+            "stopRules": {
+              "$ref": "#/$defs/nonEmptyStrings"
+            }
+          },
+          "additionalProperties": false
+        },
+        "prompts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/promptEntry"
+          }
+        },
+        "sourceProvenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "licenseAssessment": {
+          "type": "object",
+          "required": [
+            "readmeClaim",
+            "licenseFilePresent",
+            "spdxDetected",
+            "localPolicy"
+          ],
+          "properties": {
+            "readmeClaim": {
+              "const": "MIT"
+            },
+            "licenseFilePresent": {
+              "const": false
+            },
+            "spdxDetected": {
+              "const": false
+            },
+            "localPolicy": {
+              "const": "ideas-only-no-verbatim-vendoring"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "technologyProfile": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "profileId",
+        "version",
+        "title",
+        "language",
+        "frameworkFamily",
+        "versionPolicy",
+        "requiredProjectFacts",
+        "optionalProjectFacts",
+        "guidance"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "0.1-internal"
+        },
+        "artifactType": {
+          "const": "prompt-technology-profile"
+        },
+        "profileId": {
+          "const": "spring-enterprise"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "const": "Java"
+        },
+        "frameworkFamily": {
+          "const": "Spring"
+        },
+        "versionPolicy": {
+          "const": "project-fact-required"
+        },
+        "requiredProjectFacts": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "optionalProjectFacts": {
+          "$ref": "#/$defs/strings"
+        },
+        "guidance": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evalExpected": {
+      "type": "object",
+      "required": [
+        "decision",
+        "promptIds",
+        "violations"
+      ],
+      "properties": {
+        "decision": {
+          "enum": [
+            "pass",
+            "fail",
+            "blocked"
+          ]
+        },
+        "promptIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/promptId"
+          }
+        },
+        "violations": {
+          "$ref": "#/$defs/strings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evalCase": {
+      "type": "object",
+      "required": [
+        "id",
+        "description",
+        "stage",
+        "changeType",
+        "riskTags",
+        "providedFacts",
+        "authorizedActions",
+        "requestedActions",
+        "candidateOutputSections",
+        "candidateTextParts",
+        "expected"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{2,95}$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage": {
+          "enum": [
+            "shape",
+            "design",
+            "build",
+            "verify",
+            "audit"
+          ]
+        },
+        "changeType": {
+          "enum": [
+            "new-feature",
+            "modification",
+            "audit"
+          ]
+        },
+        "riskTags": {
+          "$ref": "#/$defs/strings"
+        },
+        "providedFacts": {
+          "$ref": "#/$defs/strings"
+        },
+        "authorizedActions": {
+          "$ref": "#/$defs/strings"
+        },
+        "requestedActions": {
+          "$ref": "#/$defs/strings"
+        },
+        "candidateOutputSections": {
+          "$ref": "#/$defs/nonEmptyStrings"
+        },
+        "candidateTextParts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected": {
+          "$ref": "#/$defs/evalExpected"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evalSuite": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "suiteId",
+        "version",
+        "packRef",
+        "cases"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "0.1-internal"
+        },
+        "artifactType": {
+          "const": "prompt-eval-suite"
+        },
+        "suiteId": {
+          "const": "java-enterprise-v0.1"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "packRef": {
+          "const": "../pack.json"
+        },
+        "cases": {
+          "type": "array",
+          "minItems": 13,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/evalCase"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "donorFingerprintSet": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "sourceRepository",
+        "sourceCommit",
+        "algorithm",
+        "normalization",
+        "windowLength",
+        "donorStride",
+        "sourceFileCount",
+        "hashCount",
+        "hashes"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "0.1-internal"
+        },
+        "artifactType": {
+          "const": "prompt-donor-fingerprint-set"
+        },
+        "sourceRepository": {
+          "type": "string",
+          "format": "uri"
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "algorithm": {
+          "const": "normalized-char-window-sha256-v1"
+        },
+        "normalization": {
+          "const": "lowercase-unicode-letters-decimal-digits"
+        },
+        "windowLength": {
+          "type": "integer",
+          "minimum": 128
+        },
+        "donorStride": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sourceFileCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hashCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hashes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

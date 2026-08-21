@@ -11,15 +11,20 @@ D:\ccpanes-method-layer
 ├── README.md
 ├── tsc.md
 ├── schemas/
+├── prompt-packs/
 ├── examples/
 ├── templates/
+├── companion/
 ├── adapter/
 ├── controller/
 ├── scripts/
+│   ├── companion/
 │   ├── adapter/
 │   └── controller/
 ├── tests/
 │   ├── adapter/
+│   ├── prompt-pack/
+│   ├── companion/
 │   ├── controller/
 │   └── controller-executor/
 └── docs/
@@ -49,6 +54,7 @@ CLAUDE.md
 | `AGENTS.md` | Project operating rules | Keep concise; do not duplicate every long-form runbook. |
 | `tsc.md` | Original task / prompt context | Treat as historical context unless a later task explicitly updates it. |
 | `.gitignore` | Runtime and local scratch exclusions | Keep `.ccpanes/`, `.ccpanes-method/`, `artifacts/local/`, `tests/.tmp/` ignored. |
+| `.gitattributes` | Exact-byte preservation for source-locked Prompt Pack artifacts | Keep the ten reviewed schema/manifest/profile/eval/Prompt paths marked `-text`; changing this requires source-lock regeneration and downstream review. |
 
 ## Public protocol layer
 
@@ -69,6 +75,43 @@ Rules:
 - Any required-field or meaning change needs a plan in `docs/plans/`.
 - Add valid and invalid examples for every schema behavior change.
 - Keep `additionalProperties: false` intentional and reviewed.
+
+Internal Prompt Pack contracts live beside the public schemas:
+
+```text
+schemas/
+└── prompt-pack.internal.schema.json
+```
+
+The internal schema validates Prompt Pack manifests, technology profiles, and deterministic eval suites. It does not add a public artifact type or change `protocolVersion: "0.1"`.
+
+## Prompt Packs
+
+```text
+prompt-packs/
+└── java-enterprise/
+    ├── pack.json
+    ├── README.md
+    ├── profiles/
+    ├── prompts/
+    └── evals/
+```
+
+Purpose:
+
+- Own versioned Prompt semantics, composition, source provenance, and eval fixtures.
+- Separate common engineering guidance, work-stage rules, technology profiles, project facts, output contracts, and acceptance assertions.
+- Provide source artifacts for later generated Skill projections.
+- Keep the locked donor comparison as hashes only; do not vendor donor Prompt text.
+
+Maintenance:
+
+- Keep task authorization and project facts outside the pack.
+- Require exact source commit and idea-level rewrite records.
+- Add deterministic fixtures before changing composition or validation behavior.
+- Preserve the exact committed bytes of source-locked artifacts; Git line-ending normalization must not change reviewed SHA-256 values.
+- Do not persist full Prompt bodies in launch attempts, journals, or evidence.
+- Reassess an independent repository only through `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`.
 
 ## Examples
 
@@ -109,6 +152,29 @@ Maintenance:
 
 - Template JSON must remain schema-valid.
 - Markdown templates should match current terminology in `docs/workflow.md`.
+
+## Official CC-Panes external companion
+
+```text
+companion/
+├── README.md
+└── schemas/
+    ├── official-companion-request.internal.schema.json
+    └── official-companion-guidance.internal.schema.json
+```
+
+Purpose:
+
+- Let `ccpanes-method-layer` assist the official `cc-panes.exe` from outside the runtime.
+- Validate caller-supplied task context and return metadata-only Prompt Pack guidance.
+- Keep official CC-Panes executable, profiles, hooks, plugins, MCP registration, user configuration, and host runtime untouched.
+
+Maintenance:
+
+- Companion schemas are internal contracts, not public v0.1 artifacts.
+- Output must keep `launchesOfficialExe`, `writesOfficialConfig`, and `mutatesHost` false.
+- Output may include Prompt identity/version/output-contract metadata, but not Prompt bodies.
+- Changes to selection behavior require fixtures in `tests/companion/`.
 
 ## Adapter contract layer
 
@@ -166,6 +232,9 @@ Maintenance:
 ```text
 scripts/
 ├── validate.ps1
+├── companion/
+│   ├── MethodLayer.Companion.psm1
+│   └── new-guidance.ps1
 ├── adapter/
 │   ├── MethodLayer.Adapter.psm1
 │   ├── prepare-launch.ps1
@@ -189,6 +258,8 @@ Main local gate. It checks:
 - protocol examples.
 - templates.
 - PowerShell parser.
+- Prompt Pack tests.
+- Official CC-Panes external companion tests.
 - adapter tests.
 - controller planner tests.
 - controller executor tests.
@@ -220,12 +291,30 @@ Core invariants:
 - replay safety;
 - loopback-only MCP endpoint.
 
+### `scripts/companion/*`
+
+External guidance for the official `cc-panes.exe`.
+
+Core invariants:
+
+- request and guidance schema validation;
+- read-only Prompt Pack metadata consumption;
+- no official executable launch;
+- no official/user configuration mutation;
+- no Prompt execution or runtime composition;
+- metadata-only guidance output.
+
 ## Tests
 
 ```text
 tests/
 ├── adapter/
 │   ├── TestHarness.ps1
+│   ├── run.ps1
+│   └── fixtures/
+├── prompt-pack/
+│   └── run.ps1
+├── companion/
 │   ├── run.ps1
 │   └── fixtures/
 ├── controller/
@@ -240,12 +329,16 @@ Current expected counts:
 | Suite | Command | Expected |
 | --- | --- | --- |
 | Adapter | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\adapter\run.ps1` | 23 pass |
+| Prompt Pack | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\prompt-pack\run.ps1` | 11 pass |
+| Official Companion | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\companion\run.ps1` | 6 pass |
 | Controller planner | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller\run.ps1` | 16 pass |
 | Controller executor | `pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1` | 16 pass |
 
 Maintenance:
 
 - Add tests before changing behavior.
+- Keep Prompt Pack fixtures deterministic; LLM judging is optional and non-gating.
+- Keep Companion fixtures synthetic and metadata-only.
 - Keep fixture identities obvious and synthetic.
 - Keep `tests/.tmp` empty after successful runs.
 - Use injected transport for mutation tests; live MCP checks should be read-only unless the task states otherwise.

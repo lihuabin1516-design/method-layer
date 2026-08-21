@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "official-ccpanes-companion-request",
+  "requestId": "fixture-authorization-expansion",
+  "createdAt": "2026-08-11T12:00:00+08:00",
+  "officialTarget": {
+    "product": "official-cc-panes",
+    "exeName": "cc-panes.exe",
+    "integrationMode": "external-companion"
+  },
+  "task": {
+    "objective": "Implement a Java endpoint while only design is authorized.",
+    "stage": "build",
+    "changeType": "new-feature",
+    "riskTags": [
+      "tests"
+    ],
+    "authorizedActions": [
+      "inspect",
+      "design"
+    ],
+    "requestedActions": [
+      "inspect",
+      "design",
+      "implement"
+    ]
+  },
+  "projectFacts": {
+    "provided": [
+      "repository",
+      "contracts",
+      "tests",
+      "technologyProfile",
+      "javaVersion",
+      "springVersion",
+      "buildTool",
+      "persistenceTechnology"
+    ]
+  }
+}

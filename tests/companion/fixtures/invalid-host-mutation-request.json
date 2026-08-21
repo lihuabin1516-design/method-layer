@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "0.1-internal",
+  "artifactType": "official-ccpanes-companion-request",
+  "requestId": "fixture-invalid-host-mutation",
+  "createdAt": "2026-08-11T12:00:00+08:00",
+  "officialTarget": {
+    "product": "official-cc-panes",
+    "exeName": "cc-panes.exe",
+    "integrationMode": "external-companion",
+    "writeUserConfig": true
+  },
+  "task": {
+    "objective": "Try to wire the companion into official host configuration.",
+    "stage": "shape",
+    "changeType": "audit",
+    "riskTags": [],
+    "authorizedActions": [
+      "inspect"
+    ],
+    "requestedActions": [
+      "inspect"
+    ]
+  },
+  "projectFacts": {
+    "provided": [
+      "repository",
+      "contracts",
+      "tests"
+    ]
+  }
+}
