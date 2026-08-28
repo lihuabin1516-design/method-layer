@@ -63,6 +63,27 @@ flowchart LR
 | CC-Panes | 官方 panes、sessions、PTY 和既有运行时 |
 | 目标项目 | 代码、项目事实、授权上下文和最终业务验收 |
 
+## 推荐工作流：外部方法层接入
+
+这条路径把 Codex App 和 codex cli 接到同一套本地 artifact 流上。我们不把官方 `cc-panes.exe`、profile、hook、plugin 或 user config 拉进来；官方 runtime 继续只做 runtime owner。
+
+### 入口分工
+
+| Surface | 在工作流里负责什么 |
+| --- | --- |
+| Codex App | 接收任务、澄清事实、审查 companion guidance、确认 evidence 和 handoff |
+| codex cli / 本地脚本 | 读写 `task` / `run` / `evidence` / `handoff` artifact，运行 adapter/controller，必要时走显式 live transport |
+| official CC-Panes | 只提供 panes / sessions / PTY / runtime，不被本仓库改写 |
+
+### 标准顺序
+
+1. 用 `templates/task.md` 创建 `task` artifact，并用 `schemas/task.schema.json` 先验收。
+2. 做 baseline readback：仓库根、分支、HEAD、status、允许 / 禁止动作。
+3. 需要 Prompt 元数据时，运行 `scripts/companion/new-guidance.ps1` 生成只读 guidance。
+4. 用 `scripts/adapter/prepare-launch.ps1` / `bind-launch.ps1` 建立 `run`；需要 transport 时再走 `scripts/controller/plan-transport.ps1` 和 `scripts/controller/execute-transport.ps1`。
+5. 执行工作，写 `evidence`，再做 drift / finish gate。
+6. 需要继续时生成 `handoff`；结束时保留证据和 Git 状态。
+
 ## 60 秒开始
 
 仓库不需要额外依赖。推荐先运行完整冻结验证：

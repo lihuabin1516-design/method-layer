@@ -1,5 +1,13 @@
 # Workflow v0.1
 
+## 工作流接入点
+
+本仓库把 Codex App 和 codex cli 放进同一条外部方法层工作流：先落 `task`，再做 baseline readback，随后通过 Companion、Adapter 和 Controller 进入执行与验证。官方 CC-Panes 只在显式授权的 surface 上作为 runtime owner，不在本仓库内被改写。
+
+- Codex App：任务接收、事实澄清、证据审查、handoff 决策
+- codex cli / 本地脚本：artifact 验证、run 创建、finish gate、transport 执行
+- official CC-Panes：panes / sessions / PTY / runtime
+
 ## 标准路径
 
 ```text
