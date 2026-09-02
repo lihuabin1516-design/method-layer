@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/v0.12.9/context-chain.schema.json",
+  "title": "CC-Panes Global Workflow Context Chain v0.12.9",
+  "description": "Three-generation context chain for context.md, context.prev.md, and context.prev2.md with explicit observation, parse state, and position binding.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "files",
+    "verifiedFacts",
+    "unverifiedAssumptions",
+    "currentBlockers",
+    "taskScope",
+    "protectedPaths",
+    "recentAcceptanceEvidence",
+    "taskBinding",
+    "worktree",
+    "auditDir",
+    "nextGate"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.12.9"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/currentContextFile"
+        },
+        {
+          "$ref": "#/$defs/previousContextFile"
+        },
+        {
+          "$ref": "#/$defs/previous2ContextFile"
+        }
+      ],
+      "items": false
+    },
+    "verifiedFacts": {
+      "$ref": "#/$defs/stringList"
+    },
+    "unverifiedAssumptions": {
+      "$ref": "#/$defs/stringList"
+    },
+    "currentBlockers": {
+      "$ref": "#/$defs/stringList"
+    },
+    "taskScope": {
+      "$ref": "#/$defs/taskScope"
+    },
+    "protectedPaths": {
+      "$ref": "#/$defs/stringList"
+    },
+    "recentAcceptanceEvidence": {
+      "$ref": "#/$defs/stringList"
+    },
+    "taskBinding": {
+      "$ref": "#/$defs/taskBinding"
+    },
+    "worktree": {
+      "$ref": "#/$defs/worktree"
+    },
+    "auditDir": {
+      "$ref": "#/$defs/auditDir"
+    },
+    "nextGate": {
+      "$ref": "#/$defs/nextGate"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "sha256": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "contextFileBase": {
+      "type": "object",
+      "required": [
+        "role",
+        "path",
+        "exists",
+        "observedAt",
+        "sha256",
+        "parseStatus"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "current",
+            "previous",
+            "previous2"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "parseStatus": {
+          "type": "string",
+          "enum": [
+            "parsed",
+            "missing",
+            "invalid"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "currentContextFile": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/contextFileBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "current"
+            },
+            "path": {
+              "pattern": "^(?:.*[\\\\/])?context\\.md$"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/contextFileParseStatusRules"
+        }
+      ]
+    },
+    "previousContextFile": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/contextFileBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "previous"
+            },
+            "path": {
+              "pattern": "^(?:.*[\\\\/])?context\\.prev\\.md$"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/contextFileParseStatusRules"
+        }
+      ]
+    },
+    "previous2ContextFile": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/contextFileBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "previous2"
+            },
+            "path": {
+              "pattern": "^(?:.*[\\\\/])?context\\.prev2\\.md$"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/contextFileParseStatusRules"
+        }
+      ]
+    },
+    "taskScope": {
+      "type": "object",
+      "required": [
+        "summary"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inScope": {
+          "$ref": "#/$defs/stringList"
+        },
+        "outOfScope": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contextFileParseStatusRules": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "parseStatus": {
+                "const": "missing"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exists": {
+                "const": false
+              },
+              "sha256": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "parseStatus": {
+                "const": "parsed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exists": {
+                "const": true
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{64}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "parseStatus": {
+                "const": "invalid"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exists": {
+                "const": true
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "taskBinding": {
+      "type": "object",
+      "required": [
+        "status",
+        "observedAt"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "linked",
+            "stale",
+            "broken"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "worktree": {
+      "type": "object",
+      "required": [
+        "path",
+        "branch"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "head": {
+          "type": "string",
+          "pattern": "^(unborn|[0-9a-fA-F]{40})$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "clean",
+            "dirty",
+            "untracked",
+            "mixed"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "auditDir": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "nextGate": {
+      "type": "object",
+      "required": [
+        "name",
+        "status"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "ready",
+            "blocked",
+            "complete"
+          ]
+        },
+        "blockingReason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

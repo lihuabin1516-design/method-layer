@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/v0.12.9/global-workflow-state.schema.json",
+  "title": "CC-Panes Global Workflow State v0.12.9",
+  "description": "Layered workflow state snapshot with independent readiness tracking for every stage; readiness in one layer never implies readiness in another layer.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "layers"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.12.9"
+    },
+    "layers": {
+      "type": "object",
+      "required": [
+        "taskBinding",
+        "contextChain",
+        "mcpRegistration",
+        "mcpInventory",
+        "preflight",
+        "coordinator",
+        "workflow",
+        "worker",
+        "result",
+        "acceptance",
+        "nextGate"
+      ],
+      "properties": {
+        "taskBinding": {
+          "$ref": "#/$defs/layerState"
+        },
+        "contextChain": {
+          "$ref": "#/$defs/layerState"
+        },
+        "mcpRegistration": {
+          "$ref": "#/$defs/layerState"
+        },
+        "mcpInventory": {
+          "$ref": "#/$defs/layerState"
+        },
+        "preflight": {
+          "$ref": "#/$defs/layerState"
+        },
+        "coordinator": {
+          "$ref": "#/$defs/layerState"
+        },
+        "workflow": {
+          "$ref": "#/$defs/layerState"
+        },
+        "worker": {
+          "$ref": "#/$defs/layerState"
+        },
+        "result": {
+          "$ref": "#/$defs/layerState"
+        },
+        "acceptance": {
+          "$ref": "#/$defs/layerState"
+        },
+        "nextGate": {
+          "$ref": "#/$defs/layerState"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "layerState": {
+      "type": "object",
+      "required": [
+        "status",
+        "observedAt"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "ready",
+            "blocked",
+            "complete",
+            "unknown"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

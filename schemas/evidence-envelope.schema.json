@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccpanes.local/method-layer/v0.12.9/evidence-envelope.schema.json",
+  "title": "CC-Panes Evidence Envelope v0.12.9",
+  "description": "Authority-tagged evidence envelope with explicit redaction, advisory-only signaling, and enumerated authority layers.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "source",
+    "observedAt",
+    "redaction",
+    "advisoryOnly",
+    "authority"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.12.9"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "redaction": {
+      "$ref": "#/$defs/redaction"
+    },
+    "advisoryOnly": {
+      "type": "boolean"
+    },
+    "authority": {
+      "type": "string",
+      "enum": [
+        "canonical",
+        "observed",
+        "advisory",
+        "historical",
+        "unverified"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "identifier"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "file",
+            "workflow",
+            "task",
+            "log",
+            "manual"
+          ]
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "redaction": {
+      "type": "object",
+      "required": [
+        "level"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "partial",
+            "full"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
