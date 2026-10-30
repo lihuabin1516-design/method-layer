@@ -89,3 +89,10 @@ Upstream changes do not flow automatically. A future intake must:
 3. reassess license evidence;
 4. update provenance only for independently reviewed local rewrites;
 5. add or update deterministic fixtures before changing composition or Prompt contracts.
+
+## Recheck on 2026-10-30
+
+- GitHub `main` and the locked commit still resolve to `1959b508696c7d92d550c152c735f49ed6dafbe2`.
+- GitHub's license endpoint still returns `404` for this repository; the donor's README claim is not a license grant.
+- The local Prompt Pack suite passes all 11 assertions, including the check that local Prompts contain no large normalized donor passage. The full Method Layer validation also passes.
+- This evidence supports licensing the independently authored Method Layer materials under the repository's MIT license; it does not grant rights to copy or redistribute donor files, examples, or other expression.

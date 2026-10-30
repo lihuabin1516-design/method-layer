@@ -287,6 +287,8 @@ Prompt Pack 可以通过下游 PaneForge 预览实现进行只读审查。方法
 
 ## License
 
-No `LICENSE` file is currently present. Public visibility does not grant a
-general right to copy, modify, or redistribute this repository. License
-selection is pending source and attribution review.
+Original project materials are licensed under the MIT License; see [`LICENSE`](./LICENSE).
+Referenced external works remain under their own terms and are not relicensed
+by this notice. The Java Prompt Pack is independently rewritten and validated
+against its locked source record; its provenance and license assessment are in
+[`docs/upstreams/ai-coding-prompt-java.md`](docs/upstreams/ai-coding-prompt-java.md).
