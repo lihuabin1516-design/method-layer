@@ -281,12 +281,12 @@ Prompt Pack 可以通过下游 PaneForge 预览实现进行只读审查。方法
 ## 当前状态
 
 - Protocol baseline：v0.1；
-- 当前仓库分支：`codex/official-ccpanes-companion`；
-- 当前本地工作区：`D:\ccpanes-method-layer`；
 - 项目主页（用户提供）：[lihuabin1516-design/method-layer](https://github.com/lihuabin1516-design/method-layer)；
 - 当前实现重点：外部 Companion、Prompt Pack、File-first Adapter 和 Controller transport seam；
 - 官方 CC-Panes runtime integration 仍保持独立边界，需单独定义目标面和授权。
 
 ## License
 
-License information will be added when the repository license decision is finalized.
+No `LICENSE` file is currently present. Public visibility does not grant a
+general right to copy, modify, or redistribute this repository. License
+selection is pending source and attribution review.
