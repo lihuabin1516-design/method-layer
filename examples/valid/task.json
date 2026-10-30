@@ -7,21 +7,21 @@
   "riskMode": "standard",
   "authorization": {
     "allowedPaths": [
-      "D:\\ccpanes-method-layer"
+      "D:\\paneforge-method-layer"
     ],
     "forbiddenActions": [
-      "Modify D:\\cc-pane",
+      "Modify D:\\paneforge",
       "Install dependencies",
       "Commit, push, or create remotes"
     ],
     "conditionalActions": [
-      "Any future CC-Panes adapter integration requires separate approval."
+      "Any future PaneForge adapter integration requires separate approval."
     ]
   },
   "baseline": {
     "workspaceName": "gjc",
-    "projectPath": "D:\\ccpanes-method-layer",
-    "repoRoot": "D:\\ccpanes-method-layer",
+    "projectPath": "D:\\paneforge-method-layer",
+    "repoRoot": "D:\\paneforge-method-layer",
     "git": {
       "branch": "main",
       "head": "unborn",
@@ -37,7 +37,7 @@
   "acceptance": [
     "All valid examples pass their matching schema.",
     "All invalid examples fail their matching schema.",
-    "No files outside D:\\ccpanes-method-layer are modified."
+    "No files outside D:\\paneforge-method-layer are modified."
   ],
   "requiredEvidence": [
     "Validation command output",
@@ -46,7 +46,7 @@
   ],
   "stopConditions": [
     "A dependency installation becomes necessary.",
-    "A required change would modify D:\\cc-pane or user configuration."
+    "A required change would modify D:\\paneforge or user configuration."
   ],
   "lineage": {
     "specId": "local-v0.1-baseline",

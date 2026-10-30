@@ -1,11 +1,11 @@
 {
   "schemaVersion": "0.1-internal",
-  "artifactType": "official-ccpanes-companion-request",
+  "artifactType": "official-paneforge-companion-request",
   "requestId": "fixture-authorization-expansion",
   "createdAt": "2026-08-11T12:00:00+08:00",
   "officialTarget": {
-    "product": "official-cc-panes",
-    "exeName": "cc-panes.exe",
+    "product": "official-paneforge",
+    "exeName": "paneforge.exe",
     "integrationMode": "external-companion"
   },
   "task": {

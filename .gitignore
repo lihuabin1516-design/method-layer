@@ -9,9 +9,9 @@ Thumbs.db
 .cache/
 tests/.tmp/
 
-# CC-Panes host-generated workspace state
-.ccpanes/
-.ccpanes-method/
+# PaneForge host-generated workspace state
+.paneforge/
+.paneforge-method/
 CLAUDE.md
 
 # Local-only generated evidence bundles

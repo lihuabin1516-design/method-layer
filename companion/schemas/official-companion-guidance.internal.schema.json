@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/companion/v0.1/official-companion-guidance.internal.schema.json",
-  "title": "Official CC-Panes External Companion Guidance v0.1",
-  "description": "Metadata-only guidance produced outside official CC-Panes. It is safe to copy manually into an official CC-Panes session and carries no runtime, profile, host configuration, Prompt execution, or source mutation authority.",
+  "$id": "https://paneforge.local/method-layer/companion/v0.1/official-companion-guidance.internal.schema.json",
+  "title": "Official PaneForge External Companion Guidance v0.1",
+  "description": "Metadata-only guidance produced outside official PaneForge. It is safe to copy manually into an official PaneForge session and carries no runtime, profile, host configuration, Prompt execution, or source mutation authority.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -25,7 +25,7 @@
       "const": "0.1-internal"
     },
     "artifactType": {
-      "const": "official-ccpanes-companion-guidance"
+      "const": "official-paneforge-companion-guidance"
     },
     "requestId": {
       "type": "string",
@@ -50,10 +50,10 @@
       ],
       "properties": {
         "product": {
-          "const": "official-cc-panes"
+          "const": "official-paneforge"
         },
         "exeName": {
-          "const": "cc-panes.exe"
+          "const": "paneforge.exe"
         },
         "integrationMode": {
           "const": "external-companion"
@@ -88,7 +88,7 @@
           "const": "0.1.0"
         },
         "owner": {
-          "const": "ccpanes-method-layer"
+          "const": "paneforge-method-layer"
         },
         "sourceState": {
           "const": "remote-commit-reviewed"
@@ -130,7 +130,7 @@
       ],
       "properties": {
         "targetSurface": {
-          "const": "official-ccpanes-manual-session-or-existing-transport"
+          "const": "official-paneforge-manual-session-or-existing-transport"
         },
         "containsPromptBodies": {
           "const": false

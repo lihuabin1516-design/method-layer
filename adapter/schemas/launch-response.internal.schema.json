@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/launch-response.internal.schema.json",
-  "title": "CC-Panes launch_task Response Snapshot",
+  "$id": "https://paneforge.local/method-layer/adapter/v0.1/launch-response.internal.schema.json",
+  "title": "PaneForge launch_task Response Snapshot",
   "type": "object",
   "required": [
     "taskId",

@@ -15,7 +15,7 @@
 
 ## 本地改写点
 
-- `.lattice/` 和 slash workflow 改写为普通 JSON artifact、Markdown 模板和未来 CC-Panes adapter。
+- `.lattice/` 和 slash workflow 改写为普通 JSON artifact、Markdown 模板和未来 PaneForge adapter。
 - GitHub identifier 只作为可选 lineage，不是 task intake 的唯一入口。
 - merge、push、cleanup 等动作不从上游继承，继续受本地授权门禁约束。
 - v0.1 不建立独立 closure artifact。

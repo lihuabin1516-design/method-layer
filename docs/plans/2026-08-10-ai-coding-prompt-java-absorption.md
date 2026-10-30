@@ -4,7 +4,7 @@
 
 **Goal:** Intake the locked donor as an external corpus and deliver `java-enterprise` Prompt Pack `0.1.0` with internal contracts and deterministic validation.
 
-**Architecture:** Keep Prompt Pack semantics in `ccpanes-method-layer`. Use one internal JSON Schema for manifest, technology profile, and eval suite; store independently written Prompt bodies under the pack; compose by stage, change type, and risk without changing task authorization.
+**Architecture:** Keep Prompt Pack semantics in `paneforge-method-layer`. Use one internal JSON Schema for manifest, technology profile, and eval suite; store independently written Prompt bodies under the pack; compose by stage, change type, and risk without changing task authorization.
 
 **Tech Stack:** Markdown, JSON Schema draft 2020-12, PowerShell 7 `Test-Json`, Python standard-library `json.tool`, Git read-only donor inspection.
 

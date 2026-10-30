@@ -1,10 +1,10 @@
-# Official CC-Panes External Companion Implementation Plan
+# Official PaneForge External Companion Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a local, file-first Companion that lets the method-layer Prompt Pack assist official `cc-panes.exe` from the outside.
+**Goal:** Add a local, file-first Companion that lets the method-layer Prompt Pack assist official `paneforge.exe` from the outside.
 
-**Architecture:** Keep official CC-Panes as the runtime owner. Add internal Companion schemas, one PowerShell command, and deterministic tests that return metadata-only guidance without launching or mutating official CC-Panes.
+**Architecture:** Keep official PaneForge as the runtime owner. Add internal Companion schemas, one PowerShell command, and deterministic tests that return metadata-only guidance without launching or mutating official PaneForge.
 
 **Tech Stack:** PowerShell 7, JSON Schema via `Test-Json`, existing Prompt Pack JSON.
 
@@ -28,7 +28,7 @@
 - Create: `scripts/companion/MethodLayer.Companion.psm1`
 - Create: `scripts/companion/new-guidance.ps1`
 
-- [x] Add request schema with official target fixed to `official-cc-panes` / `cc-panes.exe` / `external-companion` and `additionalProperties: false`.
+- [x] Add request schema with official target fixed to `official-paneforge` / `paneforge.exe` / `external-companion` and `additionalProperties: false`.
 - [x] Add guidance schema with fixed no-launch/no-config/no-host-mutation target fields.
 - [x] Implement deterministic Prompt selection from `prompt-packs/java-enterprise/pack.json`.
 - [x] Return `blocked-authorization`, `blocked-input-gap`, or `ready-to-copy`.

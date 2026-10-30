@@ -1,11 +1,11 @@
 # Repository Structure
 
-本文档是 `D:\ccpanes-method-layer` 的长期维护目录架构说明。它描述每个目录的职责、允许的变更类型和维护注意事项。
+本文档是 `D:\paneforge-method-layer` 的长期维护目录架构说明。它描述每个目录的职责、允许的变更类型和维护注意事项。
 
 ## 总览
 
 ```text
-D:\ccpanes-method-layer
+D:\paneforge-method-layer
 ├── AGENTS.md
 ├── HANDOFF.md
 ├── README.md
@@ -38,8 +38,8 @@ D:\ccpanes-method-layer
 Ignored local/runtime paths:
 
 ```text
-.ccpanes/
-.ccpanes-method/
+.paneforge/
+.paneforge-method/
 artifacts/local/
 tests/.tmp/
 CLAUDE.md
@@ -53,7 +53,7 @@ CLAUDE.md
 | `HANDOFF.md` | Current top-level handoff for the next controller | Update at major baseline changes, push/release events, or integration milestones. |
 | `AGENTS.md` | Project operating rules | Keep concise; do not duplicate every long-form runbook. |
 | `tsc.md` | Original task / prompt context | Treat as historical context unless a later task explicitly updates it. |
-| `.gitignore` | Runtime and local scratch exclusions | Keep `.ccpanes/`, `.ccpanes-method/`, `artifacts/local/`, `tests/.tmp/` ignored. |
+| `.gitignore` | Runtime and local scratch exclusions | Keep `.paneforge/`, `.paneforge-method/`, `artifacts/local/`, `tests/.tmp/` ignored. |
 | `.gitattributes` | Exact-byte preservation for source-locked Prompt Pack artifacts | Keep the ten reviewed schema/manifest/profile/eval/Prompt paths marked `-text`; changing this requires source-lock regeneration and downstream review. |
 
 ## Public protocol layer
@@ -153,7 +153,7 @@ Maintenance:
 - Template JSON must remain schema-valid.
 - Markdown templates should match current terminology in `docs/workflow.md`.
 
-## Official CC-Panes external companion
+## Official PaneForge external companion
 
 ```text
 companion/
@@ -165,9 +165,9 @@ companion/
 
 Purpose:
 
-- Let `ccpanes-method-layer` assist the official `cc-panes.exe` from outside the runtime.
+- Let `paneforge-method-layer` assist the official `paneforge.exe` from outside the runtime.
 - Validate caller-supplied task context and return metadata-only Prompt Pack guidance.
-- Keep official CC-Panes executable, profiles, hooks, plugins, MCP registration, user configuration, and host runtime untouched.
+- Keep official PaneForge executable, profiles, hooks, plugins, MCP registration, user configuration, and host runtime untouched.
 
 Maintenance:
 
@@ -245,7 +245,7 @@ scripts/
 └── controller/
     ├── MethodLayer.Controller.psm1
     ├── MethodLayer.Executor.psm1
-    ├── CcPanesMcp.Transport.psm1
+    ├── PaneForgeMcp.Transport.psm1
     ├── plan-transport.ps1
     └── execute-transport.ps1
 ```
@@ -259,7 +259,7 @@ Main local gate. It checks:
 - templates.
 - PowerShell parser.
 - Prompt Pack tests.
-- Official CC-Panes external companion tests.
+- Official PaneForge external companion tests.
 - adapter tests.
 - controller planner tests.
 - controller executor tests.
@@ -293,7 +293,7 @@ Core invariants:
 
 ### `scripts/companion/*`
 
-External guidance for the official `cc-panes.exe`.
+External guidance for the official `paneforge.exe`.
 
 Core invariants:
 
@@ -350,7 +350,7 @@ docs/
 ├── charter.md
 ├── workflow.md
 ├── integration-map.md
-├── ccpanes-mcp-transport-runbook.md
+├── paneforge-mcp-transport-runbook.md
 ├── architecture/
 ├── maintenance/
 ├── plans/
@@ -364,8 +364,8 @@ docs/
 | --- | --- |
 | `docs/charter.md` | Purpose, boundaries, non-goals |
 | `docs/workflow.md` | Artifact lifecycle |
-| `docs/integration-map.md` | Mapping from upstream ideas and CC-Panes primitives |
-| `docs/ccpanes-mcp-transport-runbook.md` | Transport ordering and failure rules |
+| `docs/integration-map.md` | Mapping from upstream ideas and PaneForge primitives |
+| `docs/paneforge-mcp-transport-runbook.md` | Transport ordering and failure rules |
 
 ### `docs/architecture/`
 

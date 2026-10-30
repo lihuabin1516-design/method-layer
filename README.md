@@ -1,10 +1,10 @@
 # Method Layer
 
-> **Codex App ↔ CC-Panes 的外部方法层与兼容协议**
+> **Codex App ↔ PaneForge 的外部方法层与兼容协议**
 >
 > 把任务意图、运行绑定、验证证据和主控交接变成可审阅、可验证、可迁移的本地 artifact。
 
-本仓库面向使用 **Codex App** 和 **CC-Panes** 的开发者、Agent 工程维护者与工具集成者。它不复制 CC-Panes 的 UI、Orchestrator 或运行时，而是在外部提供一层稳定的方法协议、schema、Prompt Pack、适配器和验证工具。
+本仓库面向使用 **Codex App** 和 **PaneForge** 的开发者、Agent 工程维护者与工具集成者。它不复制 PaneForge 的 UI、Orchestrator 或运行时，而是在外部提供一层稳定的方法协议、schema、Prompt Pack、适配器和验证工具。
 
 ## 为什么需要 Method Layer
 
@@ -15,7 +15,7 @@ AI 编码工具可以启动任务、调用 worker、修改文件，但跨工具�
 - “完成”是否有可复核的检查结果，而不只是模型的一句总结？
 - 中断、重试、交接或切换工具后，如何保留事实、证据和恢复路径？
 
-Method Layer 将这些信息固定为机器可验证的契约，让 Codex App 可以通过外部方法层兼容 CC-Panes，而不要求方法层侵入宿主工具。
+Method Layer 将这些信息固定为机器可验证的契约，让 Codex App 可以通过外部方法层兼容 PaneForge，而不要求方法层侵入宿主工具。
 
 ## 核心能力
 
@@ -23,8 +23,8 @@ Method Layer 将这些信息固定为机器可验证的契约，让 Codex App �
 - **可验证运行绑定**：记录 task、runner、session、profile、workspace、worktree 和 launch-time contract。
 - **证据驱动完成**：将检查结果、文件触达、drift check、Git 状态和残余风险写入 artifact。
 - **九段式主控交接**：让下一位 Agent 能从事实和证据继续工作，而不是依赖上下文猜测。
-- **外部 Companion**：通过旁路指导兼容官方 `cc-panes.exe`，保留双方运行时边界。
-- **File-first Adapter**：用依赖零安装的 PowerShell 7 reference adapter 连接方法 artifact 与 CC-Panes transport。
+- **外部 Companion**：通过旁路指导兼容官方 `paneforge.exe`，保留双方运行时边界。
+- **File-first Adapter**：用依赖零安装的 PowerShell 7 reference adapter 连接方法 artifact 与 PaneForge transport。
 - **可审计 Controller**：先生成 MCP request plan，再按 dry-run、journal、hash precondition 和 recovery 规则执行。
 - **Prompt Pack**：将阶段、变更类型、风险和技术栈相关的 Prompt 元数据、输出合同与 eval 固定下来。
 
@@ -35,8 +35,8 @@ flowchart LR
     C[Codex App] --> M[Method Layer]
     M -->|task / run / evidence / handoff| A[External Adapter]
     M -->|Prompt metadata / guidance| P[External Companion]
-    A --> T[CC-Panes transport]
-    P --> CP[Official CC-Panes]
+    A --> T[PaneForge transport]
+    P --> CP[Official PaneForge]
     T --> CP
     CP --> R[Official panes / sessions / PTY]
 ```
@@ -48,7 +48,7 @@ flowchart LR
 | Codex App | Agent 对话、任务推进和人工决策 |
 | Method Layer | 方法协议、schema、Prompt 元数据、证据与交接 |
 | Adapter / Controller | 将方法 artifact 映射为可审阅的 transport request |
-| CC-Panes | 官方 panes、sessions、PTY 和既有运行时 |
+| PaneForge | 官方 panes、sessions、PTY 和既有运行时 |
 | 目标项目 | 代码、项目事实、授权上下文和最终业务验收 |
 
 ## 60 秒开始
@@ -115,12 +115,12 @@ v0.1 定义四类 public JSON artifact：
 
 ### External Companion
 
-官方 `cc-panes.exe` 原样运行。本仓库只提供旁路方法层指导：
+官方 `paneforge.exe` 原样运行。本仓库只提供旁路方法层指导：
 
-1. 调用方提供 `official-ccpanes-companion-request` JSON；
+1. 调用方提供 `official-paneforge-companion-request` JSON；
 2. Companion 读取本仓库 Prompt Pack metadata；
 3. 根据任务阶段、变更类型、风险标签和项目事实确定 Prompt IDs；
-4. 输出 `official-ccpanes-companion-guidance` JSON；
+4. 输出 `official-paneforge-companion-guidance` JSON；
 5. 由人工或已批准的 transport surface 继续执行。
 
 Companion 不启动官方 executable，不写官方配置，不改 host，不注册 profile、hook、plugin 或 MCP，不执行或组合 Prompt，也不持久化 Prompt 正文。
@@ -199,7 +199,7 @@ pwsh -NoProfile -File scripts\adapter\finish-run.ps1 `
 - 歧义 launch/report 单次后进入 `manual-review`；
 - crash/replay 时跳过 request hash 相同的成功 mutation。
 
-完整说明见 [`controller/README.md`](controller/README.md) 和 [`docs/ccpanes-mcp-transport-runbook.md`](docs/ccpanes-mcp-transport-runbook.md)。
+完整说明见 [`controller/README.md`](controller/README.md) 和 [`docs/paneforge-mcp-transport-runbook.md`](docs/paneforge-mcp-transport-runbook.md)。
 
 ## 验证与质量门
 
@@ -255,7 +255,7 @@ Prompt Pack 可以通过下游 PaneForge 预览实现进行只读审查。方法
 本仓库专注于方法层协议、schema、模板、映射文档和本地实验脚本：
 
 - 不把 Lattice 或 Aegis 的完整成品复制进来；
-- 不接入 CC-Panes 主仓库或修改官方 source tree；
+- 不接入 PaneForge 主仓库或修改官方 source tree；
 - 不实现 UI、hook、plugin、profile 或 MCP 写入；
 - 不写用户全局配置；
 - 不自动 merge、push、cleanup 或执行其它远端操作；
@@ -283,7 +283,7 @@ Prompt Pack 可以通过下游 PaneForge 预览实现进行只读审查。方法
 - Protocol baseline：v0.1；
 - 项目主页（用户提供）：[lihuabin1516-design/method-layer](https://github.com/lihuabin1516-design/method-layer)；
 - 当前实现重点：外部 Companion、Prompt Pack、File-first Adapter 和 Controller transport seam；
-- 官方 CC-Panes runtime integration 仍保持独立边界，需单独定义目标面和授权。
+- 官方 PaneForge runtime integration 仍保持独立边界，需单独定义目标面和授权。
 
 ## License
 

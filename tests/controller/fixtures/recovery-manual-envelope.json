@@ -6,7 +6,7 @@
   "recoveryAction": "manual-review",
   "taskId": "team:task-001",
   "runId": "run-controller-fixture",
-  "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+  "runPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
   "launchTaskId": "launch-task-controller-fixture",
   "sessionId": "session-controller-fixture"
 }

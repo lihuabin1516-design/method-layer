@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/companion/v0.1/official-companion-request.internal.schema.json",
-  "title": "Official CC-Panes External Companion Request v0.1",
-  "description": "Caller-supplied context for external, read-only assistance to the official cc-panes.exe runtime. This request does not authorize launching the official executable, changing host configuration, or mutating CC-Panes profiles/plugins/hooks.",
+  "$id": "https://paneforge.local/method-layer/companion/v0.1/official-companion-request.internal.schema.json",
+  "title": "Official PaneForge External Companion Request v0.1",
+  "description": "Caller-supplied context for external, read-only assistance to the official paneforge.exe runtime. This request does not authorize launching the official executable, changing host configuration, or mutating PaneForge profiles/plugins/hooks.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -19,7 +19,7 @@
       "const": "0.1-internal"
     },
     "artifactType": {
-      "const": "official-ccpanes-companion-request"
+      "const": "official-paneforge-companion-request"
     },
     "requestId": {
       "type": "string",
@@ -41,10 +41,10 @@
       ],
       "properties": {
         "product": {
-          "const": "official-cc-panes"
+          "const": "official-paneforge"
         },
         "exeName": {
-          "const": "cc-panes.exe"
+          "const": "paneforge.exe"
         },
         "integrationMode": {
           "const": "external-companion"

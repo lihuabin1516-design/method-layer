@@ -6,7 +6,7 @@ This directory contains internal contracts for the dependency-free PowerShell re
 
 - Protocol artifacts remain `task`, `run`, `evidence`, and `handoff`.
 - `adapter/schemas/*.internal.schema.json` describe local operation inputs and recovery state; they are not additional protocol artifact types.
-- Adapter commands emit JSON envelopes for a CC-Panes transport caller.
+- Adapter commands emit JSON envelopes for a PaneForge transport caller.
 - Every stdout envelope carries `schemaVersion` and `envelopeType`, and is validated against its command-specific internal schema before stdout is written.
 - Runtime calls, UI changes, database migrations, profile changes, and user-global configuration remain outside this reference adapter.
 
@@ -15,15 +15,15 @@ This directory contains internal contracts for the dependency-free PowerShell re
 The internal launch response and TaskBinding snapshots were mapped from:
 
 ```text
-D:\cc-pane\.source\cc-pane
+D:\paneforge\.source\paneforge
 e63d0889c52b6f8dc1109266563327da59eb080e
 ```
 
 Relevant source files:
 
 - `src-tauri/src/services/orchestrator_service.rs`
-- `cc-panes-core/src/models/task_binding.rs`
-- `cc-panes-core/src/services/task_binding_service.rs`
+- `paneforge-core/src/models/task_binding.rs`
+- `paneforge-core/src/services/task_binding_service.rs`
 - `web/types/orchestrator.ts`
 
 ## Intended command flow
@@ -47,7 +47,7 @@ new-handoff
 
 The controller-mediated MCP mapping, metadata merge rule, readback gates, and recovery action table are defined in:
 
-- `docs/ccpanes-mcp-transport-runbook.md`
+- `docs/paneforge-mcp-transport-runbook.md`
 
 A dependency-free dry-run consumer of those envelopes is documented in:
 
@@ -108,13 +108,13 @@ pwsh -NoProfile -File scripts/adapter/recover-launch.ps1 `
   -AttemptPath PATH_TO_ATTEMPT
 ```
 
-Every command writes one JSON envelope to stdout. The transport applies the returned CC-Panes request, patch, or leader report.
+Every command writes one JSON envelope to stdout. The transport applies the returned PaneForge request, patch, or leader report.
 
 `launch_task.taskId` identifies the orchestrator launch-status record. TaskBinding identity is resolved separately through `sessionId`; the adapter never aliases these two identifiers.
 
 MCP `update_task_binding` receives a complete `metadata` value rather than the adapter's merge patch semantics. A controller must read the current TaskBinding, preserve sibling metadata keys, replace only `metadata.methodLayer`, update, and then read back before advancing.
 
-`leaderReport.dispatchPolicy` is `if-not-auto-notified`: a controller does not manually call `report_to_leader` when its preceding `update_task_binding` already caused a non-terminal worker to enter `completed` or `failed`, because the CC-Panes MCP path auto-notifies that transition.
+`leaderReport.dispatchPolicy` is `if-not-auto-notified`: a controller does not manually call `report_to_leader` when its preceding `update_task_binding` already caused a non-terminal worker to enter `completed` or `failed`, because the PaneForge MCP path auto-notifies that transition.
 
 ## Execution and method status
 
@@ -127,7 +127,7 @@ MCP `update_task_binding` receives a complete `metadata` value rather than the a
 
 ## Project artifact policy
 
-Each consuming project selects one explicit policy for `.ccpanes-method/`:
+Each consuming project selects one explicit policy for `.paneforge-method/`:
 
 - track artifacts when repository history should retain method evidence;
 - ignore artifacts when execution state is local and ephemeral.

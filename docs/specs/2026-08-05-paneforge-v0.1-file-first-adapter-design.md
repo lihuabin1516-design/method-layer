@@ -1,18 +1,18 @@
-# CC-Panes v0.1 File-First Adapter Design
+# PaneForge v0.1 File-First Adapter Design
 
 **Status:** 已于 2026-08-05 确认并完成本地 reference adapter 实现  
 **Decision:** 采用方案 A：文件优先的薄 Adapter  
-**Protocol:** CC-Panes Method Layer `0.1`  
-**Reference CC-Panes source:** `D:\cc-pane\.source\cc-pane` at `e63d0889c52b6f8dc1109266563327da59eb080e`
+**Protocol:** PaneForge Method Layer `0.1`  
+**Reference PaneForge source:** `D:\paneforge\.source\paneforge` at `e63d0889c52b6f8dc1109266563327da59eb080e`
 
 ## 1. 目标与边界
 
-Adapter 在 CC-Panes Orchestrator 与 v0.1 方法层 artifact 之间完成显式映射：
+Adapter 在 PaneForge Orchestrator 与 v0.1 方法层 artifact 之间完成显式映射：
 
 ```text
 task.json
   -> launch adapter
-  -> CC-Panes launch_task / TaskBinding
+  -> PaneForge launch_task / TaskBinding
   -> run.json
   -> finish adapter
   -> evidence.json
@@ -24,21 +24,21 @@ task.json
 
 - `task`、`run`、`evidence`、`handoff` 文件是方法层事实源。
 - TaskBinding 保存运行索引、会话状态和 artifact 引用。
-- CC-Panes 的 pane、session、profile、runtime 与布局仍由 Orchestrator 管理。
+- PaneForge 的 pane、session、profile、runtime 与布局仍由 Orchestrator 管理。
 - v0.1 `riskMode` 保持 advisory-only；profile 与 runtime 由调用方显式选择。
 - `completionSummary` 是完成输入之一，不等同于验证证据。
 - `handoff.nextOrder` 只表达后续门禁顺序，不触发下一次 launch。
-- 本设计不要求修改 CC-Panes core、数据库、Tauri、REST、MCP 或 UI 类型。
+- 本设计不要求修改 PaneForge core、数据库、Tauri、REST、MCP 或 UI 类型。
 
 ## 2. 权威契约依据
 
-本设计按以下 CC-Panes 源码契约建立：
+本设计按以下 PaneForge 源码契约建立：
 
 | 契约 | 权威源码 |
 | --- | --- |
 | `launch_task` 请求、响应和 session 创建 | `src-tauri/src/services/orchestrator_service.rs` |
-| TaskBinding 数据模型、状态和角色 | `cc-panes-core/src/models/task_binding.rs` |
-| TaskBinding metadata merge-patch | `cc-panes-core/src/services/task_binding_service.rs` |
+| TaskBinding 数据模型、状态和角色 | `paneforge-core/src/models/task_binding.rs` |
+| TaskBinding metadata merge-patch | `paneforge-core/src/services/task_binding_service.rs` |
 | 前端 TaskBinding 类型 | `web/types/orchestrator.ts` |
 | TaskBinding service 调用 | `web/services/taskBindingService.ts` |
 
@@ -59,15 +59,15 @@ task.json
 v0.1 adapter 使用项目内显式根目录：
 
 ```text
-<projectPath>/.ccpanes-method/v0.1/
+<projectPath>/.paneforge-method/v0.1/
 ```
 
-该目录与 CC-Panes 宿主状态目录 `.ccpanes/` 分离。adapter 每次操作都接收或解析明确的 `projectPath`，不依赖用户全局配置。
+该目录与 PaneForge 宿主状态目录 `.paneforge/` 分离。adapter 每次操作都接收或解析明确的 `projectPath`，不依赖用户全局配置。
 
 ### 3.2 任务目录
 
 ```text
-.ccpanes-method/v0.1/
+.paneforge-method/v0.1/
   tasks/
     <task-key>/
       task.json
@@ -86,7 +86,7 @@ v0.1 adapter 使用项目内显式根目录：
 其中：
 
 - `task.json` 是 task identity、授权和验收的权威文件。
-- `run.json` 记录一次具体 CC-Panes session 绑定。
+- `run.json` 记录一次具体 PaneForge session 绑定。
 - `evidence/*.json` 采用追加式写入；已有 evidence identity 不被静默覆盖。
 - `handoffs/*.json` 采用追加式写入。
 - `adapter/launch-attempts/*.json` 是短期操作日志，不属于四类协议 artifact。
@@ -106,7 +106,7 @@ taskId: team:task-001
 task-key: team%3Atask-001
 ```
 
-解析后的绝对路径必须位于 `<projectPath>/.ccpanes-method/v0.1/` 内。adapter 检查 `..`、绝对路径注入、符号链接和 junction 越界。
+解析后的绝对路径必须位于 `<projectPath>/.paneforge-method/v0.1/` 内。adapter 检查 `..`、绝对路径注入、符号链接和 junction 越界。
 
 ## 4. 文件一致性模型
 
@@ -144,7 +144,7 @@ TaskBinding 只保存小型、可重建的引用：
     "protocolVersion": "0.1",
     "taskId": "task-example-001",
     "runId": "run-example-001",
-    "artifactRoot": ".ccpanes-method/v0.1",
+    "artifactRoot": ".paneforge-method/v0.1",
     "taskPath": "tasks/task-example-001/task.json",
     "runPath": "tasks/task-example-001/runs/run-example-001/run.json",
     "latestEvidencePath": "tasks/task-example-001/runs/run-example-001/evidence/evidence-example-001.json",
@@ -159,18 +159,18 @@ TaskBinding 只保存小型、可重建的引用：
 - `latestEvidencePath` 和 `latestHandoffPath` 只表示索引，不改变历史文件。
 - metadata 不嵌入完整 artifact、命令输出、补丁、日志或密钥。
 - adapter 只 patch `metadata.methodLayer`，保留其它 metadata namespace。
-- 正常 patch 目标控制在 8 KiB 内，为 CC-Panes 64 KiB 上限留出余量。
+- 正常 patch 目标控制在 8 KiB 内，为 PaneForge 64 KiB 上限留出余量。
 
 ### 5.2 字段职责
 
 | TaskBinding 字段 | Adapter 用法 |
 | --- | --- |
-| `id` | CC-Panes binding identity，写入 launch attempt 和 recovery 日志 |
+| `id` | PaneForge binding identity，写入 launch attempt 和 recovery 日志 |
 | `parentId` / `role` | leader/worker 关系；不替代 method `taskId` |
 | `sessionId` / `resumeId` | 映射到 `run.runner.session` |
 | `projectPath` / `workspaceName` | 与 task baseline、run workspace 交叉校验 |
 | `cliTool` | 映射到 `run.runner.cliTool` |
-| `status` / `progress` | CC-Panes 执行状态；与 evidence outcome 分开解释 |
+| `status` / `progress` | PaneForge 执行状态；与 evidence outcome 分开解释 |
 | `completionSummary` | evidence 候选摘要输入 |
 | `exitCode` | finish 事实输入，可写入 check notes 或 adapter 日志 |
 | `metadata.methodLayer` | 协议版本、method identity 与 artifact 路径索引 |
@@ -188,7 +188,7 @@ TaskBinding 只保存小型、可重建的引用：
 
 ### 6.2 前置门禁
 
-产生 CC-Panes 副作用前依次检查：
+产生 PaneForge 副作用前依次检查：
 
 1. task JSON 语法与 `task.schema.json`。
 2. `protocolVersion` 精确等于 `0.1`。
@@ -267,9 +267,9 @@ attempt 不复制 prompt 全文和 task 全文。
 
 ### 7.1 状态分层
 
-CC-Panes TaskBinding 状态描述 session/binding 执行状态；method evidence 描述目标与验收结果。两者保持独立：
+PaneForge TaskBinding 状态描述 session/binding 执行状态；method evidence 描述目标与验收结果。两者保持独立：
 
-| CC-Panes 状态 | Method 层解释 |
+| PaneForge 状态 | Method 层解释 |
 | --- | --- |
 | `pending` / `running` / `waiting` | run 尚在进行 |
 | `completed` | worker/session 已完成报告，仍需 evidence gate |
@@ -371,7 +371,7 @@ handoff adapter 只生成控制契约。后续 controller 重新验证 artifact 
 - 未识别版本在任何 launch/finish/handoff 副作用前返回版本诊断。
 - metadata 使用顶层 namespace `methodLayer`，其内部版本字段用于路由。
 - 新增协议版本使用并列目录和 schema，不原地改变 v0.1 语义。
-- CC-Panes 字段发生变化时，先更新 contract fixture 与映射测试，再调整 adapter。
+- PaneForge 字段发生变化时，先更新 contract fixture 与映射测试，再调整 adapter。
 
 ## 11. 安全与审计约束
 
@@ -379,7 +379,7 @@ handoff adapter 只生成控制契约。后续 controller 重新验证 artifact 
 - 路径检查覆盖 Windows junction、symlink、UNC 和大小写归一化。
 - artifact 与 metadata 不记录 token、密钥、完整环境变量或生产数据。
 - prompt 中只放执行所需的 task 内容和相对 artifact 引用。
-- 每次 adapter 操作输出 operation id、输入 artifact SHA-256、输出 artifact SHA-256 和 CC-Panes binding/session identity。
+- 每次 adapter 操作输出 operation id、输入 artifact SHA-256、输出 artifact SHA-256 和 PaneForge binding/session identity。
 - `riskMode`、profile、TaskBinding role 和 completion summary 均不扩展 authorization。
 - merge、push、cleanup、远端写入和用户配置写入继续由 task authorization 独立门禁。
 
@@ -400,13 +400,13 @@ storage/
   path containment
   atomic JSON writes
   SHA-256 / conflict detection
-ccpanes/
+paneforge/
   launch_task
   TaskBinding patch/query
   report/reconcile
 ```
 
-domain 与 storage 可在无 CC-Panes runtime 的条件下测试；`ccpanes/` 通过窄接口注入。
+domain 与 storage 可在无 PaneForge runtime 的条件下测试；`paneforge/` 通过窄接口注入。
 
 ## 13. 验收断言
 
@@ -434,11 +434,11 @@ domain 与 storage 可在无 CC-Panes runtime 的条件下测试；`ccpanes/` �
 
 - 文件是方法层唯一事实源。
 - TaskBinding metadata 只保存引用。
-- 使用 project-local `.ccpanes-method/v0.1`。
+- 使用 project-local `.paneforge-method/v0.1`。
 - 自定义 project-local artifact root 由 `run.taskRef.artifactPath` 推导并贯穿 finish/handoff。
 - launch 使用短期 attempt 日志解决 session 创建与 run 发布之间的事务间隙。
 - finish 先发布 evidence，再更新 TaskBinding，再通知 leader。
 - handoff 只生成 artifact。
-- CC-Panes 原生模型和数据库保持现状。
+- PaneForge 原生模型和数据库保持现状。
 
-实施计划位于 `docs/plans/2026-08-05-v0.1-file-first-adapter.md`。PowerShell 7 reference adapter、内部 schemas、恢复链路和 dependency-free tests 已实现；CC-Panes runtime transport 仍作为后续独立门禁。
+实施计划位于 `docs/plans/2026-08-05-v0.1-file-first-adapter.md`。PowerShell 7 reference adapter、内部 schemas、恢复链路和 dependency-free tests 已实现；PaneForge runtime transport 仍作为后续独立门禁。

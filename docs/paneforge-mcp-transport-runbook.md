@@ -1,9 +1,9 @@
-# CC-Panes MCP Transport Runbook v0.1
+# PaneForge MCP Transport Runbook v0.1
 
 ## 范围
 
 本 runbook 定义 controller 如何消费 file-first adapter 的五类 stdout
-envelope，并把其中的意图映射到 CC-Panes MCP。本仓库同时提供 planner 与需要
+envelope，并把其中的意图映射到 PaneForge MCP。本仓库同时提供 planner 与需要
 显式 `-Mode live` 的 journaled executor。
 
 仓库内的 dry-run reference planner 位于：
@@ -14,7 +14,7 @@ envelope，并把其中的意图映射到 CC-Panes MCP。本仓库同时提供 p
 
 planner 把本 runbook 的顺序生成为机器可验证 request plan，但不发送 request。
 `scripts/controller/execute-transport.ps1` 复验 plan 后，可通过当前进程注入的
-`CC_PANES_API_BASE_URL` / `CC_PANES_API_TOKEN` 执行 MCP Streamable HTTP。
+`PANEFORGE_API_BASE_URL` / `PANEFORGE_API_TOKEN` 执行 MCP Streamable HTTP。
 token 不进入 journal 或 response artifact。
 
 权威边界：
@@ -30,15 +30,15 @@ token 不进入 journal 或 response artifact。
 本映射按以下只读 Git object 复核：
 
 ```text
-D:\cc-pane\.source\cc-pane
+D:\paneforge\.source\paneforge
 e63d0889c52b6f8dc1109266563327da59eb080e
 ```
 
 相关路径：
 
 - `src-tauri/src/services/orchestrator_service.rs`
-- `cc-panes-core/src/models/task_binding.rs`
-- `cc-panes-core/src/services/task_binding_service.rs`
+- `paneforge-core/src/models/task_binding.rs`
+- `paneforge-core/src/services/task_binding_service.rs`
 - `web/types/orchestrator.ts`
 
 复核时 source checkout 只有 `.git`，tracked 文件在工作树中呈删除状态；内容通过
@@ -194,7 +194,7 @@ update_task_binding(
 ```
 
 6. 按同一 `sessionId` readback，并核对 `latestEvidencePath`、状态、进度和摘要。
-7. 判断本次 `update_task_binding` 是否已触发 CC-Panes 的 worker 终态自动通知：
+7. 判断本次 `update_task_binding` 是否已触发 PaneForge 的 worker 终态自动通知：
    - fresh binding 是非终态且 patch status 是 `completed` / `failed`：视为自动通知已触发，
      不再手工补报。
    - 其它情况按 `leaderReport.dispatchPolicy == "if-not-auto-notified"` 进入手工补报。
@@ -260,7 +260,7 @@ handoff transport 不调用 `launch_task`，`nextOrder` 也不触发下一任务
   `update_task_binding` 的 transient failure 才进入最多三次 retry。
 - journal 使用 JSONL append-only sequence；response 单独 create-once 保存并记录
   SHA-256。重放只跳过 request hash 相同且已有成功 journal entry 的 mutation。
-- 任一动作要求写入本仓库外的未授权路径、用户配置或 CC-Panes 主仓库时停止。
+- 任一动作要求写入本仓库外的未授权路径、用户配置或 PaneForge 主仓库时停止。
 
 ## 本仓库验证
 

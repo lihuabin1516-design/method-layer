@@ -175,7 +175,7 @@ function New-AdapterTestProject {
         return [pscustomobject]@{
             ProjectPath = $projectPath
             TaskPath = $taskPath
-            ArtifactRoot = Join-Path $projectPath '.ccpanes-method/v0.1'
+            ArtifactRoot = Join-Path $projectPath '.paneforge-method/v0.1'
         }
     }
     catch {

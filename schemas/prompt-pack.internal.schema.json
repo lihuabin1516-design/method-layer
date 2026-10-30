@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/prompt-pack/v0.1/prompt-pack.internal.schema.json",
-  "title": "CC-Panes Prompt Pack Internal Contracts v0.1",
+  "$id": "https://paneforge.local/method-layer/prompt-pack/v0.1/prompt-pack.internal.schema.json",
+  "title": "PaneForge Prompt Pack Internal Contracts v0.1",
   "description": "Internal contracts for Prompt Pack manifests, technology profiles, deterministic eval suites, and donor fingerprint sets. These are configuration inputs, not public method artifacts.",
   "oneOf": [
     {
@@ -223,7 +223,7 @@
           "const": "java-enterprise"
         },
         "owner": {
-          "const": "ccpanes-method-layer"
+          "const": "paneforge-method-layer"
         },
         "status": {
           "enum": [

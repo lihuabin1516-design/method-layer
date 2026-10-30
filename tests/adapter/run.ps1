@@ -362,9 +362,9 @@ if (Test-Group 'recovery') {
                     protocolVersion = '0.1'
                     taskId = 'team:task-001'
                     runId = 'run-conflicting-identity'
-                    artifactRoot = '.ccpanes-method/v0.1'
-                    taskPath = '.ccpanes-method/v0.1/tasks/team%3Atask-001/task.json'
-                    runPath = '.ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-conflicting-identity/run.json'
+                    artifactRoot = '.paneforge-method/v0.1'
+                    taskPath = '.paneforge-method/v0.1/tasks/team%3Atask-001/task.json'
+                    runPath = '.paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-conflicting-identity/run.json'
                 }
             }
             $binding | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $bindingPath -Encoding utf8NoBOM

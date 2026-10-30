@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/v0.1/evidence.schema.json",
-  "title": "CC-Panes Method Evidence v0.1",
+  "$id": "https://paneforge.local/method-layer/v0.1/evidence.schema.json",
+  "title": "PaneForge Method Evidence v0.1",
   "description": "Fresh verification evidence and drift assessment for a concrete run.",
   "type": "object",
   "required": [

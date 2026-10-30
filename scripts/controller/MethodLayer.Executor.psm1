@@ -294,7 +294,7 @@ function Get-ControllerNormalizedError {
     $category = if ($Exception.Data['ControllerTransportCategory']) { [string]$Exception.Data['ControllerTransportCategory'] } else { 'contract' }
     $delivery = if ($Exception.Data['ControllerDelivery']) { [string]$Exception.Data['ControllerDelivery'] } else { 'unknown' }
     $message = [string]$Exception.Message
-    if ($env:CC_PANES_API_TOKEN) { $message = $message.Replace($env:CC_PANES_API_TOKEN, '***') }
+    if ($env:PANEFORGE_API_TOKEN) { $message = $message.Replace($env:PANEFORGE_API_TOKEN, '***') }
     return [pscustomobject]@{ category = $category; delivery = $delivery; message = $message }
 }
 

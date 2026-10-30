@@ -18,18 +18,18 @@
   },
   "workspace": {
     "workspaceName": "gjc",
-    "projectPath": "D:\\ccpanes-method-layer",
-    "worktreePath": "D:\\ccpanes-method-layer",
+    "projectPath": "D:\\paneforge-method-layer",
+    "worktreePath": "D:\\paneforge-method-layer",
     "branch": "main"
   },
   "contract": {
     "capturedAt": "2026-08-05T16:05:00+08:00",
     "objective": "Establish a locally verifiable v0.1 method-layer protocol baseline.",
     "allowedPaths": [
-      "D:\\ccpanes-method-layer"
+      "D:\\paneforge-method-layer"
     ],
     "forbiddenActions": [
-      "Modify D:\\cc-pane",
+      "Modify D:\\paneforge",
       "Install dependencies",
       "Commit, push, or create remotes"
     ],

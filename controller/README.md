@@ -4,13 +4,13 @@
 
 The controller layer consumes validated adapter envelopes, produces an ordered
 MCP request plan, and can execute an explicitly supplied plan through the
-current CC-Panes MCP endpoint.
+current PaneForge MCP endpoint.
 
 The four method artifacts remain authoritative. Controller plans, journal
 entries, execution results, and response files are internal transport
 artifacts.
 
-This repository does not modify the CC-Panes source tree, user configuration,
+This repository does not modify the PaneForge source tree, user configuration,
 profiles, hooks, plugins, UI, Git remotes, or dependencies.
 
 ## Plan
@@ -57,20 +57,20 @@ pwsh -NoProfile -File scripts/controller/execute-transport.ps1 `
   -Mode live
 ```
 
-Because the current CC-Panes `update_task_binding` API has no server-side CAS,
+Because the current PaneForge `update_task_binding` API has no server-side CAS,
 plans containing metadata replacement stop at `manual-review` unless the caller
 also supplies `-AllowNonAtomicTaskBindingUpdate`. That switch is an explicit
 risk acceptance; precondition lookup and readback reduce but do not eliminate
 the server-side TOCTOU window.
 
-Live mode reads `CC_PANES_API_BASE_URL` and `CC_PANES_API_TOKEN`, initializes
+Live mode reads `PANEFORGE_API_BASE_URL` and `PANEFORGE_API_TOKEN`, initializes
 an MCP Streamable HTTP session, and invokes `tools/call`. Credentials are not
 persisted.
 
 Default execution state:
 
 ```text
-TARGET_PROJECT/.ccpanes-method/v0.1/controller/executions/<planId>/
+TARGET_PROJECT/.paneforge-method/v0.1/controller/executions/<planId>/
   execution.lock
   journal.jsonl
   responses/*.json

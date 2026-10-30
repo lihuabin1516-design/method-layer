@@ -319,7 +319,7 @@ function Resolve-ArtifactRoot {
 
     $project = Get-NormalizedFullPath -Path $ProjectPath
     $candidate = if ([string]::IsNullOrWhiteSpace($ArtifactRoot)) {
-        Join-Path $project '.ccpanes-method/v0.1'
+        Join-Path $project '.paneforge-method/v0.1'
     }
     elseif ([System.IO.Path]::IsPathRooted($ArtifactRoot)) {
         Get-NormalizedFullPath -Path $ArtifactRoot

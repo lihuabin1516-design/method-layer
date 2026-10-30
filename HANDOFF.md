@@ -1,10 +1,10 @@
-# CC-Panes Method Layer Handoff
+# PaneForge Method Layer Handoff
 
 ## 1. Role, task id, current result
 
-- Role: next `ccpanes-method-layer` maintenance controller.
-- Task ID: `ccpanes-official-exe-external-companion`.
-- Current result: the published `java-enterprise` Prompt Pack `0.1.0` is now exposed through a repository-local, file-first Official CC-Panes external Companion. The Companion validates caller-supplied task context, selects Prompt metadata deterministically, reports missing project facts or authorization expansion, and emits metadata-only guidance for manual copy or separately approved transport into official `cc-panes.exe`. It does not launch official CC-Panes, write official/user configuration, mutate host files, execute or compose Prompts, or persist Prompt bodies.
+- Role: next `paneforge-method-layer` maintenance controller.
+- Task ID: `paneforge-official-exe-external-companion`.
+- Current result: the published `java-enterprise` Prompt Pack `0.1.0` is now exposed through a repository-local, file-first Official PaneForge external Companion. The Companion validates caller-supplied task context, selects Prompt metadata deterministically, reports missing project facts or authorization expansion, and emits metadata-only guidance for manual copy or separately approved transport into official `paneforge.exe`. It does not launch official PaneForge, write official/user configuration, mutate host files, execute or compose Prompts, or persist Prompt bodies.
 
 ## 2. Required reading
 
@@ -17,9 +17,9 @@
 7. `docs/integration-map.md`
 8. `docs/upstreams/ai-coding-prompt-java.md`
 9. `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
-10. `docs/specs/2026-08-11-official-ccpanes-companion-design.md`
+10. `docs/specs/2026-08-11-official-paneforge-companion-design.md`
 11. `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
-12. `docs/plans/2026-08-11-official-ccpanes-companion.md`
+12. `docs/plans/2026-08-11-official-paneforge-companion.md`
 13. `prompt-packs/java-enterprise/README.md`
 14. `prompt-packs/java-enterprise/pack.json`
 15. `schemas/prompt-pack.internal.schema.json`
@@ -33,10 +33,10 @@
 
 ## 3. Current baseline, facts, and evidence
 
-- Repository: `D:\ccpanes-method-layer`
-- Branch: `codex/official-ccpanes-companion`
+- Repository: `D:\paneforge-method-layer`
+- Branch: `codex/official-paneforge-companion`
 - Baseline HEAD: `921725ec19930687e247841fdfa90bbbf3bf704b`
-- Remote: `origin -> https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
+- Remote: `origin -> https://github.com/lihuabin1516-design/paneforge-method-layer.git`
 - Current task has no commit, push, merge, cleanup, or official runtime mutation authorization.
 - The previous Prompt Pack branch `codex/prompt-pack-java-intake` is published at `921725ec19930687e247841fdfa90bbbf3bf704b`.
 - Donor repository: `https://github.com/jwangkun/ai-coding-prompt-java.git`
@@ -76,28 +76,28 @@
 
 ## 4. Single objective for the next round
 
-Finish validating the Official CC-Panes external Companion as a local method-layer sidecar, then decide whether to commit/push this branch. Any direct official CC-Panes runtime integration remains a separate task with explicit target surface and mutation authorization.
+Finish validating the Official PaneForge external Companion as a local method-layer sidecar, then decide whether to commit/push this branch. Any direct official PaneForge runtime integration remains a separate task with explicit target surface and mutation authorization.
 
 ## 5. Authorization, forbidden items, conditional authorization
 
 Current repository maintenance may:
 
-- modify only `D:\ccpanes-method-layer` files required by the Companion task;
+- modify only `D:\paneforge-method-layer` files required by the Companion task;
 - read and validate Prompt Pack source artifacts;
 - read and validate Companion request/guidance schemas and fixtures;
 - run local schema, Prompt Pack, Companion, adapter, planner, and executor checks.
 
 Without a new explicit task:
 
-- do not modify `D:\cc-pane`, PaneForge, official CC-Panes source, or any user-global configuration;
-- do not launch or mutate official `cc-panes.exe` from this repository;
+- do not modify `D:\paneforge`, PaneForge, official PaneForge source, or any user-global configuration;
+- do not launch or mutate official `paneforge.exe` from this repository;
 - do not install dependencies;
 - do not publish generated Skills;
 - do not merge, push, commit, clean worktrees, or change remote state;
 - do not change public v0.1 artifact semantics;
 - do not vendor donor Prompt files or substantial donor text.
 
-The earlier `2026-08-11` commit/push authorization applied only to publishing `codex/prompt-pack-java-intake`. It does not apply to `codex/official-ccpanes-companion`.
+The earlier `2026-08-11` commit/push authorization applied only to publishing `codex/prompt-pack-java-intake`. It does not apply to `codex/official-paneforge-companion`.
 
 ## 6. Execution order and agent boundaries
 
@@ -162,9 +162,9 @@ Primary artifacts:
 
 - `docs/upstreams/ai-coding-prompt-java.md`
 - `docs/specs/2026-08-10-prompt-pack-v0.1-design.md`
-- `docs/specs/2026-08-11-official-ccpanes-companion-design.md`
+- `docs/specs/2026-08-11-official-paneforge-companion-design.md`
 - `docs/plans/2026-08-10-ai-coding-prompt-java-absorption.md`
-- `docs/plans/2026-08-11-official-ccpanes-companion.md`
+- `docs/plans/2026-08-11-official-paneforge-companion.md`
 - `docs/architecture/adr-2026-08-10-prompt-pack-repository-boundary.md`
 - `schemas/prompt-pack.internal.schema.json`
 - `prompt-packs/java-enterprise/**`
@@ -182,6 +182,6 @@ Validation owner:
 
 Next order:
 
-> After local validation, ask whether to commit/push `codex/official-ccpanes-companion`. A later task may add an already-approved transport surface, but the current Companion remains manual-copy / metadata-only.
+> After local validation, ask whether to commit/push `codex/official-paneforge-companion`. A later task may add an already-approved transport surface, but the current Companion remains manual-copy / metadata-only.
 
 Do not execute remote publishing or official runtime integration as part of the current task.

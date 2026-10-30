@@ -2,7 +2,7 @@
 
 **Status:** accepted and implemented locally
 **Date:** 2026-08-10
-**Owner:** `ccpanes-method-layer`
+**Owner:** `paneforge-method-layer`
 **Initial pack:** `java-enterprise` `0.1.0`
 
 ## Goal and invariant
@@ -18,12 +18,12 @@ The governing invariant is:
 ### Prompt Pack owner
 
 - Owns Prompt semantics, Prompt IDs and versions, composition rules, technology profiles, provenance, and deterministic evals.
-- Does not own task authorization, project facts, runtime launch, evidence, or CC-Panes UI.
+- Does not own task authorization, project facts, runtime launch, evidence, or PaneForge UI.
 
 ### Providers and consumers
 
-- Provider: `ccpanes-method-layer`.
-- Future consumers: CC-Panes task/prompt transport and generated Skill projections.
+- Provider: `paneforge-method-layer`.
+- Future consumers: PaneForge task/prompt transport and generated Skill projections.
 - Donor repositories: read-only reference inputs at locked commits.
 - `tool/skills`: derived projection only.
 

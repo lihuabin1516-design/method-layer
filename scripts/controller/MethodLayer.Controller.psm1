@@ -331,7 +331,7 @@ function New-BindingMutationPlan {
             [string]$Envelope.taskBindingPatch.status -in $terminalStatuses
         if ($autoNotify) {
             $leaderNotification = 'auto-notify-expected'
-            $notes += 'The planned update crosses into a terminal worker status, so CC-Panes automatic leader notification is expected.'
+            $notes += 'The planned update crosses into a terminal worker status, so PaneForge automatic leader notification is expected.'
         }
         else {
             $leaderNotification = 'manual-report-planned'
@@ -375,7 +375,7 @@ function New-ControllerTransportPlan {
                         -Sequence 1 `
                         -Tool 'launch_task' `
                         -Request (Copy-ControllerJsonValue -Value $Envelope.launchTaskRequest) `
-                        -Purpose 'Launch the validated method task through CC-Panes MCP.'
+                        -Purpose 'Launch the validated method task through PaneForge MCP.'
                 ) `
                 -Notes @('The controller must persist the launch response before invoking bind-launch.')
         }

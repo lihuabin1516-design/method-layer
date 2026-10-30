@@ -9,19 +9,19 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $executor = Join-Path $PSScriptRoot 'MethodLayer.Executor.psm1'
-$transport = Join-Path $PSScriptRoot 'CcPanesMcp.Transport.psm1'
+$transport = Join-Path $PSScriptRoot 'PaneForgeMcp.Transport.psm1'
 $adapter = Join-Path (Split-Path -Parent $PSScriptRoot) 'adapter/MethodLayer.Adapter.psm1'
 Import-Module $executor -Force
 Import-Module $adapter -Force
 
 if ($Mode -eq 'live') {
     Import-Module $transport -Force
-    $invoker = { param($Tool, $Request) Invoke-CcPanesMcpTool -Tool $Tool -Request $Request }
+    $invoker = { param($Tool, $Request) Invoke-PaneForgeMcpTool -Tool $Tool -Request $Request }
     try {
         $result = Invoke-ControllerExecution -PlanPath $PlanPath -ProjectPath $ProjectPath -Mode live -ArtifactRoot $ArtifactRoot -TransportTargetProjectPath $ProjectPath -AllowNonAtomicTaskBindingUpdate:$AllowNonAtomicTaskBindingUpdate -TransportInvoker $invoker
     }
     finally {
-        Disconnect-CcPanesMcp
+        Disconnect-PaneForgeMcp
     }
 }
 else {

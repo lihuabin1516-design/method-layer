@@ -42,7 +42,7 @@
     "level": "low",
     "summary": "Runtime adapter behavior remains untested because integration is outside v0.1 scope.",
     "items": [
-      "A future adapter must map CC-Panes session fields to the run artifact."
+      "A future adapter must map PaneForge session fields to the run artifact."
     ]
   },
   "recommendedNextAction": "Review v0.1 and separately authorize a read-only adapter design."

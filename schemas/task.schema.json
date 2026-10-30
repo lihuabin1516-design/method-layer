@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/v0.1/task.schema.json",
-  "title": "CC-Panes Method Task v0.1",
+  "$id": "https://paneforge.local/method-layer/v0.1/task.schema.json",
+  "title": "PaneForge Method Task v0.1",
   "description": "Authoritative task intent, authorization, baseline, acceptance, and evidence contract.",
   "type": "object",
   "required": [

@@ -1,6 +1,6 @@
-# Integration Map: Lattice + Aegis -> CC-Panes Method Layer v0.1
+# Integration Map: Lattice + Aegis -> PaneForge Method Layer v0.1
 
-本表描述协议映射和已选定的方案 A adapter 边界，不表示已经接入 CC-Panes runtime。详细设计见 `docs/specs/2026-08-05-ccpanes-v0.1-file-first-adapter-design.md`。
+本表描述协议映射和已选定的方案 A adapter 边界，不表示已经接入 PaneForge runtime。详细设计见 `docs/specs/2026-08-05-paneforge-v0.1-file-first-adapter-design.md`。
 
 ## Lattice 映射
 
@@ -28,9 +28,9 @@
 | workflow depth | `task.riskMode` | 当前字段，v0.1 advisory-only |
 | repair / retirement disposition | 无 | `changeDisposition` 是 future candidate |
 
-## CC-Panes 原生能力映射
+## PaneForge 原生能力映射
 
-| CC-Panes 能力 | v0.1 接入点 | 当前状态 |
+| PaneForge 能力 | v0.1 接入点 | 当前状态 |
 | --- | --- | --- |
 | workspace/project 管理 | `task.baseline`, `run.workspace` | reference adapter 从 task baseline 显式映射 |
 | `launch_task` | `run.taskRef`, `run.runner`, `run.workspace`, `run.contract` | `prepare-launch` 输出请求，`bind-launch` 消费响应；响应 `taskId` 保持 launch identity，TaskBinding 通过 `sessionId` 查询 |
@@ -40,7 +40,7 @@
 | resume session | `run.runner.session.resumeSessionId` | 当前可选字段 |
 | worker completion summary | `evidence.summary` 的输入之一 | 不单独证明 `evidence.outcome=completed` |
 | `report_to_leader` / reconcile | TaskBinding 持久化并 readback 后通知；丢失时重新读取 | `finish-run` / `recover-launch` 已提供本地 envelope、command-specific schema 与恢复分类 |
-| controller request planning / execution | 五类 envelope -> ordered MCP request plan -> journaled execution | dependency-free planner 与显式 live MCP executor 已实现；不自动接入 CC-Panes 主仓库、UI、profile 或 hook |
+| controller request planning / execution | 五类 envelope -> ordered MCP request plan -> journaled execution | dependency-free planner 与显式 live MCP executor 已实现；不自动接入 PaneForge 主仓库、UI、profile 或 hook |
 | UI/spec/todo | 可映射到 task lineage 或展示层 | future；不属于 v0.1 runtime |
 
 ## Prompt Pack 映射
@@ -54,7 +54,7 @@
 | deterministic eval | `prompt-packs/<pack>/evals/*.json` + `tests/prompt-pack/run.ps1` | exact expected decisions、跨文件引用与 donor-window hashes；required gate 不使用 LLM judge |
 | Task/project context | future composer input | 授权、事实、停止条件的 authority |
 | `tool/skills` | generated projection | consumer，不是 source of truth |
-| Official CC-Panes external Companion | caller-supplied context JSON -> metadata-only guidance JSON | 旁路协助官方 `cc-panes.exe`；不启动官方 exe、不改 profile/plugin/hook/MCP/user config、不执行/组合 Prompt |
+| Official PaneForge external Companion | caller-supplied context JSON -> metadata-only guidance JSON | 旁路协助官方 `paneforge.exe`；不启动官方 exe、不改 profile/plugin/hook/MCP/user config、不执行/组合 Prompt |
 | PaneForge PF-FUSION-007 | caller-supplied source-lock/catalog JSON -> sanitized metadata review | 默认关闭的只读 consumer；校验原始 bytes/hash、身份、顺序、覆盖与 host-path 边界，不读取 source path |
 | launch/journal/evidence | Prompt identity/version/ref | 避免保存完整 Prompt 正文 |
 
@@ -66,11 +66,11 @@
 - evidence 记录事实，不自行授予 completion authority。
 - handoff 表达下一轮控制契约，`nextOrder` 不扩大当前授权。
 - adapter 可以增加映射逻辑，但不得静默改变 v0.1 artifact 语义。
-- artifact 默认位于项目内 `.ccpanes-method/v0.1`，与 CC-Panes 宿主 `.ccpanes/` 分离。
-- controller-mediated MCP transport contract 见 `docs/ccpanes-mcp-transport-runbook.md`；它不表示本仓库已执行 live runtime 接入。
+- artifact 默认位于项目内 `.paneforge-method/v0.1`，与 PaneForge 宿主 `.paneforge/` 分离。
+- controller-mediated MCP transport contract 见 `docs/paneforge-mcp-transport-runbook.md`；它不表示本仓库已执行 live runtime 接入。
 - dry-run planner 输出 `controller-transport-plan` internal artifact；它不是新的方法层协议 artifact。
 - Prompt Pack、technology profile 和 eval suite 使用 `0.1-internal` schema；它们不是新的方法层协议 artifact。
-- Official Companion 是外部 sidecar；官方 CC-Panes 继续拥有 pane/session/PTY/runtime，Companion 只输出可人工复制或由单独批准 transport 消费的 metadata guidance。
+- Official Companion 是外部 sidecar；官方 PaneForge 继续拥有 pane/session/PTY/runtime，Companion 只输出可人工复制或由单独批准 transport 消费的 metadata guidance。
 - PaneForge 的 Prompt Pack review seam 只拥有 sanitized review projection；它不拥有 Prompt 语义、执行、组合、Skill 发布、方法层写入或 host 配置修改 authority。
 
 ## Future candidates

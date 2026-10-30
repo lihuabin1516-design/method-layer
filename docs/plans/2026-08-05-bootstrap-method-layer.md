@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Create a maintainable local repository for CC-Panes Method Layer design, schemas, templates, and handoff artifacts.
+**Goal:** Create a maintainable local repository for PaneForge Method Layer design, schemas, templates, and handoff artifacts.
 
-**Architecture:** The repository stays independent from `D:\cc-pane` and stores method-layer documents as plain Markdown plus JSON Schemas. Upstream projects remain references, while CC-Panes-specific adapters and contracts are defined locally.
+**Architecture:** The repository stays independent from `D:\paneforge` and stores method-layer documents as plain Markdown plus JSON Schemas. Upstream projects remain references, while PaneForge-specific adapters and contracts are defined locally.
 
 **Tech Stack:** Markdown, JSON Schema draft 2020-12, Git, PowerShell validation commands.
 
@@ -25,11 +25,11 @@
 Run:
 
 ```powershell
-New-Item -ItemType Directory -Path D:\ccpanes-method-layer
-git -C D:\ccpanes-method-layer init -b main
+New-Item -ItemType Directory -Path D:\paneforge-method-layer
+git -C D:\paneforge-method-layer init -b main
 ```
 
-Expected: a new independent local Git repository exists at `D:\ccpanes-method-layer`.
+Expected: a new independent local Git repository exists at `D:\paneforge-method-layer`.
 
 - [x] **Step 2: Write core documents**
 
@@ -40,7 +40,7 @@ Create the files listed above with the current charter, mapping, and workflow dr
 Run:
 
 ```powershell
-git -C D:\ccpanes-method-layer status --short
+git -C D:\paneforge-method-layer status --short
 ```
 
 Expected: new untracked files are visible; no commit is made without explicit approval.
@@ -97,8 +97,8 @@ Create `HANDOFF.md` with role, baseline, target, authorization, execution order,
 Run:
 
 ```powershell
-git -C D:\ccpanes-method-layer status --short
-git -C D:\ccpanes-method-layer rev-parse --show-toplevel
+git -C D:\paneforge-method-layer status --short
+git -C D:\paneforge-method-layer rev-parse --show-toplevel
 ```
 
 Expected: repository is initialized and files are ready for review.

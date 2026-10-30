@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/controller/v0.1/execution-journal-entry.internal.schema.json",
-  "title": "CC-Panes Method Layer Controller Execution Journal Entry",
+  "$id": "https://paneforge.local/method-layer/controller/v0.1/execution-journal-entry.internal.schema.json",
+  "title": "PaneForge Method Layer Controller Execution Journal Entry",
   "type": "object",
   "required": [
     "schemaVersion",

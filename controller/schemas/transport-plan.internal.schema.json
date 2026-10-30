@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/controller/v0.1/transport-plan.internal.schema.json",
-  "title": "CC-Panes Method Layer Dry-Run Transport Plan",
+  "$id": "https://paneforge.local/method-layer/controller/v0.1/transport-plan.internal.schema.json",
+  "title": "PaneForge Method Layer Dry-Run Transport Plan",
   "type": "object",
   "required": [
     "schemaVersion",

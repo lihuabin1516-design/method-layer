@@ -93,7 +93,7 @@ if (Test-ControllerGroup 'core') {
         Assert-PlanSchema -Plan $plan
         Assert-Equal 'manual-report-planned' $plan.leaderNotification
         Assert-Equal 'report_to_leader' $plan.steps[-1].tool
-        Assert-Equal 'ccpanes-binding-controller' $plan.steps[-1].request.workerId
+        Assert-Equal 'paneforge-binding-controller' $plan.steps[-1].request.workerId
     }
 
     Invoke-TestCase 'handoff plan preserves metadata and updates latest handoff path' {

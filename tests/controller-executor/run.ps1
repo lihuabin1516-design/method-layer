@@ -11,7 +11,7 @@ $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $executorModule = Join-Path $root 'scripts/controller/MethodLayer.Executor.psm1'
 $controllerModule = Join-Path $root 'scripts/controller/MethodLayer.Controller.psm1'
 $adapterModule = Join-Path $root 'scripts/adapter/MethodLayer.Adapter.psm1'
-$transportModule = Join-Path $root 'scripts/controller/CcPanesMcp.Transport.psm1'
+$transportModule = Join-Path $root 'scripts/controller/PaneForgeMcp.Transport.psm1'
 $fixtures = Join-Path $root 'tests/controller/fixtures'
 $resultSchema = Join-Path $root 'controller/schemas/execution-result.internal.schema.json'
 $journalSchema = Join-Path $root 'controller/schemas/execution-journal-entry.internal.schema.json'
@@ -88,7 +88,7 @@ if (Test-ExecutorGroup 'core') {
     Invoke-TestCase 'planner update step contains binding drift preconditions' {
         $plan = New-TestPlan
         $update = @($plan.steps | Where-Object tool -eq 'update_task_binding')[0]
-        Assert-Equal 'ccpanes-binding-controller' $update.preconditions.bindingId
+        Assert-Equal 'paneforge-binding-controller' $update.preconditions.bindingId
         Assert-Equal 'session-controller-fixture' $update.preconditions.sessionId
         Assert-Equal 'worker' $update.preconditions.role
         Assert-Equal 'running' $update.preconditions.status
@@ -453,7 +453,7 @@ retry: 3000
 data: {"jsonrpc":"2.0","id":2,"result":{"content":[{"type":"text","text":"{\"id\":\"binding-1\",\"status\":\"running\"}"}],"isError":false}}
 
 '@
-        $value = ConvertFrom-CcPanesMcpResponse -Content $payload
+        $value = ConvertFrom-PaneForgeMcpResponse -Content $payload
         Assert-Equal 'binding-1' $value.id
         Assert-Equal 'running' $value.status
     }
@@ -465,21 +465,21 @@ data: {"jsonrpc":"2.0","id":2,"result":{"content":[{"type":"text","text":"tool r
 
 '@
         Assert-Throws {
-            ConvertFrom-CcPanesMcpResponse -Content $payload
+            ConvertFrom-PaneForgeMcpResponse -Content $payload
         } 'tool rejected fixture|MCP'
     }
 
     Invoke-TestCase 'MCP parser accepts JSON and selects response before trailing notification' {
         Import-Module $transportModule -Force
         $json = '{"jsonrpc":"2.0","id":7,"result":{"content":[{"type":"text","text":"null"}],"isError":false}}'
-        Assert-Equal $null (ConvertFrom-CcPanesMcpResponse -Content $json -ExpectedId 7)
+        Assert-Equal $null (ConvertFrom-PaneForgeMcpResponse -Content $json -ExpectedId 7)
         $sse = @'
 data: {"jsonrpc":"2.0","id":8,"result":{"content":[{"type":"text","text":"{\"ok\":true}"}],"isError":false}}
 
 data: {"jsonrpc":"2.0","method":"notifications/message","params":{"level":"info"}}
 
 '@
-        $value = ConvertFrom-CcPanesMcpResponse -Content $sse -ExpectedId 8
+        $value = ConvertFrom-PaneForgeMcpResponse -Content $sse -ExpectedId 8
         Assert-True ([bool]$value.ok)
     }
 }

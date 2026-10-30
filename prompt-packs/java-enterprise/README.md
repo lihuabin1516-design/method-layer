@@ -4,7 +4,7 @@
 
 ## Boundaries
 
-- Canonical owner: `ccpanes-method-layer`.
+- Canonical owner: `paneforge-method-layer`.
 - Public method artifacts remain `task`, `run`, `evidence`, and `handoff`.
 - The pack selects and renders guidance; it does not grant permissions or record runtime evidence.
 - Concrete Java, Spring, persistence, security, and test versions come from `profiles/spring-enterprise.json` plus repository facts.

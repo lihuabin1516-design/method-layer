@@ -172,26 +172,26 @@ function New-OfficialCopyPlan {
         'blocked-authorization' {
             @(
                 'Reduce requested actions or expand task authorization outside this companion.',
-                'Re-run companion guidance before using official CC-Panes.'
+                'Re-run companion guidance before using official PaneForge.'
             )
         }
         'blocked-input-gap' {
             @(
-                'Collect the missing project facts before copying guidance into official CC-Panes.',
+                'Collect the missing project facts before copying guidance into official PaneForge.',
                 'Re-run companion guidance with the completed facts.'
             )
         }
         default {
             @(
-                'Copy selected Prompt identities and output contracts into the official CC-Panes task/session prompt manually.',
-                'Keep Prompt execution and any runtime composition inside the active official CC-Panes session under task authorization.',
-                'Record selected Prompt ids in method-layer evidence if the target project tracks .ccpanes-method/.'
+                'Copy selected Prompt identities and output contracts into the official PaneForge task/session prompt manually.',
+                'Keep Prompt execution and any runtime composition inside the active official PaneForge session under task authorization.',
+                'Record selected Prompt ids in method-layer evidence if the target project tracks .paneforge-method/.'
             )
         }
     }
 
     return [pscustomobject][ordered]@{
-        targetSurface = 'official-ccpanes-manual-session-or-existing-transport'
+        targetSurface = 'official-paneforge-manual-session-or-existing-transport'
         containsPromptBodies = $false
         steps = @($steps)
     }
@@ -227,12 +227,12 @@ function New-OfficialCompanionGuidance {
 
     $guidance = [pscustomobject][ordered]@{
         schemaVersion = '0.1-internal'
-        artifactType = 'official-ccpanes-companion-guidance'
+        artifactType = 'official-paneforge-companion-guidance'
         requestId = [string]$Request.requestId
         createdAt = [DateTimeOffset]::UtcNow.ToString('o')
         target = [pscustomobject][ordered]@{
-            product = 'official-cc-panes'
-            exeName = 'cc-panes.exe'
+            product = 'official-paneforge'
+            exeName = 'paneforge.exe'
             integrationMode = 'external-companion'
             launchesOfficialExe = $false
             writesOfficialConfig = $false
@@ -252,8 +252,8 @@ function New-OfficialCompanionGuidance {
         authorizationViolations = @($authorizationViolations)
         copyPlan = New-OfficialCopyPlan -Decision $decision
         deniedOperations = @(
-            'launchOfficialCcPanesExe',
-            'mutateOfficialCcPanesConfig',
+            'launchOfficialPaneForgeExe',
+            'mutateOfficialPaneForgeConfig',
             'writeUserGlobalConfig',
             'installPluginOrHook',
             'registerMcpServer',
@@ -263,8 +263,8 @@ function New-OfficialCompanionGuidance {
             'persistPromptBody'
         )
         notes = @(
-            'Official CC-Panes remains the authority for panes, sessions, PTY, and existing runtime surfaces.',
-            'This companion only returns metadata guidance derived from ccpanes-method-layer Prompt Pack files.',
+            'Official PaneForge remains the authority for panes, sessions, PTY, and existing runtime surfaces.',
+            'This companion only returns metadata guidance derived from paneforge-method-layer Prompt Pack files.',
             'Task authorization, repository facts, stop conditions, and acceptance evidence stay outside Prompt Pack content.'
         )
     }

@@ -16,7 +16,7 @@
 ## 本地改写点
 
 - `docs/aegis/` ceremony 改写为四类轻量、独立验证的 JSON artifact。
-- method-pack 自动触发改写为未来 CC-Panes adapter 显式生成 run/evidence/handoff。
+- method-pack 自动触发改写为未来 PaneForge adapter 显式生成 run/evidence/handoff。
 - completion authority 继续属于项目规则、实际证据和当前用户授权。
 - repair/retirement track 不在 v0.1 定义 `changeDisposition`。
 

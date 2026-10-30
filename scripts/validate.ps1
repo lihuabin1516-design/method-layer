@@ -221,13 +221,13 @@ else {
 $companionTests = Join-Path $root 'tests/companion/run.ps1'
 if (Test-Path -LiteralPath $companionTests -PathType Leaf) {
     Write-Host ""
-    Write-Host "[INFO] Running Official CC-Panes external companion tests" -ForegroundColor Cyan
+    Write-Host "[INFO] Running Official PaneForge external companion tests" -ForegroundColor Cyan
     & (Get-Command pwsh).Source -NoProfile -ExecutionPolicy Bypass -File $companionTests
     if ($LASTEXITCODE -eq 0) {
-        Write-Pass 'Official CC-Panes external companion test suite'
+        Write-Pass 'Official PaneForge external companion test suite'
     }
     else {
-        Write-Fail "Official CC-Panes external companion test suite exited $LASTEXITCODE"
+        Write-Fail "Official PaneForge external companion test suite exited $LASTEXITCODE"
     }
 }
 else {

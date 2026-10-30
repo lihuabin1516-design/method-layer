@@ -1,5 +1,5 @@
 {
-  "id": "ccpanes-binding-controller",
+  "id": "paneforge-binding-controller",
   "title": "Controller fixture",
   "role": "worker",
   "sessionId": "session-controller-fixture",

@@ -6,15 +6,15 @@
   "riskMode": "standard",
   "authorization": {
     "allowedPaths": [
-      "D:\\ccpanes-method-layer"
+      "D:\\paneforge-method-layer"
     ],
     "forbiddenActions": [
-      "Modify D:\\cc-pane"
+      "Modify D:\\paneforge"
     ]
   },
   "baseline": {
-    "projectPath": "D:\\ccpanes-method-layer",
-    "repoRoot": "D:\\ccpanes-method-layer",
+    "projectPath": "D:\\paneforge-method-layer",
+    "repoRoot": "D:\\paneforge-method-layer",
     "git": {
       "branch": "main",
       "head": "unborn",

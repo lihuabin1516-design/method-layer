@@ -1,13 +1,13 @@
-# Official CC-Panes External Companion Design
+# Official PaneForge External Companion Design
 
 **Status:** accepted and implemented locally
 **Date:** 2026-08-11
-**Owner:** `ccpanes-method-layer`
+**Owner:** `paneforge-method-layer`
 
 ## Goal
 
 Expose the `java-enterprise` Prompt Pack as an external assistant for the
-official `cc-panes.exe` without changing official CC-Panes runtime, source,
+official `paneforge.exe` without changing official PaneForge runtime, source,
 profile, hook, plugin, MCP, or user configuration.
 
 ## Architecture
@@ -20,16 +20,16 @@ caller context JSON
   -> Prompt Pack manifest/profile metadata
   -> deterministic prompt selection and stop gates
   -> companion guidance JSON
-  -> manual copy or separately approved existing CC-Panes surface
+  -> manual copy or separately approved existing PaneForge surface
 ```
 
-Official CC-Panes remains the owner of panes, sessions, PTY, and runtime
+Official PaneForge remains the owner of panes, sessions, PTY, and runtime
 execution. The method layer owns Prompt Pack metadata and guidance envelopes
 only.
 
 ## Boundaries
 
-- The companion does not start `cc-panes.exe`.
+- The companion does not start `paneforge.exe`.
 - The companion does not write official user config, profiles, hooks, plugins,
   MCP server entries, or host runtime files.
 - The companion does not execute or compose Prompts.
@@ -49,4 +49,4 @@ only.
 2. Java design context selects `requirement-review` and `solution-design`.
 3. Missing technology facts block before copy guidance.
 4. Authorization expansion blocks before copy guidance.
-5. Output remains metadata-only and names official CC-Panes as an external target.
+5. Output remains metadata-only and names official PaneForge as an external target.

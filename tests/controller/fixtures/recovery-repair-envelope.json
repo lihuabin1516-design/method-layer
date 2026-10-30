@@ -6,7 +6,7 @@
   "recoveryAction": "repair-metadata",
   "taskId": "team:task-001",
   "runId": "run-controller-fixture",
-  "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+  "runPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
   "launchTaskId": "launch-task-controller-fixture",
   "sessionId": "session-controller-fixture",
   "taskBindingPatch": {
@@ -15,9 +15,9 @@
         "protocolVersion": "0.1",
         "taskId": "team:task-001",
         "runId": "run-controller-fixture",
-        "artifactRoot": ".ccpanes-method/v0.1",
-        "taskPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/task.json",
-        "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json"
+        "artifactRoot": ".paneforge-method/v0.1",
+        "taskPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/task.json",
+        "runPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json"
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/v0.1/handoff.schema.json",
-  "title": "CC-Panes Method Handoff v0.1",
+  "$id": "https://paneforge.local/method-layer/v0.1/handoff.schema.json",
+  "title": "PaneForge Method Handoff v0.1",
   "description": "Structured nine-section controller handoff contract.",
   "type": "object",
   "required": [

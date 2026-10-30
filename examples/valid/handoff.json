@@ -3,7 +3,7 @@
   "artifactType": "handoff",
   "handoffId": "handoff-20260805-v01-review",
   "createdAt": "2026-08-05T17:05:00+08:00",
-  "role": "Next CC-Panes Method Layer controller",
+  "role": "Next PaneForge Method Layer controller",
   "taskId": "ccp-method-bootstrap-20260805",
   "currentResult": "The v0.1 local protocol baseline is ready for review.",
   "requiredReading": [
@@ -14,8 +14,8 @@
     "examples/README.md"
   ],
   "baseline": {
-    "projectPath": "D:\\ccpanes-method-layer",
-    "repoRoot": "D:\\ccpanes-method-layer",
+    "projectPath": "D:\\paneforge-method-layer",
+    "repoRoot": "D:\\paneforge-method-layer",
     "git": {
       "branch": "main",
       "head": "unborn",
@@ -29,7 +29,7 @@
     ]
   },
   "facts": [
-    "The repository is independent from D:\\cc-pane.",
+    "The repository is independent from D:\\paneforge.",
     "PowerShell 7.6.3 Test-Json is the instance validator."
   ],
   "evidence": [
@@ -38,15 +38,15 @@
   ],
   "objective": "Review the v0.1 baseline and decide whether to design an adapter.",
   "authorization": [
-    "Read and modify files only in D:\\ccpanes-method-layer."
+    "Read and modify files only in D:\\paneforge-method-layer."
   ],
   "forbidden": [
-    "Modify D:\\cc-pane.",
+    "Modify D:\\paneforge.",
     "Write user-global configuration.",
     "Commit, push, merge, or create remotes."
   ],
   "conditionalAuthorization": [
-    "Any CC-Panes integration requires a separately approved target path and action."
+    "Any PaneForge integration requires a separately approved target path and action."
   ],
   "executionOrder": [
     "Read the protocol baseline and validation evidence.",
@@ -81,7 +81,7 @@
     "Stop after three failed repair attempts for the same root cause."
   ],
   "stopConditions": [
-    "A required change reaches outside D:\\ccpanes-method-layer.",
+    "A required change reaches outside D:\\paneforge-method-layer.",
     "A dependency installation becomes necessary."
   ],
   "artifacts": [

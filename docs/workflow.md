@@ -16,7 +16,7 @@
 
 v0.1 定义 artifact 和门禁输入。本仓库 reference adapter 已实现本地文件与
 JSON envelope 转换；controller 可在显式 live 模式执行 MCP plan，UI、远端动作和
-CC-Panes 主仓库接入仍保持独立。
+PaneForge 主仓库接入仍保持独立。
 
 ## Reference adapter 路径
 
@@ -37,7 +37,7 @@ prepare-launch
 adapter command 在 stdout 返回单个 JSON envelope。文件 artifact 先落盘，transport 动作随后执行。
 每类 stdout 在输出前通过 command-specific internal schema。controller 的 MCP
 字段映射、metadata merge/readback 门禁与恢复动作见
-`docs/ccpanes-mcp-transport-runbook.md`。
+`docs/paneforge-mcp-transport-runbook.md`。
 
 本仓库提供 `scripts/controller/plan-transport.ps1`，把 envelope 与可选
 TaskBinding snapshot 转成 `controller-transport-plan`；随后

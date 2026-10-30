@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/finish-run-envelope.internal.schema.json",
-  "title": "CC-Panes Method Layer Finish Run Envelope",
+  "$id": "https://paneforge.local/method-layer/adapter/v0.1/finish-run-envelope.internal.schema.json",
+  "title": "PaneForge Method Layer Finish Run Envelope",
   "type": "object",
   "required": [
     "schemaVersion",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/v0.1/run.schema.json",
-  "title": "CC-Panes Method Run v0.1",
+  "$id": "https://paneforge.local/method-layer/v0.1/run.schema.json",
+  "title": "PaneForge Method Run v0.1",
   "description": "Execution binding between a task contract and a concrete runner session.",
   "type": "object",
   "required": [

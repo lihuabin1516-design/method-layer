@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ccpanes.local/method-layer/adapter/v0.1/bind-launch-envelope.internal.schema.json",
-  "title": "CC-Panes Method Layer Bind Launch Envelope",
+  "$id": "https://paneforge.local/method-layer/adapter/v0.1/bind-launch-envelope.internal.schema.json",
+  "title": "PaneForge Method Layer Bind Launch Envelope",
   "type": "object",
   "required": [
     "schemaVersion",

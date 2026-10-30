@@ -3,9 +3,9 @@
   "artifactType": "prompt-pack",
   "packId": "java-enterprise",
   "version": "0.1.0",
-  "title": "CC-Panes Java Enterprise Prompt Pack",
+  "title": "PaneForge Java Enterprise Prompt Pack",
   "domain": "java-enterprise",
-  "owner": "ccpanes-method-layer",
+  "owner": "paneforge-method-layer",
   "status": "experimental",
   "publicArtifactImpact": "none",
   "publicArtifactTypes": [

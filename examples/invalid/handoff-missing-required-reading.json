@@ -7,8 +7,8 @@
   "taskId": "ccp-method-bootstrap-20260805",
   "currentResult": "Invalid because requiredReading is missing.",
   "baseline": {
-    "projectPath": "D:\\ccpanes-method-layer",
-    "repoRoot": "D:\\ccpanes-method-layer",
+    "projectPath": "D:\\paneforge-method-layer",
+    "repoRoot": "D:\\paneforge-method-layer",
     "git": {
       "branch": "main",
       "head": "unborn",

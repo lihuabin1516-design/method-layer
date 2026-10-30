@@ -9,13 +9,13 @@ Prompt semantics, versions, composition rules, technology profiles, source locks
 
 ## Decision
 
-`ccpanes-method-layer` owns Prompt Pack source artifacts. `java-enterprise` is internal configuration and knowledge input, not a public method artifact.
+`paneforge-method-layer` owns Prompt Pack source artifacts. `java-enterprise` is internal configuration and knowledge input, not a public method artifact.
 
-`D:\cc-pane\tool\skills` may receive a generated, versioned projection in a later task. It does not own source semantics. Runtime transport and PaneForge catalog/review surfaces remain separate consumers.
+`D:\paneforge\tool\skills` may receive a generated, versioned projection in a later task. It does not own source semantics. Runtime transport and PaneForge catalog/review surfaces remain separate consumers.
 
 ## Rejected alternatives
 
-### Create `ccpanes-prompt-layer` now
+### Create `paneforge-prompt-layer` now
 
 Rejected because there is one local pack, no stable multi-consumer release contract, and no sustained independent eval/release cadence. Immediate separation would add synchronization and version-coordination cost without reducing current coupling.
 
@@ -38,7 +38,7 @@ Rejected because Prompt configuration does not represent task intent, a run bind
 
 ## Split review gates
 
-Reassess an independent `ccpanes-prompt-layer` only when all of these conditions have evidence:
+Reassess an independent `paneforge-prompt-layer` only when all of these conditions have evidence:
 
 1. At least two independent consumers use Prompt Packs stably.
 2. Prompt Packs have an independent schema, SemVer policy, and compatibility policy.
@@ -55,7 +55,7 @@ Meeting the gates triggers review, not automatic migration.
 - Internal schema validates pack/profile/eval artifacts.
 - Repository tests assert the public artifact list remains unchanged.
 - Repository tests resolve manifest references and reject large normalized passages matching locked donor fingerprints.
-- Documentation identifies `ccpanes-method-layer` as owner and `tool/skills` as derived.
+- Documentation identifies `paneforge-method-layer` as owner and `tool/skills` as derived.
 
 ## Reversal
 

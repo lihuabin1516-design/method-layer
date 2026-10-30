@@ -1,10 +1,10 @@
-# Long-Term Maintenance Handoff: CC-Panes Method Layer
+# Long-Term Maintenance Handoff: PaneForge Method Layer
 
 ## 1. 角色、任务标识与一句话结论
 
 - 角色：下一任本项目长期维护主控。
-- 任务标识：`ccpanes-method-layer-long-term-maintenance-20260806`
-- 一句话结论：`D:\ccpanes-method-layer` 已从草案升级为可验证、可维护、可被后续 CC-Panes adapter 消费的 v0.1 方法层协议基线，并已推送到远端 `lihuabin1516-design/ccpanes-method-layer`。
+- 任务标识：`paneforge-method-layer-long-term-maintenance-20260806`
+- 一句话结论：`D:\paneforge-method-layer` 已从草案升级为可验证、可维护、可被后续 PaneForge adapter 消费的 v0.1 方法层协议基线，并已推送到远端 `lihuabin1516-design/paneforge-method-layer`。
 
 ## 2. 先决必读
 
@@ -18,7 +18,7 @@
 6. `docs/charter.md`
 7. `docs/workflow.md`
 8. `docs/integration-map.md`
-9. `docs/ccpanes-mcp-transport-runbook.md`
+9. `docs/paneforge-mcp-transport-runbook.md`
 10. `controller/README.md`
 11. `adapter/README.md`
 12. `schemas/*.schema.json`
@@ -32,17 +32,17 @@
 
 ### Git / remote
 
-- 本地路径：`D:\ccpanes-method-layer`
+- 本地路径：`D:\paneforge-method-layer`
 - 分支：`main`
 - 当前提交：`d75cf50be269009cc53f6e984fc70981c55cee31`
-- 远端：`https://github.com/lihuabin1516-design/ccpanes-method-layer.git`
+- 远端：`https://github.com/lihuabin1516-design/paneforge-method-layer.git`
 - 远端 `main` 已与本地 HEAD 对齐。
 - 上一远端初始提交：`e70893f Initial commit`
-- 当前基线提交标题：`Establish CC-Panes method-layer v0.1 protocol baseline`
+- 当前基线提交标题：`Establish PaneForge method-layer v0.1 protocol baseline`
 - GitHub 仓库描述：
 
 ```text
-CC-Panes v0.1 方法层协议基线：定义 task/run/evidence/handoff JSON Schema，提供 file-first adapter、controller planner、journaled executor 与本地 MCP transport 验证，用于后续 CC-Panes adapter 消费。
+PaneForge v0.1 方法层协议基线：定义 task/run/evidence/handoff JSON Schema，提供 file-first adapter、controller planner、journaled executor 与本地 MCP transport 验证，用于后续 PaneForge adapter 消费。
 ```
 
 ### 当前能力
@@ -115,13 +115,13 @@ powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
 
 ## 4. 本轮唯一目标
 
-长期维护本仓库作为 CC-Panes 方法层协议基线，优先保证：
+长期维护本仓库作为 PaneForge 方法层协议基线，优先保证：
 
 1. 四类 public artifact 的 v0.1 兼容性；
 2. 本机验证稳定；
 3. adapter/controller 的边界清晰；
 4. 后续吸收其它项目方法层时可追溯、可比较、可回滚；
-5. 后续 CC-Panes adapter 消费时不把 runtime 细节反向污染协议层。
+5. 后续 PaneForge adapter 消费时不把 runtime 细节反向污染协议层。
 
 ## 5. 精确授权、禁止项和条件授权
 
@@ -136,9 +136,9 @@ powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
 
 ### 默认保持边界
 
-- `D:\cc-pane` 作为外部项目读取参考。
+- `D:\paneforge` 作为外部项目读取参考。
 - 用户全局配置保持外部状态。
-- CC-Panes UI、hook、plugin、profile、主仓库接入保持独立任务。
+- PaneForge UI、hook、plugin、profile、主仓库接入保持独立任务。
 - GitHub 只作为同步与协作 surface，不作为方法层事实源。
 - Lattice / Aegis / 其它项目只吸收方法与契约，不 vendor 成品目录。
 
@@ -148,7 +148,7 @@ powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
 
 - 改 v0.1 public schema 的 required 字段、语义或 artifact 名称。
 - 引入 v0.2 / experimental schema。
-- 修改 `D:\cc-pane` 或任何 CC-Panes 主仓库文件。
+- 修改 `D:\paneforge` 或任何 PaneForge 主仓库文件。
 - 写用户级配置。
 - 安装依赖。
 - 增加 UI、hook、plugin、profile。
@@ -174,7 +174,7 @@ powershell -ExecutionPolicy Bypass -File scripts\validate.ps1
    - adapter maintenance
    - controller maintenance
    - documentation maintenance
-   - CC-Panes integration preparation
+   - PaneForge integration preparation
 5. 为本轮目标新增或更新 `docs/plans/*.md`。
 6. 先写失败或聚焦测试，再改 schema / adapter / controller。
 7. 验证并报告。
@@ -246,7 +246,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 - `docs/architecture/repository-structure.md` 与实际目录一致。
 - 新增 schema 或 fixture 进入 `scripts\validate.ps1` 覆盖范围。
 - 没有真实 token、PII、生产数据落入仓库。
-- `.ccpanes/`、`.ccpanes-method/`、`artifacts/local/` 继续忽略。
+- `.paneforge/`、`.paneforge-method/`、`artifacts/local/` 继续忽略。
 
 ## 8. 审计、熔断和停止条件
 
@@ -274,7 +274,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 - 需要用户级配置写入。
 - 需要安装依赖。
 - 需要远端破坏性操作。
-- 需要改变 CC-Panes 主仓库 runtime 行为。
+- 需要改变 PaneForge 主仓库 runtime 行为。
 - 验证失败且根因尚未说明。
 
 ## 9. Artifact、交付要求和后续顺序
@@ -321,7 +321,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 1. 建立 upstream absorption 模板。
 2. 为 Lattice / Aegis 现有 upstream notes 补齐对比矩阵。
 3. 为未来 v0.2 建立 `docs/plans/*` 草案，不直接改 v0.1 public schema。
-4. 设计 CC-Panes adapter consumption plan，但保持主仓库接入为独立任务。
+4. 设计 PaneForge adapter consumption plan，但保持主仓库接入为独立任务。
 5. 增加 release checklist 与 tag 策略。
 
 ## 10. 新对话启动提示词
@@ -329,7 +329,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 新开对话时可直接粘贴：
 
 ```text
-请在 D:\ccpanes-method-layer 继续担任 CC-Panes Method Layer 长期维护主控。
+请在 D:\paneforge-method-layer 继续担任 PaneForge Method Layer 长期维护主控。
 
 先读：
 - AGENTS.md
@@ -339,7 +339,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 - docs/architecture/repository-structure.md
 - docs/integration-map.md
 - docs/workflow.md
-- docs/ccpanes-mcp-transport-runbook.md
+- docs/paneforge-mcp-transport-runbook.md
 
 先执行：
 - git status --branch --short
@@ -349,8 +349,8 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tests\controller-executor\run.ps1
 维护 v0.1 方法层协议基线，后续按计划吸收其它项目的方法层能力。保持 public schema 兼容、adapter/controller 边界清晰、本机验证稳定。
 
 默认边界：
-- 只改 D:\ccpanes-method-layer。
-- 不改 D:\cc-pane。
+- 只改 D:\paneforge-method-layer。
+- 不改 D:\paneforge。
 - 不写用户全局配置。
 - 不安装依赖。
 - 不自动做 UI/hook/plugin/profile/主仓库接入。

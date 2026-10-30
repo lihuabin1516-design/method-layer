@@ -3,9 +3,9 @@
   "envelopeType": "finish-run-envelope",
   "operation": "finish-run",
   "methodOutcome": "completed",
-  "evidencePath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/evidence/evidence-controller.json",
+  "evidencePath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/evidence/evidence-controller.json",
   "evidenceSha256": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
-  "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+  "runPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
   "runSha256": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
   "taskBindingLookup": {
     "operation": "find_task_binding_by_session",
@@ -22,15 +22,15 @@
         "protocolVersion": "0.1",
         "taskId": "team:task-001",
         "runId": "run-controller-fixture",
-        "artifactRoot": ".ccpanes-method/v0.1",
-        "taskPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/task.json",
-        "runPath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
-        "latestEvidencePath": ".ccpanes-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/evidence/evidence-controller.json"
+        "artifactRoot": ".paneforge-method/v0.1",
+        "taskPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/task.json",
+        "runPath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/run.json",
+        "latestEvidencePath": ".paneforge-method/v0.1/tasks/team%3Atask-001/runs/run-controller-fixture/evidence/evidence-controller.json"
       }
     }
   },
   "leaderReport": {
-    "workerId": "ccpanes-binding-controller",
+    "workerId": "paneforge-binding-controller",
     "status": "completed",
     "summary": "Controller fixture completed with aligned evidence.",
     "dispatchPolicy": "if-not-auto-notified"
